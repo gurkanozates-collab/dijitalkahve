@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dijital Kahvehanem - Müşteri</title>
-    <!-- Firebase Compat Scriptleri -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 15px; color: #333; padding-bottom: 90px; }
         .header { text-align: center; background: #3e2723; color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; }
         .nav-btns { display: flex; gap: 5px; margin-bottom: 15px; }
-        .nav-btns button { flex: 1; padding: 12px 5px; border: none; background: #d7ccc8; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 15px; }
+        .nav-btns button { flex: 1; padding: 12px 5px; border: none; background: #d7ccc8; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 14px; }
         .nav-btns button.active { background: #5d4037; color: white; }
         .page { display: none; }
         .page.active { display: block; }
@@ -32,6 +31,10 @@
         .yazboz-table th, .yazboz-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
         .yazboz-table input { width: 90%; text-align: center; border: none; font-size: 16px; }
         .fark-row td { font-weight: bold; color: #d32f2f; background: #fbe9e7; }
+        .hesap-card { background: white; padding: 12px 16px; margin-bottom: 10px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 6px solid #ff9800; }
+        .hesap-card.onayli { border-left-color: #388e3c; }
+        .hesap-baslik { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 6px; color: #5d4037; }
+        .siparis-urun-satir { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px dashed #eee; font-size: 15px; gap: 6px; }
     </style>
 </head>
 <body>
@@ -43,6 +46,7 @@
 
 <div class="nav-btns">
     <button onclick="sayfaAc('menu')" class="active" id="btn-menu">☕ Menü</button>
+    <button onclick="sayfaAc('hesap')" id="btn-hesap">🧾 Hesap</button>
     <button onclick="sayfaAc('yazboz')" id="btn-yazboz">📝 Yaz-Boz</button>
 </div>
 
@@ -50,6 +54,13 @@
 <div id="page-menu" class="page active">
     <div id="urunListesi">Menü Yükleniyor...</div>
     <button class="btn-red" id="garsonBtn" onclick="garsonCagir()">🔔 GARSON / OCAKÇI ÇAĞIR</button>
+</div>
+
+<!-- MASA HESABI -->
+<div id="page-hesap" class="page">
+    <h3>Masa Hesabı</h3>
+    <div id="hesapListesi">Yükleniyor...</div>
+    <div id="hesapGenelToplam" style="text-align:right;font-weight:bold;font-size:18px;margin-top:10px;color:#3e2723;"></div>
 </div>
 
 <!-- DİJİTAL YAZ-BOZ -->
@@ -76,10 +87,7 @@
         storageBucket: "dijitalkahve-67f0a.appspot.com",
         messagingSenderId: "326476599239"
     };
-
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.app().database("https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app");
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -87,59 +95,41 @@
     document.getElementById('masaEtiket').innerText = "MASA " + masa;
 
     let urunlerData = {};
-    let sepet = {}; // { key: { ad, fiyat, adet } }
+    let sepet = {}; // yeni sipariş oluşturmak için: { key: { ad, fiyat, adet } }
 
-    // Ürünleri Dinle
     db.ref('urunler').on('value', (snapshot) => {
-        const data = snapshot.val();
-        urunlerData = data || {};
+        urunlerData = snapshot.val() || {};
         renderMenu();
     });
 
-    const kategoriIkon = {
-        'Sıcak İçecekler': '☕',
-        'Soğuk İçecekler': '🧊',
-        'Tatlılar': '🍰',
-        'Atıştırmalıklar': '🥪',
-        'Diğer': '🍹'
-    };
+    const kategoriIkon = { 'Sıcak İçecekler': '☕', 'Soğuk İçecekler': '🧊', 'Tatlılar': '🍰', 'Atıştırmalıklar': '🥪', 'Diğer': '🍹' };
     const kategoriSirasi = ['Sıcak İçecekler', 'Soğuk İçecekler', 'Tatlılar', 'Atıştırmalıklar', 'Diğer'];
 
     function renderMenu() {
         const menuList = document.getElementById('urunListesi');
         menuList.innerHTML = '';
         const keys = Object.keys(urunlerData);
-        if(keys.length === 0) {
-            menuList.innerHTML = '<p style="text-align:center;">Henüz ürün eklenmemiş.</p>';
-            return;
-        }
-        // Ürünleri kategoriye göre grupla
+        if(keys.length === 0) { menuList.innerHTML = '<p style="text-align:center;">Henüz ürün eklenmemiş.</p>'; return; }
         const gruplar = {};
         keys.forEach(key => {
-            const item = urunlerData[key];
-            const kat = item.kategori || 'Diğer';
+            const kat = urunlerData[key].kategori || 'Diğer';
             if(!gruplar[kat]) gruplar[kat] = [];
             gruplar[kat].push(key);
         });
-        // Önce bilinen sırayla, sonra kalan kategoriler
-        const siraliKategoriler = [
-            ...kategoriSirasi.filter(k => gruplar[k]),
-            ...Object.keys(gruplar).filter(k => !kategoriSirasi.includes(k))
-        ];
+        const siraliKategoriler = [...kategoriSirasi.filter(k => gruplar[k]), ...Object.keys(gruplar).filter(k => !kategoriSirasi.includes(k))];
         siraliKategoriler.forEach(kat => {
             let html = `<h3 class="kategori-baslik">${kategoriIkon[kat] || '🍽️'} ${kat}</h3>`;
             gruplar[kat].forEach(key => {
                 const item = urunlerData[key];
                 const adet = sepet[key] ? sepet[key].adet : 0;
-                html += `
-                    <div class="card">
-                        <span><strong>${item.ad}</strong><br><small>${item.fiyat} TL</small></span>
-                        <div class="qty-box">
-                            <button onclick="adetDegistir('${key}', -1)">-</button>
-                            <span id="adet-${key}">${adet}</span>
-                            <button onclick="adetDegistir('${key}', 1)">+</button>
-                        </div>
-                    </div>`;
+                html += `<div class="card">
+                    <span><strong>${item.ad}</strong><br><small>${item.fiyat} TL</small></span>
+                    <div class="qty-box">
+                        <button onclick="adetDegistir('${key}', -1)">-</button>
+                        <span id="adet-${key}">${adet}</span>
+                        <button onclick="adetDegistir('${key}', 1)">+</button>
+                    </div>
+                </div>`;
             });
             menuList.innerHTML += html;
         });
@@ -150,11 +140,7 @@
         if(!item) return;
         const mevcut = sepet[key] ? sepet[key].adet : 0;
         const yeni = Math.max(0, mevcut + delta);
-        if(yeni === 0) {
-            delete sepet[key];
-        } else {
-            sepet[key] = { ad: item.ad, fiyat: item.fiyat, adet: yeni };
-        }
+        if(yeni === 0) { delete sepet[key]; } else { sepet[key] = { ad: item.ad, fiyat: item.fiyat, adet: yeni }; }
         document.getElementById(`adet-${key}`).innerText = yeni;
         sepetGuncelle();
     }
@@ -163,59 +149,109 @@
         let toplam = 0;
         Object.values(sepet).forEach(i => toplam += (parseFloat(i.fiyat) || 0) * i.adet);
         const bar = document.getElementById('sepetBar');
-        if(toplam > 0) {
-            bar.style.display = 'flex';
-            document.getElementById('sepetToplam').innerText = toplam + ' TL';
-        } else {
-            bar.style.display = 'none';
-        }
+        if(toplam > 0) { bar.style.display = 'flex'; document.getElementById('sepetToplam').innerText = toplam + ' TL'; }
+        else { bar.style.display = 'none'; }
     }
 
     function siparisVer() {
-        const kalemler = Object.values(sepet);
-        if(kalemler.length === 0) return;
-        const toplam = kalemler.reduce((s, i) => s + (parseFloat(i.fiyat) || 0) * i.adet, 0);
+        const kalemler = sepet;
+        if(Object.keys(kalemler).length === 0) return;
+        const toplam = Object.values(kalemler).reduce((s, i) => s + (parseFloat(i.fiyat) || 0) * i.adet, 0);
         const saat = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
         db.ref('siparisler').push({
-            masa: masa,
-            urunler: kalemler,
-            toplam: toplam,
-            zaman: saat,
-            durum: 'bekliyor'
+            masa: masa, urunler: kalemler, toplam: toplam, zaman: saat, durum: 'bekliyor'
         }).then(() => {
             alert('Siparişiniz alındı!');
             sepet = {};
             renderMenu();
             sepetGuncelle();
-        }).catch((err) => {
-            alert('Hata Oluştu: ' + err.message);
+        }).catch((err) => { alert('Hata Oluştu: ' + err.message); });
+    }
+
+    // ---- MASA HESABI (paylaşılan, canlı) ----
+    db.ref('siparisler').orderByChild('masa').equalTo(masa).on('value', (snapshot) => {
+        renderHesap(snapshot.val());
+    });
+
+    function renderHesap(data) {
+        const container = document.getElementById('hesapListesi');
+        container.innerHTML = '';
+        let genelToplam = 0;
+        if(!data) {
+            container.innerHTML = '<p style="text-align:center;">Henüz sipariş verilmedi.</p>';
+            document.getElementById('hesapGenelToplam').innerText = '';
+            return;
+        }
+        Object.keys(data).forEach(orderKey => {
+            const siparis = data[orderKey];
+            const urunler = siparis.urunler || {};
+            const onaylandi = siparis.durum === 'onaylandi';
+            let urunHtml = '';
+            let orderToplam = 0;
+            Object.keys(urunler).forEach(pKey => {
+                const u = urunler[pKey];
+                const tutar = (parseFloat(u.fiyat) || 0) * u.adet;
+                orderToplam += tutar;
+                if(onaylandi) {
+                    urunHtml += `<div class="siparis-urun-satir"><span>${u.ad} x${u.adet}</span><span>${tutar} TL</span></div>`;
+                } else {
+                    urunHtml += `<div class="siparis-urun-satir">
+                        <span>${u.ad}</span>
+                        <div class="qty-box">
+                            <button onclick="siparisAdetDegistir('${orderKey}','${pKey}',-1)">-</button>
+                            <span>${u.adet}</span>
+                            <button onclick="siparisAdetDegistir('${orderKey}','${pKey}',1)">+</button>
+                        </div>
+                        <span>${tutar} TL</span>
+                    </div>`;
+                }
+            });
+            genelToplam += orderToplam;
+            container.innerHTML += `<div class="hesap-card ${onaylandi ? 'onayli' : ''}">
+                <div class="hesap-baslik">
+                    <span>${onaylandi ? '✅ Onaylandı' : '⏳ Bekliyor'} - Saat ${siparis.zaman}</span>
+                    <span>${orderToplam} TL</span>
+                </div>
+                ${urunHtml}
+            </div>`;
+        });
+        document.getElementById('hesapGenelToplam').innerText = 'GENEL TOPLAM: ' + genelToplam + ' TL';
+    }
+
+    function siparisAdetDegistir(orderKey, productKey, delta) {
+        const ref = db.ref('siparisler/' + orderKey + '/urunler/' + productKey);
+        ref.once('value').then(snap => {
+            const u = snap.val();
+            if(!u) return;
+            const yeniAdet = Math.max(0, u.adet + delta);
+            if(yeniAdet === 0) { ref.remove().then(() => siparisToplamGuncelle(orderKey)); }
+            else { ref.update({ adet: yeniAdet }).then(() => siparisToplamGuncelle(orderKey)); }
         });
     }
 
-    // Bu masanın bekleyen çağrısı var mı diye anlık takip et
+    function siparisToplamGuncelle(orderKey) {
+        db.ref('siparisler/' + orderKey + '/urunler').once('value').then(snap => {
+            const urunler = snap.val() || {};
+            if(Object.keys(urunler).length === 0) { db.ref('siparisler/' + orderKey).remove(); return; }
+            let toplam = 0;
+            Object.values(urunler).forEach(u => toplam += (parseFloat(u.fiyat) || 0) * u.adet);
+            db.ref('siparisler/' + orderKey + '/toplam').set(toplam);
+        });
+    }
+
+    // Garson çağrısı tekilleştirme
     let cagriBekleniyor = false;
     db.ref('bildirimler').orderByChild('masa').equalTo(masa).on('value', (snapshot) => {
         cagriBekleniyor = snapshot.exists();
         const btn = document.getElementById('garsonBtn');
-        if(cagriBekleniyor) {
-            btn.disabled = true;
-            btn.innerText = '⏳ GARSON ÇAĞRILDI, BEKLENİYOR...';
-        } else {
-            btn.disabled = false;
-            btn.innerText = '🔔 GARSON / OCAKÇI ÇAĞIR';
-        }
+        if(cagriBekleniyor) { btn.disabled = true; btn.innerText = '⏳ GARSON ÇAĞRILDI, BEKLENİYOR...'; }
+        else { btn.disabled = false; btn.innerText = '🔔 GARSON / OCAKÇI ÇAĞIR'; }
     });
 
-    // Garson Çağır
     function garsonCagir() {
         if(cagriBekleniyor) return;
         const saat = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-        db.ref('bildirimler').push({
-            masa: masa,
-            zaman: saat
-        }).catch((err) => {
-            alert("Hata Oluştu: " + err.message);
-        });
+        db.ref('bildirimler').push({ masa: masa, zaman: saat }).catch((err) => { alert("Hata Oluştu: " + err.message); });
     }
 
     function sayfaAc(sayfa) {
@@ -232,7 +268,7 @@
 
     function modSec(secilen) {
         mod = secilen;
-        playerCount = secilen === 'esli' ? 2 : 4; // tekli ve okey 4, eşli 2
+        playerCount = secilen === 'esli' ? 2 : 4;
         document.getElementById('mod-tekli').classList.toggle('active', secilen === 'tekli');
         document.getElementById('mod-esli').classList.toggle('active', secilen === 'esli');
         document.getElementById('mod-okey').classList.toggle('active', secilen === 'okey');
@@ -245,8 +281,7 @@
                 <label style="font-weight:bold;">Kaç El Oynanacak?</label>
                 <input type="number" id="elSayisiInput" min="1" value="8" style="width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;">
                 <button onclick="oyunuBaslat()" style="width:100%;padding:12px;background:#388e3c;color:white;border:none;border-radius:4px;font-weight:bold;">Oyunu Başlat</button>
-            </div>
-        `;
+            </div>`;
     }
 
     function oyunuBaslat() {
@@ -256,10 +291,7 @@
     }
 
     function renderYazbozTable() {
-        let isimler;
-        if(mod === 'esli') isimler = ['Takım 1', 'Takım 2'];
-        else isimler = ['Oyuncu 1', 'Oyuncu 2', 'Oyuncu 3', 'Oyuncu 4'];
-
+        let isimler = mod === 'esli' ? ['Takım 1', 'Takım 2'] : ['Oyuncu 1', 'Oyuncu 2', 'Oyuncu 3', 'Oyuncu 4'];
         let headHtml = '', totHtml = '', farkHtml = '';
         for(let i = 0; i < playerCount; i++) {
             headHtml += `<th><input type="text" value="${isimler[i]}"></th>`;
@@ -278,8 +310,7 @@
             </table>
             <small style="color:#777;">Alt satır: en öndekine göre fark</small><br>
             <button id="elEkleBtn" onclick="satirEkle()" style="margin-top:10px;padding:10px 15px;background:#5d4037;color:white;border:none;border-radius:4px;">+ El Ekle</button>
-            <button onclick="renderKurulum()" style="margin-top:10px;margin-left:6px;padding:10px 15px;background:#d32f2f;color:white;border:none;border-radius:4px;">Yeni Oyun</button>
-        `;
+            <button onclick="renderKurulum()" style="margin-top:10px;margin-left:6px;padding:10px 15px;background:#d32f2f;color:white;border:none;border-radius:4px;">Yeni Oyun</button>`;
         for(let i = 0; i < elSayisi; i++) satirEkle();
         elDurumGuncelle();
     }
@@ -291,9 +322,7 @@
             if(!confirm('Belirlenen ' + elSayisi + ' el tamamlandı. Yine de yeni el eklemek ister misin?')) return;
         }
         const tr = document.createElement('tr');
-        for(let i = 0; i < playerCount; i++) {
-            tr.innerHTML += `<td><input type="number" onchange="toplamHesapla()" value="0"></td>`;
-        }
+        for(let i = 0; i < playerCount; i++) { tr.innerHTML += `<td><input type="number" onchange="toplamHesapla()" value="0"></td>`; }
         tbody.appendChild(tr);
         elDurumGuncelle();
     }
@@ -302,21 +331,14 @@
         const mevcutEl = document.querySelectorAll('#yazbozBody tr').length;
         const durum = document.getElementById('elDurumu');
         if(!durum) return;
-        if(mevcutEl >= elSayisi) {
-            durum.innerText = '✅ Oyun Tamamlandı (' + elSayisi + ' el)';
-            durum.style.color = '#2e7d32';
-        } else {
-            durum.innerText = 'El ' + mevcutEl + ' / ' + elSayisi;
-            durum.style.color = '#5d4037';
-        }
+        if(mevcutEl >= elSayisi) { durum.innerText = '✅ Oyun Tamamlandı (' + elSayisi + ' el)'; durum.style.color = '#2e7d32'; }
+        else { durum.innerText = 'El ' + mevcutEl + ' / ' + elSayisi; durum.style.color = '#5d4037'; }
     }
 
     function toplamHesapla() {
         let totals = new Array(playerCount).fill(0);
         document.querySelectorAll('#yazbozBody tr').forEach(row => {
-            row.querySelectorAll('input').forEach((input, index) => {
-                totals[index] += parseInt(input.value) || 0;
-            });
+            row.querySelectorAll('input').forEach((input, index) => { totals[index] += parseInt(input.value) || 0; });
         });
         const minTotal = Math.min(...totals);
         for(let i = 0; i < playerCount; i++) {
