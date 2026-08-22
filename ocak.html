@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Garson / Ocak Ekranı</title>
-    <!-- Firebase Compat Scriptleri -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
@@ -13,11 +12,13 @@
         h3.baslik { border-bottom: 2px solid #444; padding-bottom: 6px; margin-top: 25px; }
         .ocak-card { background: #333; color: white; padding: 15px; margin-bottom: 12px; border-left: 8px solid #ffeb3b; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .ocak-card strong { font-size: 20px; color: #ffeb3b; }
-        .siparis-card { background: #2b3a2b; color: white; padding: 15px; margin-bottom: 12px; border-left: 8px solid #66bb6a; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .siparis-card { background: #2b3a2b; color: white; padding: 15px; margin-bottom: 12px; border-left: 8px solid #ff9800; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .siparis-card.onayli { border-left-color: #66bb6a; opacity: 0.9; }
         .siparis-card strong { font-size: 20px; color: #a5d6a7; }
         .siparis-urun { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px dashed #555; font-size: 15px; }
         .siparis-toplam { text-align: right; font-weight: bold; margin-top: 6px; color: #ffeb3b; }
         .btn-tamam { background: #388e3c; color: white; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px; width: 100%; }
+        .btn-sil { background: #d32f2f; color: white; border: none; padding: 8px 14px; font-size: 13px; border-radius: 4px; cursor: pointer; margin-top: 8px; width: 100%; }
     </style>
 </head>
 <body>
@@ -29,8 +30,11 @@
 <h3 class="baslik">🔔 Garson Çağrıları</h3>
 <div id="bildirimListesi">Çağrılar Yükleniyor...</div>
 
-<h3 class="baslik">🧾 Siparişler</h3>
-<div id="siparisListesi">Siparişler Yükleniyor...</div>
+<h3 class="baslik">🕐 Bekleyen Siparişler</h3>
+<div id="bekleyenListesi">Yükleniyor...</div>
+
+<h3 class="baslik">✅ Onaylanan Siparişler</h3>
+<div id="onaylananListesi">Yükleniyor...</div>
 
 <script>
     const firebaseConfig = {
@@ -39,9 +43,7 @@
         storageBucket: "dijitalkahve-67f0a.appspot.com",
         messagingSenderId: "326476599239"
     };
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.app().database("https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app");
 
     // Bildirimleri Dinle
@@ -52,58 +54,60 @@
         if(data) {
             Object.keys(data).forEach(key => {
                 const item = data[key];
-                container.innerHTML += `
-                    <div class="ocak-card">
-                        <div>
-                            <strong>MASA ${item.masa}</strong> <br>
-                            <span style="font-size:14px; color:#ccc;">Saat: ${item.zaman}</span>
-                        </div>
-                        <button class="btn-tamam" style="width:auto;" onclick="bildirimSil('${key}')">GİDİLDİ / SİL</button>
-                    </div>`;
+                container.innerHTML += `<div class="ocak-card">
+                    <div><strong>MASA ${item.masa}</strong><br><span style="font-size:14px;color:#ccc;">Saat: ${item.zaman}</span></div>
+                    <button class="btn-tamam" style="width:auto;" onclick="bildirimSil('${key}')">GİDİLDİ / SİL</button>
+                </div>`;
             });
         } else {
-            container.innerHTML = '<p style="text-align:center; color:#888;">Şu an bekleyen çağrı yok.</p>';
+            container.innerHTML = '<p style="text-align:center;color:#888;">Şu an bekleyen çağrı yok.</p>';
         }
-    }, (error) => {
-        document.getElementById('bildirimListesi').innerHTML = '<p style="color:red; text-align:center;">Bağlantı Hatası: ' + error.message + '</p>';
-    });
+    }, (error) => { document.getElementById('bildirimListesi').innerHTML = '<p style="color:red;text-align:center;">Bağlantı Hatası: ' + error.message + '</p>'; });
 
     // Siparişleri Dinle
     db.ref('siparisler').on('value', (snapshot) => {
         const data = snapshot.val();
-        const container = document.getElementById('siparisListesi');
-        container.innerHTML = '';
+        const bekleyenContainer = document.getElementById('bekleyenListesi');
+        const onaylananContainer = document.getElementById('onaylananListesi');
+        bekleyenContainer.innerHTML = '';
+        onaylananContainer.innerHTML = '';
+        let bekleyenVar = false, onaylananVar = false;
         if(data) {
             Object.keys(data).forEach(key => {
                 const siparis = data[key];
-                const urunler = siparis.urunler || [];
+                const urunler = siparis.urunler || {};
                 let urunHtml = '';
-                urunler.forEach(u => {
+                Object.values(urunler).forEach(u => {
                     urunHtml += `<div class="siparis-urun"><span>${u.ad} x${u.adet}</span><span>${(parseFloat(u.fiyat) || 0) * u.adet} TL</span></div>`;
                 });
-                container.innerHTML += `
-                    <div class="siparis-card">
+                if(siparis.durum === 'onaylandi') {
+                    onaylananVar = true;
+                    onaylananContainer.innerHTML += `<div class="siparis-card onayli">
                         <strong>MASA ${siparis.masa}</strong>
-                        <span style="float:right; font-size:14px; color:#ccc;">Saat: ${siparis.zaman}</span>
+                        <span style="float:right;font-size:14px;color:#ccc;">Saat: ${siparis.zaman}</span>
                         <div style="margin-top:8px;">${urunHtml}</div>
                         <div class="siparis-toplam">Toplam: ${siparis.toplam} TL</div>
-                        <button class="btn-tamam" onclick="siparisSil('${key}')">HAZIRLANDI / TAMAMLANDI</button>
+                        <button class="btn-sil" onclick="siparisSil('${key}')">Kaldır</button>
                     </div>`;
+                } else {
+                    bekleyenVar = true;
+                    bekleyenContainer.innerHTML += `<div class="siparis-card">
+                        <strong>MASA ${siparis.masa}</strong>
+                        <span style="float:right;font-size:14px;color:#ccc;">Saat: ${siparis.zaman}</span>
+                        <div style="margin-top:8px;">${urunHtml}</div>
+                        <div class="siparis-toplam">Toplam: ${siparis.toplam} TL</div>
+                        <button class="btn-tamam" onclick="siparisOnayla('${key}')">✅ ONAYLA (Malzemeler Götürüldü)</button>
+                    </div>`;
+                }
             });
-        } else {
-            container.innerHTML = '<p style="text-align:center; color:#888;">Şu an bekleyen sipariş yok.</p>';
         }
-    }, (error) => {
-        document.getElementById('siparisListesi').innerHTML = '<p style="color:red; text-align:center;">Bağlantı Hatası: ' + error.message + '</p>';
-    });
+        if(!bekleyenVar) bekleyenContainer.innerHTML = '<p style="text-align:center;color:#888;">Bekleyen sipariş yok.</p>';
+        if(!onaylananVar) onaylananContainer.innerHTML = '<p style="text-align:center;color:#888;">Onaylanan sipariş yok.</p>';
+    }, (error) => { document.getElementById('bekleyenListesi').innerHTML = '<p style="color:red;text-align:center;">Bağlantı Hatası: ' + error.message + '</p>'; });
 
-    function bildirimSil(id) {
-        db.ref('bildirimler/' + id).remove();
-    }
-
-    function siparisSil(id) {
-        db.ref('siparisler/' + id).remove();
-    }
+    function bildirimSil(id) { db.ref('bildirimler/' + id).remove(); }
+    function siparisOnayla(id) { db.ref('siparisler/' + id + '/durum').set('onaylandi'); }
+    function siparisSil(id) { db.ref('siparisler/' + id).remove(); }
 </script>
 </body>
 </html>
