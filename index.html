@@ -20,9 +20,12 @@
         .qty-box button { width: 34px; height: 34px; border-radius: 50%; border: none; background: #5d4037; color: white; font-size: 18px; font-weight: bold; cursor: pointer; }
         .qty-box span { min-width: 20px; text-align: center; font-weight: bold; }
         .btn-red { background: #d32f2f; color: white; border: none; width: 100%; padding: 16px; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .btn-red:active { background: #b71c1c; }
+        .btn-red:disabled { background: #9e9e9e; cursor: not-allowed; }
         .sepet-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #263238; color: white; padding: 12px 15px; display: none; justify-content: space-between; align-items: center; box-shadow: 0 -2px 6px rgba(0,0,0,0.3); }
         .sepet-bar button { background: #388e3c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; font-size: 15px; cursor: pointer; }
+        .mod-btns { display: flex; gap: 5px; margin-bottom: 12px; }
+        .mod-btns button { flex: 1; padding: 10px 5px; border: none; background: #efebe9; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .mod-btns button.active { background: #3e2723; color: white; }
         .yazboz-table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; }
         .yazboz-table th, .yazboz-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
         .yazboz-table input { width: 90%; text-align: center; border: none; font-size: 16px; }
@@ -44,33 +47,17 @@
 <!-- MÜŞTERİ MENÜSÜ -->
 <div id="page-menu" class="page active">
     <div id="urunListesi">Menü Yükleniyor...</div>
-    <button class="btn-red" onclick="garsonCagir()">🔔 GARSON / OCAKÇI ÇAĞIR</button>
+    <button class="btn-red" id="garsonBtn" onclick="garsonCagir()">🔔 GARSON / OCAKÇI ÇAĞIR</button>
 </div>
 
 <!-- DİJİTAL YAZ-BOZ -->
 <div id="page-yazboz" class="page">
     <h3>Skor Tahtası</h3>
-    <table class="yazboz-table">
-        <thead>
-            <tr>
-                <th><input type="text" value="Oyuncu 1"></th>
-                <th><input type="text" value="Oyuncu 2"></th>
-                <th><input type="text" value="Oyuncu 3"></th>
-                <th><input type="text" value="Oyuncu 4"></th>
-            </tr>
-        </thead>
-        <tbody id="yazbozBody"></tbody>
-        <tfoot>
-            <tr style="font-weight: bold; background: #eee;">
-                <td id="tot1">0</td><td id="tot2">0</td><td id="tot3">0</td><td id="tot4">0</td>
-            </tr>
-            <tr class="fark-row">
-                <td id="fark1">-</td><td id="fark2">-</td><td id="fark3">-</td><td id="fark4">-</td>
-            </tr>
-        </tfoot>
-    </table>
-    <small style="color:#777;">Alt satır: her oyuncunun en öndekine göre farkı</small><br>
-    <button onclick="satirEkle()" style="margin-top:10px; padding:10px 15px; background:#5d4037; color:white; border:none; border-radius:4px;">+ El Ekle</button>
+    <div class="mod-btns">
+        <button onclick="modSec('tekli')" id="mod-tekli" class="active">Tekli Batak</button>
+        <button onclick="modSec('esli')" id="mod-esli">Eşli Batak</button>
+    </div>
+    <div id="yazbozAlan"></div>
 </div>
 
 <!-- SEPET BARI -->
@@ -176,14 +163,27 @@
         });
     }
 
+    // Bu masanın bekleyen çağrısı var mı diye anlık takip et
+    let cagriBekleniyor = false;
+    db.ref('bildirimler').orderByChild('masa').equalTo(masa).on('value', (snapshot) => {
+        cagriBekleniyor = snapshot.exists();
+        const btn = document.getElementById('garsonBtn');
+        if(cagriBekleniyor) {
+            btn.disabled = true;
+            btn.innerText = '⏳ GARSON ÇAĞRILDI, BEKLENİYOR...';
+        } else {
+            btn.disabled = false;
+            btn.innerText = '🔔 GARSON / OCAKÇI ÇAĞIR';
+        }
+    });
+
     // Garson Çağır
     function garsonCagir() {
+        if(cagriBekleniyor) return;
         const saat = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
         db.ref('bildirimler').push({
             masa: masa,
             zaman: saat
-        }).then(() => {
-            alert("Garsona haber verildi!");
         }).catch((err) => {
             alert("Hata Oluştu: " + err.message);
         });
@@ -196,28 +196,107 @@
         document.getElementById('btn-' + sayfa).classList.add('active');
     }
 
+    // ---- YAZ-BOZ ----
+    let mod = 'tekli';
+    let playerCount = 4;
+    let elSayisi = 0;
+
+    function modSec(secilen) {
+        mod = secilen;
+        playerCount = secilen === 'tekli' ? 4 : 2;
+        document.getElementById('mod-tekli').classList.toggle('active', secilen === 'tekli');
+        document.getElementById('mod-esli').classList.toggle('active', secilen === 'esli');
+        renderKurulum();
+    }
+
+    function renderKurulum() {
+        document.getElementById('yazbozAlan').innerHTML = `
+            <div style="background:white;padding:15px;border-radius:6px;margin-top:10px;">
+                <label style="font-weight:bold;">Kaç El Oynanacak?</label>
+                <input type="number" id="elSayisiInput" min="1" value="8" style="width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;">
+                <button onclick="oyunuBaslat()" style="width:100%;padding:12px;background:#388e3c;color:white;border:none;border-radius:4px;font-weight:bold;">Oyunu Başlat</button>
+            </div>
+        `;
+    }
+
+    function oyunuBaslat() {
+        const deger = parseInt(document.getElementById('elSayisiInput').value);
+        elSayisi = deger > 0 ? deger : 1;
+        renderYazbozTable();
+    }
+
+    function renderYazbozTable() {
+        const isimler = mod === 'tekli'
+            ? ['Oyuncu 1', 'Oyuncu 2', 'Oyuncu 3', 'Oyuncu 4']
+            : ['Takım 1', 'Takım 2'];
+        let headHtml = '', totHtml = '', farkHtml = '';
+        for(let i = 0; i < playerCount; i++) {
+            headHtml += `<th><input type="text" value="${isimler[i]}"></th>`;
+            totHtml += `<td id="tot${i+1}">0</td>`;
+            farkHtml += `<td id="fark${i+1}">-</td>`;
+        }
+        document.getElementById('yazbozAlan').innerHTML = `
+            <div id="elDurumu" style="text-align:center;font-weight:bold;margin-bottom:8px;color:#5d4037;"></div>
+            <table class="yazboz-table" id="yazbozTable">
+                <thead><tr>${headHtml}</tr></thead>
+                <tbody id="yazbozBody"></tbody>
+                <tfoot>
+                    <tr style="font-weight:bold;background:#eee;">${totHtml}</tr>
+                    <tr class="fark-row">${farkHtml}</tr>
+                </tfoot>
+            </table>
+            <small style="color:#777;">Alt satır: en öndekine göre fark</small><br>
+            <button id="elEkleBtn" onclick="satirEkle()" style="margin-top:10px;padding:10px 15px;background:#5d4037;color:white;border:none;border-radius:4px;">+ El Ekle</button>
+            <button onclick="renderKurulum()" style="margin-top:10px;margin-left:6px;padding:10px 15px;background:#d32f2f;color:white;border:none;border-radius:4px;">Yeni Oyun</button>
+        `;
+        for(let i = 0; i < elSayisi; i++) satirEkle();
+        elDurumGuncelle();
+    }
+
     function satirEkle() {
         const tbody = document.getElementById('yazbozBody');
+        const mevcutEl = tbody.querySelectorAll('tr').length;
+        if(mevcutEl >= elSayisi) {
+            if(!confirm('Belirlenen ' + elSayisi + ' el tamamlandı. Yine de yeni el eklemek ister misin?')) return;
+        }
         const tr = document.createElement('tr');
-        for(let i=0; i<4; i++) tr.innerHTML += `<td><input type="number" onchange="toplamHesapla()" value="0"></td>`;
+        for(let i = 0; i < playerCount; i++) {
+            tr.innerHTML += `<td><input type="number" onchange="toplamHesapla()" value="0"></td>`;
+        }
         tbody.appendChild(tr);
+        elDurumGuncelle();
+    }
+
+    function elDurumGuncelle() {
+        const mevcutEl = document.querySelectorAll('#yazbozBody tr').length;
+        const durum = document.getElementById('elDurumu');
+        if(!durum) return;
+        if(mevcutEl >= elSayisi) {
+            durum.innerText = '✅ Oyun Tamamlandı (' + elSayisi + ' el)';
+            durum.style.color = '#2e7d32';
+        } else {
+            durum.innerText = 'El ' + mevcutEl + ' / ' + elSayisi;
+            durum.style.color = '#5d4037';
+        }
     }
 
     function toplamHesapla() {
-        let totals = [0, 0, 0, 0];
+        let totals = new Array(playerCount).fill(0);
         document.querySelectorAll('#yazbozBody tr').forEach(row => {
             row.querySelectorAll('input').forEach((input, index) => {
                 totals[index] += parseInt(input.value) || 0;
             });
         });
         const minTotal = Math.min(...totals);
-        for(let i=0; i<4; i++) {
+        for(let i = 0; i < playerCount; i++) {
             document.getElementById(`tot${i+1}`).innerText = totals[i];
             const fark = totals[i] - minTotal;
             document.getElementById(`fark${i+1}`).innerText = fark === 0 ? 'ÖNDE' : '+' + fark;
         }
+        elDurumGuncelle();
     }
-    satirEkle(); satirEkle();
+
+    renderKurulum();
 </script>
 </body>
 </html>
