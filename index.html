@@ -3,68 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dijital Kahvehanem - Müşteri</title>
+    <title>Yönetici Paneli</title>
     <!-- Firebase Compat Scriptleri -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 15px; color: #333; padding-bottom: 90px; }
-        .header { text-align: center; background: #3e2723; color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; }
-        .nav-btns { display: flex; gap: 5px; margin-bottom: 15px; }
-        .nav-btns button { flex: 1; padding: 12px 5px; border: none; background: #d7ccc8; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 15px; }
-        .nav-btns button.active { background: #5d4037; color: white; }
-        .page { display: none; }
-        .page.active { display: block; }
-        .card { background: white; padding: 12px 16px; margin-bottom: 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 16px; }
-        .qty-box { display: flex; align-items: center; gap: 8px; }
-        .qty-box button { width: 34px; height: 34px; border-radius: 50%; border: none; background: #5d4037; color: white; font-size: 18px; font-weight: bold; cursor: pointer; }
-        .qty-box span { min-width: 20px; text-align: center; font-weight: bold; }
-        .btn-red { background: #d32f2f; color: white; border: none; width: 100%; padding: 16px; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .btn-red:disabled { background: #9e9e9e; cursor: not-allowed; }
-        .sepet-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #263238; color: white; padding: 12px 15px; display: none; justify-content: space-between; align-items: center; box-shadow: 0 -2px 6px rgba(0,0,0,0.3); }
-        .sepet-bar button { background: #388e3c; color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: bold; font-size: 15px; cursor: pointer; }
-        .mod-btns { display: flex; gap: 5px; margin-bottom: 12px; }
-        .mod-btns button { flex: 1; padding: 10px 5px; border: none; background: #efebe9; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 13px; }
-        .mod-btns button.active { background: #3e2723; color: white; }
-        .yazboz-table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; }
-        .yazboz-table th, .yazboz-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-        .yazboz-table input { width: 90%; text-align: center; border: none; font-size: 16px; }
-        .fark-row td { font-weight: bold; color: #d32f2f; background: #fbe9e7; }
+        body { font-family: Arial, sans-serif; background: #eceff1; margin: 0; padding: 15px; color: #333; }
+        .header { background: #263238; color: white; padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 15px; }
+        .box { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        input[type="text"], input[type="number"], input[type="password"], select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
+        button { padding: 12px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; }
+        .btn-green { background: #2e7d32; color: white; }
+        .btn-blue { background: #1565c0; color: white; }
+        .card { background: #f9f9f9; padding: 10px; margin-bottom: 6px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd; }
+        #adminContent { display: none; }
     </style>
 </head>
 <body>
 
 <div class="header">
-    <h2 style="margin:0;">DİJİTAL KAHVEHANE</h2>
-    <small id="masaEtiket">Masa Belirtilmedi</small>
+    <h2 style="margin:0;">⚙️ YÖNETİCİ PANELİ</h2>
 </div>
 
-<div class="nav-btns">
-    <button onclick="sayfaAc('menu')" class="active" id="btn-menu">☕ Menü</button>
-    <button onclick="sayfaAc('yazboz')" id="btn-yazboz">📝 Yaz-Boz</button>
+<!-- ŞİFRE GİRİŞ EKRANI -->
+<div id="loginBox" class="box" style="max-width: 400px; margin: 40px auto; text-align: center;">
+    <h3>Yönetici Girişi</h3>
+    <input type="password" id="passInput" placeholder="Yönetici Şifrenizi Girin">
+    <button class="btn-blue" onclick="girisYap()">Giriş Yap</button>
 </div>
 
-<!-- MÜŞTERİ MENÜSÜ -->
-<div id="page-menu" class="page active">
-    <div id="urunListesi">Menü Yükleniyor...</div>
-    <button class="btn-red" id="garsonBtn" onclick="garsonCagir()">🔔 GARSON / OCAKÇI ÇAĞIR</button>
-</div>
-
-<!-- DİJİTAL YAZ-BOZ -->
-<div id="page-yazboz" class="page">
-    <h3>Skor Tahtası</h3>
-    <div class="mod-btns">
-        <button onclick="modSec('tekli')" id="mod-tekli" class="active">Tekli Batak</button>
-        <button onclick="modSec('esli')" id="mod-esli">Eşli Batak</button>
-        <button onclick="modSec('okey')" id="mod-okey">Okey</button>
+<!-- YÖNETİM İÇERİĞİ -->
+<div id="adminContent">
+    <div class="box">
+        <h3>➕ Yeni Ürün / Fiyat Ekle</h3>
+        <input type="text" id="yeniAd" placeholder="Ürün Adı (Örn: Çay)">
+        <input type="number" id="yeniFiyat" placeholder="Fiyat (TL)">
+        <select id="yeniKategori">
+            <option value="Sıcak İçecekler">☕ Sıcak İçecekler</option>
+            <option value="Soğuk İçecekler">🧊 Soğuk İçecekler</option>
+            <option value="Tatlılar">🍰 Tatlılar</option>
+            <option value="Atıştırmalıklar">🥪 Atıştırmalıklar</option>
+            <option value="Diğer">🍹 Diğer</option>
+        </select>
+        <button class="btn-green" onclick="urunEkle()">Ürünü Menüye Ekle</button>
     </div>
-    <div id="yazbozAlan"></div>
-</div>
 
-<!-- SEPET BARI -->
-<div class="sepet-bar" id="sepetBar">
-    <span id="sepetToplam">0 TL</span>
-    <button onclick="siparisVer()">Sipariş Ver</button>
+    <div class="box">
+        <h3>📋 Mevcut Menü ve Fiyatlar</h3>
+        <div id="adminUrunListesi">Yükleniyor...</div>
+    </div>
 </div>
 
 <script>
@@ -80,226 +67,48 @@
     }
     const db = firebase.app().database("https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app");
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const masa = urlParams.get('masa') || '1';
-    document.getElementById('masaEtiket').innerText = "MASA " + masa;
-
-    let urunlerData = {};
-    let sepet = {}; // { key: { ad, fiyat, adet } }
-
-    // Ürünleri Dinle
-    db.ref('urunler').on('value', (snapshot) => {
-        const data = snapshot.val();
-        urunlerData = data || {};
-        renderMenu();
-    });
-
-    function renderMenu() {
-        const menuList = document.getElementById('urunListesi');
-        menuList.innerHTML = '';
-        const keys = Object.keys(urunlerData);
-        if(keys.length === 0) {
-            menuList.innerHTML = '<p style="text-align:center;">Henüz ürün eklenmemiş.</p>';
-            return;
+    function girisYap() {
+        const pass = document.getElementById('passInput').value;
+        if(pass === '1234') {
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            verileriYukle();
+        } else {
+            alert('Hatalı Şifre!');
         }
-        keys.forEach(key => {
-            const item = urunlerData[key];
-            const adet = sepet[key] ? sepet[key].adet : 0;
-            menuList.innerHTML += `
-                <div class="card">
-                    <span><strong>${item.ad}</strong><br><small>${item.fiyat} TL</small></span>
-                    <div class="qty-box">
-                        <button onclick="adetDegistir('${key}', -1)">-</button>
-                        <span id="adet-${key}">${adet}</span>
-                        <button onclick="adetDegistir('${key}', 1)">+</button>
-                    </div>
-                </div>`;
+    }
+
+    function verileriYukle() {
+        db.ref('urunler').on('value', (snapshot) => {
+            const data = snapshot.val();
+            const adminList = document.getElementById('adminUrunListesi');
+            adminList.innerHTML = '';
+            if(data) {
+                Object.keys(data).forEach(key => {
+                    const item = data[key];
+                    adminList.innerHTML += `<div class="card"><span><strong>${item.ad}</strong> - ${item.fiyat} TL <small style="color:#888;">(${item.kategori || 'Diğer'})</small></span><button onclick="urunSil('${key}')" style="background:#d32f2f; color:white; border:none; padding:6px 12px; width:auto;">Sil</button></div>`;
+                });
+            } else {
+                adminList.innerHTML = '<p>Henüz eklenmiş ürün yok.</p>';
+            }
         });
     }
 
-    function adetDegistir(key, delta) {
-        const item = urunlerData[key];
-        if(!item) return;
-        const mevcut = sepet[key] ? sepet[key].adet : 0;
-        const yeni = Math.max(0, mevcut + delta);
-        if(yeni === 0) {
-            delete sepet[key];
-        } else {
-            sepet[key] = { ad: item.ad, fiyat: item.fiyat, adet: yeni };
-        }
-        document.getElementById(`adet-${key}`).innerText = yeni;
-        sepetGuncelle();
-    }
-
-    function sepetGuncelle() {
-        let toplam = 0;
-        Object.values(sepet).forEach(i => toplam += (parseFloat(i.fiyat) || 0) * i.adet);
-        const bar = document.getElementById('sepetBar');
-        if(toplam > 0) {
-            bar.style.display = 'flex';
-            document.getElementById('sepetToplam').innerText = toplam + ' TL';
-        } else {
-            bar.style.display = 'none';
-        }
-    }
-
-    function siparisVer() {
-        const kalemler = Object.values(sepet);
-        if(kalemler.length === 0) return;
-        const toplam = kalemler.reduce((s, i) => s + (parseFloat(i.fiyat) || 0) * i.adet, 0);
-        const saat = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-        db.ref('siparisler').push({
-            masa: masa,
-            urunler: kalemler,
-            toplam: toplam,
-            zaman: saat,
-            durum: 'bekliyor'
-        }).then(() => {
-            alert('Siparişiniz alındı!');
-            sepet = {};
-            renderMenu();
-            sepetGuncelle();
-        }).catch((err) => {
-            alert('Hata Oluştu: ' + err.message);
-        });
-    }
-
-    // Bu masanın bekleyen çağrısı var mı diye anlık takip et
-    let cagriBekleniyor = false;
-    db.ref('bildirimler').orderByChild('masa').equalTo(masa).on('value', (snapshot) => {
-        cagriBekleniyor = snapshot.exists();
-        const btn = document.getElementById('garsonBtn');
-        if(cagriBekleniyor) {
-            btn.disabled = true;
-            btn.innerText = '⏳ GARSON ÇAĞRILDI, BEKLENİYOR...';
-        } else {
-            btn.disabled = false;
-            btn.innerText = '🔔 GARSON / OCAKÇI ÇAĞIR';
-        }
-    });
-
-    // Garson Çağır
-    function garsonCagir() {
-        if(cagriBekleniyor) return;
-        const saat = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
-        db.ref('bildirimler').push({
-            masa: masa,
-            zaman: saat
-        }).catch((err) => {
-            alert("Hata Oluştu: " + err.message);
-        });
-    }
-
-    function sayfaAc(sayfa) {
-        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-btns button').forEach(el => el.classList.remove('active'));
-        document.getElementById('page-' + sayfa).classList.add('active');
-        document.getElementById('btn-' + sayfa).classList.add('active');
-    }
-
-    // ---- YAZ-BOZ ----
-    let mod = 'tekli';
-    let playerCount = 4;
-    let elSayisi = 0;
-
-    function modSec(secilen) {
-        mod = secilen;
-        playerCount = secilen === 'esli' ? 2 : 4; // tekli ve okey 4, eşli 2
-        document.getElementById('mod-tekli').classList.toggle('active', secilen === 'tekli');
-        document.getElementById('mod-esli').classList.toggle('active', secilen === 'esli');
-        document.getElementById('mod-okey').classList.toggle('active', secilen === 'okey');
-        renderKurulum();
-    }
-
-    function renderKurulum() {
-        document.getElementById('yazbozAlan').innerHTML = `
-            <div style="background:white;padding:15px;border-radius:6px;margin-top:10px;">
-                <label style="font-weight:bold;">Kaç El Oynanacak?</label>
-                <input type="number" id="elSayisiInput" min="1" value="8" style="width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:4px;box-sizing:border-box;">
-                <button onclick="oyunuBaslat()" style="width:100%;padding:12px;background:#388e3c;color:white;border:none;border-radius:4px;font-weight:bold;">Oyunu Başlat</button>
-            </div>
-        `;
-    }
-
-    function oyunuBaslat() {
-        const deger = parseInt(document.getElementById('elSayisiInput').value);
-        elSayisi = deger > 0 ? deger : 1;
-        renderYazbozTable();
-    }
-
-    function renderYazbozTable() {
-        let isimler;
-        if(mod === 'esli') isimler = ['Takım 1', 'Takım 2'];
-        else isimler = ['Oyuncu 1', 'Oyuncu 2', 'Oyuncu 3', 'Oyuncu 4'];
-
-        let headHtml = '', totHtml = '', farkHtml = '';
-        for(let i = 0; i < playerCount; i++) {
-            headHtml += `<th><input type="text" value="${isimler[i]}"></th>`;
-            totHtml += `<td id="tot${i+1}">0</td>`;
-            farkHtml += `<td id="fark${i+1}">-</td>`;
-        }
-        document.getElementById('yazbozAlan').innerHTML = `
-            <div id="elDurumu" style="text-align:center;font-weight:bold;margin-bottom:8px;color:#5d4037;"></div>
-            <table class="yazboz-table" id="yazbozTable">
-                <thead><tr>${headHtml}</tr></thead>
-                <tbody id="yazbozBody"></tbody>
-                <tfoot>
-                    <tr style="font-weight:bold;background:#eee;">${totHtml}</tr>
-                    <tr class="fark-row">${farkHtml}</tr>
-                </tfoot>
-            </table>
-            <small style="color:#777;">Alt satır: en öndekine göre fark</small><br>
-            <button id="elEkleBtn" onclick="satirEkle()" style="margin-top:10px;padding:10px 15px;background:#5d4037;color:white;border:none;border-radius:4px;">+ El Ekle</button>
-            <button onclick="renderKurulum()" style="margin-top:10px;margin-left:6px;padding:10px 15px;background:#d32f2f;color:white;border:none;border-radius:4px;">Yeni Oyun</button>
-        `;
-        for(let i = 0; i < elSayisi; i++) satirEkle();
-        elDurumGuncelle();
-    }
-
-    function satirEkle() {
-        const tbody = document.getElementById('yazbozBody');
-        const mevcutEl = tbody.querySelectorAll('tr').length;
-        if(mevcutEl >= elSayisi) {
-            if(!confirm('Belirlenen ' + elSayisi + ' el tamamlandı. Yine de yeni el eklemek ister misin?')) return;
-        }
-        const tr = document.createElement('tr');
-        for(let i = 0; i < playerCount; i++) {
-            tr.innerHTML += `<td><input type="number" onchange="toplamHesapla()" value="0"></td>`;
-        }
-        tbody.appendChild(tr);
-        elDurumGuncelle();
-    }
-
-    function elDurumGuncelle() {
-        const mevcutEl = document.querySelectorAll('#yazbozBody tr').length;
-        const durum = document.getElementById('elDurumu');
-        if(!durum) return;
-        if(mevcutEl >= elSayisi) {
-            durum.innerText = '✅ Oyun Tamamlandı (' + elSayisi + ' el)';
-            durum.style.color = '#2e7d32';
-        } else {
-            durum.innerText = 'El ' + mevcutEl + ' / ' + elSayisi;
-            durum.style.color = '#5d4037';
-        }
-    }
-
-    function toplamHesapla() {
-        let totals = new Array(playerCount).fill(0);
-        document.querySelectorAll('#yazbozBody tr').forEach(row => {
-            row.querySelectorAll('input').forEach((input, index) => {
-                totals[index] += parseInt(input.value) || 0;
+    function urunEkle() {
+        const ad = document.getElementById('yeniAd').value;
+        const fiyat = document.getElementById('yeniFiyat').value;
+        const kategori = document.getElementById('yeniKategori').value;
+        if(ad && fiyat) {
+            db.ref('urunler').push({ ad: ad, fiyat: fiyat, kategori: kategori }).then(() => {
+                document.getElementById('yeniAd').value = '';
+                document.getElementById('yeniFiyat').value = '';
             });
-        });
-        const minTotal = Math.min(...totals);
-        for(let i = 0; i < playerCount; i++) {
-            document.getElementById(`tot${i+1}`).innerText = totals[i];
-            const fark = totals[i] - minTotal;
-            document.getElementById(`fark${i+1}`).innerText = fark === 0 ? 'ÖNDE' : '+' + fark;
         }
-        elDurumGuncelle();
     }
 
-    renderKurulum();
+    function urunSil(id) {
+        db.ref('urunler/' + id).remove();
+    }
 </script>
 </body>
 </html>
