@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dijital Kahvehane - Yönetim</title>
+<title>Dijital Kahvehane - Yönetim Paneli</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
@@ -18,7 +18,7 @@
 body{
     margin:0;
     font-family:Arial,sans-serif;
-    background:#f4f1ed;
+    background:#f3f0ed;
     color:#33231d;
 }
 
@@ -41,6 +41,7 @@ body{
     opacity:.8;
 }
 
+
 /* LOGIN */
 
 .login-box{
@@ -55,63 +56,24 @@ body{
 }
 
 .login-icon{
-    font-size:50px;
-    margin-bottom:10px;
+    font-size:48px;
 }
 
-input,
-select{
+.login-box input{
     width:100%;
-    padding:13px;
+    padding:14px;
     border:1px solid #ddd;
     border-radius:9px;
-    margin-bottom:10px;
-    font-size:15px;
-    outline:none;
+    margin:10px 0;
+    font-size:16px;
 }
 
-input:focus,
-select:focus{
-    border-color:#6d4c41;
+.login-box button{
+    width:100%;
 }
 
-/* BUTTONS */
 
-button{
-    border:0;
-    border-radius:9px;
-    padding:12px 15px;
-    font-weight:bold;
-    cursor:pointer;
-    font-size:14px;
-}
-
-.btn-primary{
-    background:#5d4037;
-    color:white;
-}
-
-.btn-green{
-    background:#2e7d32;
-    color:white;
-}
-
-.btn-red{
-    background:#d32f2f;
-    color:white;
-}
-
-.btn-blue{
-    background:#1565c0;
-    color:white;
-}
-
-.btn-orange{
-    background:#ef6c00;
-    color:white;
-}
-
-/* CONTENT */
+/* ADMIN */
 
 #adminContent{
     display:none;
@@ -119,6 +81,7 @@ button{
     margin:auto;
     padding:15px;
 }
+
 
 /* NAV */
 
@@ -129,20 +92,26 @@ button{
     position:sticky;
     top:0;
     z-index:20;
-    background:#f4f1ed;
+    background:#f3f0ed;
     padding:10px 0;
 }
 
 .admin-nav button{
     flex:1;
-    background:#ddd2cc;
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    background:#d7ccc8;
     color:#4e342e;
+    font-weight:bold;
+    cursor:pointer;
 }
 
 .admin-nav button.active{
     background:#5d4037;
     color:white;
 }
+
 
 /* PAGE */
 
@@ -154,11 +123,12 @@ button{
     display:block;
 }
 
+
 /* BOX */
 
 .box{
     background:white;
-    border-radius:14px;
+    border-radius:15px;
     padding:18px;
     margin-bottom:18px;
     box-shadow:0 3px 12px rgba(0,0,0,.08);
@@ -176,11 +146,56 @@ button{
     font-size:19px;
 }
 
+
+/* INPUT */
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    font-size:15px;
+}
+
+
+/* BUTTON */
+
+button{
+    border:0;
+    border-radius:8px;
+    padding:12px 15px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.btn-green{
+    background:#2e7d32;
+    color:white;
+}
+
+.btn-red{
+    background:#d32f2f;
+    color:white;
+}
+
+.btn-blue{
+    background:#1565c0;
+    color:white;
+}
+
+.btn-primary{
+    background:#5d4037;
+    color:white;
+}
+
+
 /* PRODUCT */
 
 .product-card{
     background:#fafafa;
-    border:1px solid #e3ded9;
+    border:1px solid #e0dbd7;
     border-radius:12px;
     padding:13px;
     margin-bottom:9px;
@@ -204,14 +219,14 @@ button{
 }
 
 .product-category{
-    color:#888;
     font-size:12px;
-    margin-top:5px;
+    color:#888;
+    margin-top:4px;
 }
 
 .product-actions{
     display:flex;
-    gap:6px;
+    gap:7px;
     margin-top:10px;
 }
 
@@ -219,117 +234,13 @@ button{
     flex:1;
 }
 
-/* EDIT */
-
 .edit-area{
     display:none;
     margin-top:10px;
-    padding-top:10px;
     border-top:1px solid #ddd;
+    padding-top:10px;
 }
 
-/* MASA */
-
-.masa-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:15px;
-}
-
-.masa-card{
-    background:white;
-    border-radius:16px;
-    padding:17px;
-    box-shadow:0 3px 12px rgba(0,0,0,.09);
-    border-top:6px solid #bdbdbd;
-}
-
-.masa-card.dolu{
-    border-top-color:#ef6c00;
-}
-
-.masa-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:12px;
-}
-
-.masa-title{
-    font-size:21px;
-    font-weight:bold;
-    color:#4e342e;
-}
-
-.masa-status{
-    font-size:12px;
-    padding:5px 8px;
-    border-radius:20px;
-    background:#eee;
-}
-
-.masa-status.dolu{
-    background:#fff3e0;
-    color:#e65100;
-}
-
-.masa-empty{
-    text-align:center;
-    padding:25px 10px;
-    color:#999;
-}
-
-.urun-satir{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:9px 0;
-    border-bottom:1px dashed #ddd;
-}
-
-.urun-ad{
-    font-weight:bold;
-}
-
-.urun-adet{
-    color:#666;
-    font-size:14px;
-}
-
-.urun-tutar{
-    font-weight:bold;
-}
-
-.bekleyen{
-    color:#ef6c00;
-}
-
-.onayli{
-    color:#2e7d32;
-}
-
-.masa-toplam{
-    display:flex;
-    justify-content:space-between;
-    margin-top:15px;
-    padding-top:12px;
-    border-top:2px solid #eee;
-    font-size:20px;
-    font-weight:bold;
-}
-
-.odeme-btn{
-    width:100%;
-    margin-top:14px;
-    background:#2e7d32;
-    color:white;
-    padding:15px;
-    font-size:16px;
-}
-
-.odeme-btn:hover{
-    background:#1b5e20;
-}
 
 /* SUMMARY */
 
@@ -349,30 +260,156 @@ button{
 }
 
 .summary-number{
-    font-size:24px;
+    font-size:23px;
     font-weight:bold;
     color:#5d4037;
 }
 
 .summary-label{
-    font-size:12px;
     color:#777;
+    font-size:12px;
 }
+
+
+/* MASALAR */
+
+.masa-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
+    gap:15px;
+}
+
+.masa-card{
+    background:white;
+    border-radius:16px;
+    padding:17px;
+    box-shadow:0 3px 12px rgba(0,0,0,.09);
+    border-top:6px solid #bdbdbd;
+}
+
+.masa-card.dolu{
+    border-top-color:#ef6c00;
+}
+
+.masa-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+}
+
+.masa-title{
+    font-size:21px;
+    font-weight:bold;
+    color:#4e342e;
+}
+
+.masa-status{
+    padding:5px 9px;
+    border-radius:20px;
+    background:#eee;
+    font-size:12px;
+}
+
+.masa-status.bekliyor{
+    background:#fff3e0;
+    color:#e65100;
+}
+
+.masa-status.onayli{
+    background:#e8f5e9;
+    color:#2e7d32;
+}
+
+
+/* PRODUCT ROW */
+
+.urun-satir{
+    padding:10px 0;
+    border-bottom:1px dashed #ddd;
+}
+
+.urun-ust{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.urun-ad{
+    font-weight:bold;
+}
+
+.urun-tutar{
+    font-weight:bold;
+}
+
+.urun-detay{
+    font-size:12px;
+    margin-top:4px;
+}
+
+.bekleyen-yazi{
+    color:#ef6c00;
+}
+
+.onayli-yazi{
+    color:#2e7d32;
+}
+
+
+/* TOTAL */
+
+.masa-toplam{
+    display:flex;
+    justify-content:space-between;
+    margin-top:15px;
+    padding-top:12px;
+    border-top:2px solid #eee;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.bekleyen-toplam{
+    text-align:right;
+    margin-top:7px;
+    color:#ef6c00;
+    font-size:13px;
+}
+
+.odeme-btn{
+    width:100%;
+    margin-top:14px;
+    background:#2e7d32;
+    color:white;
+    padding:15px;
+    font-size:16px;
+}
+
+.masa-empty{
+    text-align:center;
+    padding:25px 10px;
+    color:#999;
+}
+
 
 /* RESPONSIVE */
 
 @media(max-width:600px){
 
     .summary{
-        grid-template-columns:1fr 1fr 1fr;
+        grid-template-columns:repeat(3,1fr);
     }
 
     .summary-number{
-        font-size:19px;
+        font-size:18px;
     }
 
     .summary-label{
         font-size:10px;
+    }
+
+    .masa-grid{
+        grid-template-columns:1fr;
     }
 
     .admin-nav button{
@@ -380,15 +417,14 @@ button{
         padding:11px 5px;
     }
 
-    .masa-grid{
-        grid-template-columns:1fr;
-    }
 }
 
 </style>
 </head>
 
+
 <body>
+
 
 <!-- HEADER -->
 
@@ -396,7 +432,9 @@ button{
 
     <h1>☕ DİJİTAL KAHVEHANE</h1>
 
-    <small>Yönetim ve Kasa Paneli</small>
+    <small>
+        Yönetim & Kasa Paneli
+    </small>
 
 </div>
 
@@ -405,12 +443,16 @@ button{
 
 <div id="loginBox" class="login-box">
 
-    <div class="login-icon">🔐</div>
+    <div class="login-icon">
+        🔐
+    </div>
 
-    <h2>Yönetici Girişi</h2>
+    <h2>
+        Yönetici Girişi
+    </h2>
 
     <p style="color:#777;font-size:14px;">
-        Yönetim paneline devam etmek için şifrenizi girin.
+        Yönetim paneline giriş yapın.
     </p>
 
     <input
@@ -422,7 +464,6 @@ button{
 
     <button
         class="btn-primary"
-        style="width:100%;"
         onclick="girisYap()"
     >
         Giriş Yap
@@ -434,6 +475,7 @@ button{
 <!-- ADMIN -->
 
 <div id="adminContent">
+
 
     <!-- NAV -->
 
@@ -458,7 +500,7 @@ button{
 
 
     <!-- ============================= -->
-    <!-- ÜRÜN SAYFASI -->
+    <!-- ÜRÜN -->
     <!-- ============================= -->
 
     <div
@@ -470,7 +512,9 @@ button{
 
             <div class="box-title">
 
-                <h2>➕ Yeni Ürün Ekle</h2>
+                <h2>
+                    ➕ Yeni Ürün
+                </h2>
 
             </div>
 
@@ -527,7 +571,9 @@ button{
 
             <div class="box-title">
 
-                <h2>📋 Menü & Fiyatlar</h2>
+                <h2>
+                    📋 Menü & Fiyatlar
+                </h2>
 
                 <span
                     id="urunSayisi"
@@ -546,7 +592,7 @@ button{
 
 
     <!-- ============================= -->
-    <!-- MASA SAYFASI -->
+    <!-- MASALAR -->
     <!-- ============================= -->
 
     <div
@@ -582,7 +628,7 @@ button{
                 </div>
 
                 <div class="summary-label">
-                    Bekleyen Sipariş
+                    Bekleyen
                 </div>
 
             </div>
@@ -598,7 +644,7 @@ button{
                 </div>
 
                 <div class="summary-label">
-                    Masa Toplamı
+                    Onaylı Toplam
                 </div>
 
             </div>
@@ -610,10 +656,14 @@ button{
 
             <div class="box-title">
 
-                <h2>🧾 Masa Hesapları</h2>
+                <h2>
+                    🧾 Masa Hesapları
+                </h2>
 
-                <span style="color:#777;font-size:12px;">
-                    Canlı
+                <span
+                    style="color:#2e7d32;font-size:12px;"
+                >
+                    ● CANLI
                 </span>
 
             </div>
@@ -679,9 +729,13 @@ function girisYap(){
 
     if(pass === '1234'){
 
-        document.getElementById('loginBox').style.display='none';
+        document.getElementById(
+            'loginBox'
+        ).style.display='none';
 
-        document.getElementById('adminContent').style.display='block';
+        document.getElementById(
+            'adminContent'
+        ).style.display='block';
 
         urunleriDinle();
 
@@ -699,7 +753,7 @@ function girisYap(){
 
 
 /* ==========================================
-   SAYFA DEĞİŞTİR
+   SAYFA
 ========================================== */
 
 function sayfaAc(sayfa){
@@ -710,18 +764,15 @@ function sayfaAc(sayfa){
         el.classList.remove('active');
     });
 
-
     document
     .querySelectorAll('.admin-nav button')
     .forEach(el=>{
         el.classList.remove('active');
     });
 
-
     document
     .getElementById('page-'+sayfa)
     .classList.add('active');
-
 
     document
     .getElementById('nav-'+sayfa)
@@ -736,150 +787,155 @@ function sayfaAc(sayfa){
 
 function urunleriDinle(){
 
-    db.ref('urunler').on('value',(snapshot)=>{
+    db.ref('urunler').on(
+        'value',
+        snapshot=>{
 
-        const data =
-        snapshot.val() || {};
+            const data =
+            snapshot.val() || {};
 
-        const container =
-        document.getElementById(
-            'adminUrunListesi'
-        );
+            const container =
+            document.getElementById(
+                'adminUrunListesi'
+            );
 
-        container.innerHTML='';
+            container.innerHTML='';
 
-        const keys =
-        Object.keys(data);
+            const keys =
+            Object.keys(data);
 
-        document.getElementById(
-            'urunSayisi'
-        ).innerText =
-        keys.length + ' ürün';
+            document.getElementById(
+                'urunSayisi'
+            ).innerText =
+            keys.length+' ürün';
 
 
-        if(keys.length === 0){
+            if(keys.length===0){
 
-            container.innerHTML =
-            '<p style="text-align:center;color:#999;">Henüz ürün yok.</p>';
+                container.innerHTML=
+                '<p style="text-align:center;color:#999;">Henüz ürün yok.</p>';
 
-            return;
+                return;
+
+            }
+
+
+            keys.forEach(key=>{
+
+                const item=data[key];
+
+                container.innerHTML+=`
+
+                <div class="product-card">
+
+                    <div class="product-top">
+
+                        <div>
+
+                            <div class="product-name">
+                                ${guvenli(item.ad)}
+                            </div>
+
+                            <div class="product-category">
+                                ${guvenli(item.kategori || 'Diğer')}
+                            </div>
+
+                        </div>
+
+                        <div class="product-price">
+                            ${item.fiyat} TL
+                        </div>
+
+                    </div>
+
+
+                    <div class="product-actions">
+
+                        <button
+                            class="btn-blue"
+                            onclick="duzenleAc('${key}')"
+                        >
+                            ✏️ Düzenle
+                        </button>
+
+                        <button
+                            class="btn-red"
+                            onclick="urunSil('${key}')"
+                        >
+                            🗑️ Sil
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="edit-${key}"
+                        class="edit-area"
+                    >
+
+                        <input
+                            type="text"
+                            id="edit-ad-${key}"
+                            value="${guvenliAttr(item.ad)}"
+                        >
+
+                        <input
+                            type="number"
+                            id="edit-fiyat-${key}"
+                            value="${item.fiyat}"
+                            min="0"
+                            step="0.01"
+                        >
+
+                        <select
+                            id="edit-kategori-${key}"
+                        >
+
+                            <option value="Sıcak İçecekler"
+                            ${item.kategori==='Sıcak İçecekler'?'selected':''}>
+                                ☕ Sıcak İçecekler
+                            </option>
+
+                            <option value="Soğuk İçecekler"
+                            ${item.kategori==='Soğuk İçecekler'?'selected':''}>
+                                🧊 Soğuk İçecekler
+                            </option>
+
+                            <option value="Tatlılar"
+                            ${item.kategori==='Tatlılar'?'selected':''}>
+                                🍰 Tatlılar
+                            </option>
+
+                            <option value="Atıştırmalıklar"
+                            ${item.kategori==='Atıştırmalıklar'?'selected':''}>
+                                🥪 Atıştırmalıklar
+                            </option>
+
+                            <option value="Diğer"
+                            ${item.kategori==='Diğer'?'selected':''}>
+                                🍹 Diğer
+                            </option>
+
+                        </select>
+
+                        <button
+                            class="btn-green"
+                            style="width:100%;"
+                            onclick="urunGuncelle('${key}')"
+                        >
+                            💾 Kaydet
+                        </button>
+
+                    </div>
+
+                </div>
+
+                `;
+
+            });
 
         }
-
-
-        keys.forEach(key=>{
-
-            const item=data[key];
-
-            container.innerHTML += `
-
-            <div class="product-card">
-
-                <div class="product-top">
-
-                    <div>
-
-                        <div class="product-name">
-                            ${guvenliMetin(item.ad)}
-                        </div>
-
-                        <div class="product-category">
-                            ${guvenliMetin(item.kategori || 'Diğer')}
-                        </div>
-
-                    </div>
-
-                    <div class="product-price">
-                        ${item.fiyat} TL
-                    </div>
-
-                </div>
-
-
-                <div class="product-actions">
-
-                    <button
-                        class="btn-blue"
-                        onclick="duzenleAc('${key}')"
-                    >
-                        ✏️ Düzenle
-                    </button>
-
-                    <button
-                        class="btn-red"
-                        onclick="urunSil('${key}')"
-                    >
-                        🗑️ Sil
-                    </button>
-
-                </div>
-
-
-                <div
-                    id="edit-${key}"
-                    class="edit-area"
-                >
-
-                    <input
-                        type="text"
-                        id="edit-ad-${key}"
-                        value="${guvenliAttr(item.ad)}"
-                    >
-
-                    <input
-                        type="number"
-                        id="edit-fiyat-${key}"
-                        value="${item.fiyat}"
-                        min="0"
-                        step="0.01"
-                    >
-
-                    <select id="edit-kategori-${key}">
-
-                        <option value="Sıcak İçecekler"
-                        ${item.kategori==='Sıcak İçecekler'?'selected':''}>
-                        ☕ Sıcak İçecekler
-                        </option>
-
-                        <option value="Soğuk İçecekler"
-                        ${item.kategori==='Soğuk İçecekler'?'selected':''}>
-                        🧊 Soğuk İçecekler
-                        </option>
-
-                        <option value="Tatlılar"
-                        ${item.kategori==='Tatlılar'?'selected':''}>
-                        🍰 Tatlılar
-                        </option>
-
-                        <option value="Atıştırmalıklar"
-                        ${item.kategori==='Atıştırmalıklar'?'selected':''}>
-                        🥪 Atıştırmalıklar
-                        </option>
-
-                        <option value="Diğer"
-                        ${item.kategori==='Diğer'?'selected':''}>
-                        🍹 Diğer
-                        </option>
-
-                    </select>
-
-                    <button
-                        class="btn-green"
-                        style="width:100%;"
-                        onclick="urunGuncelle('${key}')"
-                    >
-                        💾 Değişiklikleri Kaydet
-                    </button>
-
-                </div>
-
-            </div>
-
-            `;
-
-        });
-
-    });
+    );
 
 }
 
@@ -891,25 +947,34 @@ function urunleriDinle(){
 function urunEkle(){
 
     const ad =
-    document.getElementById('yeniAd').value.trim();
+    document.getElementById(
+        'yeniAd'
+    ).value.trim();
 
     const fiyat =
-    document.getElementById('yeniFiyat').value;
+    document.getElementById(
+        'yeniFiyat'
+    ).value;
 
     const kategori =
-    document.getElementById('yeniKategori').value;
+    document.getElementById(
+        'yeniKategori'
+    ).value;
 
 
     if(!ad || !fiyat){
 
-        alert('Ürün adı ve fiyat girin.');
+        alert(
+            'Ürün adı ve fiyat girin.'
+        );
 
         return;
 
     }
 
 
-    db.ref('urunler').push({
+    db.ref('urunler')
+    .push({
 
         ad:ad,
 
@@ -920,16 +985,24 @@ function urunEkle(){
     })
     .then(()=>{
 
-        document.getElementById('yeniAd').value='';
+        document.getElementById(
+            'yeniAd'
+        ).value='';
 
-        document.getElementById('yeniFiyat').value='';
+        document.getElementById(
+            'yeniFiyat'
+        ).value='';
 
-        alert('✅ Ürün eklendi.');
+        alert(
+            '✅ Ürün eklendi.'
+        );
 
     })
     .catch(err=>{
 
-        alert('Hata: '+err.message);
+        alert(
+            '❌ Hata: '+err.message
+        );
 
     });
 
@@ -943,10 +1016,12 @@ function urunEkle(){
 function duzenleAc(key){
 
     const area =
-    document.getElementById('edit-'+key);
+    document.getElementById(
+        'edit-'+key
+    );
 
     area.style.display =
-    area.style.display === 'block'
+    area.style.display==='block'
     ? 'none'
     : 'block';
 
@@ -956,25 +1031,35 @@ function duzenleAc(key){
 function urunGuncelle(key){
 
     const ad =
-    document.getElementById('edit-ad-'+key).value.trim();
+    document.getElementById(
+        'edit-ad-'+key
+    ).value.trim();
 
     const fiyat =
-    document.getElementById('edit-fiyat-'+key).value;
+    document.getElementById(
+        'edit-fiyat-'+key
+    ).value;
 
     const kategori =
-    document.getElementById('edit-kategori-'+key).value;
+    document.getElementById(
+        'edit-kategori-'+key
+    ).value;
 
 
-    if(!ad || fiyat === ''){
+    if(!ad || fiyat===''){
 
-        alert('Bilgileri eksiksiz girin.');
+        alert(
+            'Bilgileri eksiksiz girin.'
+        );
 
         return;
 
     }
 
 
-    db.ref('urunler/'+key)
+    db.ref(
+        'urunler/'+key
+    )
     .update({
 
         ad:ad,
@@ -986,12 +1071,9 @@ function urunGuncelle(key){
     })
     .then(()=>{
 
-        alert('✅ Ürün güncellendi.');
-
-    })
-    .catch(err=>{
-
-        alert('Hata: '+err.message);
+        alert(
+            '✅ Ürün güncellendi.'
+        );
 
     });
 
@@ -1005,12 +1087,16 @@ function urunGuncelle(key){
 function urunSil(key){
 
     if(!confirm(
-        'Bu ürünü menüden silmek istediğinize emin misiniz?'
-    )) return;
+        'Bu ürünü silmek istediğinize emin misiniz?'
+    )){
 
+        return;
 
-    db.ref('urunler/'+key)
-    .remove();
+    }
+
+    db.ref(
+        'urunler/'+key
+    ).remove();
 
 }
 
@@ -1019,19 +1105,23 @@ function urunSil(key){
    SİPARİŞLER
 ========================================== */
 
-let tumSiparisler = {};
+let tumSiparisler={};
 
 
 function siparisleriDinle(){
 
-    db.ref('siparisler').on('value',(snapshot)=>{
+    db.ref('siparisler')
+    .on(
+        'value',
+        snapshot=>{
 
-        tumSiparisler =
-        snapshot.val() || {};
+            tumSiparisler =
+            snapshot.val() || {};
 
-        masaHesaplariniOlustur();
+            masaHesaplariniOlustur();
 
-    });
+        }
+    );
 
 }
 
@@ -1042,182 +1132,336 @@ function siparisleriDinle(){
 
 function masaHesaplariniOlustur(){
 
-    const masaListesi =
-    document.getElementById('masaListesi');
+    const container =
+    document.getElementById(
+        'masaListesi'
+    );
 
-    masaListesi.innerHTML='';
+    container.innerHTML='';
 
 
     let doluMasa=0;
 
-    let bekleyen=0;
+    let bekleyenSiparisSayisi=0;
 
     let genelToplam=0;
 
 
-    /*
-       1-10 arası masalar
-    */
-
-    for(let masa=1; masa<=10; masa++){
+    for(let masa=1;masa<=10;masa++){
 
         const siparisler =
-        Object.entries(tumSiparisler)
-        .filter(([key,siparis])=>
-            String(siparis.masa) === String(masa)
+        Object.entries(
+            tumSiparisler
+        )
+        .filter(
+            ([key,siparis])=>
+            String(siparis.masa)===
+            String(masa)
         );
 
 
-        const urunToplam={};
+        /*
+           ÜRÜNLER
 
-        let masaToplam=0;
+           Her ürün için:
 
-        let bekleyenMasa=0;
+           toplam adet
+           bekleyen adet
+           onaylanan adet
+           onaylanan tutar
+        */
 
-
-        siparisler.forEach(([key,siparis])=>{
-
-            if(siparis.durum !== 'onaylandi'){
-
-                bekleyen++;
-
-                bekleyenMasa++;
-
-            }
+        const urunler={};
 
 
-            const urunler =
-            siparis.urunler || {};
+        let onayliToplam=0;
+
+        let bekleyenToplam=0;
+
+        let bekleyenSiparisVar=false;
 
 
-            Object.values(urunler)
-            .forEach(u=>{
+        siparisler.forEach(
+            ([key,siparis])=>{
 
-                const ad=u.ad;
-
-                const adet=
-                parseInt(u.adet)||0;
-
-                const fiyat=
-                parseFloat(u.fiyat)||0;
+                const onayli =
+                siparis.durum===
+                'onaylandi';
 
 
-                if(!urunToplam[ad]){
+                if(!onayli){
 
-                    urunToplam[ad]={
-                        adet:0,
-                        toplam:0,
-                        fiyat:fiyat
-                    };
+                    bekleyenSiparisSayisi++;
+
+                    bekleyenSiparisVar=true;
 
                 }
 
 
-                urunToplam[ad].adet += adet;
-
-                urunToplam[ad].toplam +=
-                fiyat * adet;
-
-                masaToplam +=
-                fiyat * adet;
-
-            });
-
-        });
+                const urunData =
+                siparis.urunler || {};
 
 
-        if(siparisler.length>0){
+                Object.values(
+                    urunData
+                )
+                .forEach(u=>{
 
-            doluMasa++;
+                    const ad=u.ad;
 
-            genelToplam += masaToplam;
+                    const adet=
+                    parseInt(u.adet)||0;
 
-        }
+                    const fiyat=
+                    parseFloat(u.fiyat)||0;
+
+
+                    if(!urunler[ad]){
+
+                        urunler[ad]={
+
+                            toplamAdet:0,
+
+                            bekleyenAdet:0,
+
+                            onayliAdet:0,
+
+                            onayliTutar:0,
+
+                            bekleyenTutar:0
+
+                        };
+
+                    }
+
+
+                    urunler[ad].toplamAdet +=
+                    adet;
+
+
+                    if(onayli){
+
+                        urunler[ad].onayliAdet +=
+                        adet;
+
+                        urunler[ad].onayliTutar +=
+                        fiyat*adet;
+
+                        onayliToplam +=
+                        fiyat*adet;
+
+                    }
+
+                    else{
+
+                        urunler[ad].bekleyenAdet +=
+                        adet;
+
+                        urunler[ad].bekleyenTutar +=
+                        fiyat*adet;
+
+                        bekleyenToplam +=
+                        fiyat*adet;
+
+                    }
+
+                });
+
+            }
+        );
 
 
         const dolu =
-        siparisler.length > 0;
+        siparisler.length>0;
+
+
+        if(dolu){
+
+            doluMasa++;
+
+            genelToplam +=
+            onayliToplam;
+
+        }
 
 
         let urunHtml='';
 
 
-        if(dolu){
+        Object.keys(urunler)
+        .forEach(ad=>{
 
-            Object.keys(urunToplam)
-            .forEach(ad=>{
+            const u=urunler[ad];
 
-                const u=urunToplam[ad];
 
-                urunHtml += `
+            let detay='';
 
-                <div class="urun-satir">
 
-                    <div>
+            if(u.onayliAdet>0){
 
-                        <div class="urun-ad">
-                            ${guvenliMetin(ad)}
-                        </div>
+                detay+=`
 
-                        <div class="urun-adet">
-                            ${u.adet} adet
-                        </div>
+                    <span class="onayli-yazi">
+                        ✅ ${u.onayliAdet} onaylandı
+                    </span>
+
+                `;
+
+            }
+
+
+            if(u.bekleyenAdet>0){
+
+                if(detay!==''){
+
+                    detay+=
+                    ' &nbsp; ';
+
+                }
+
+
+                detay+=`
+
+                    <span class="bekleyen-yazi">
+                        ⏳ ${u.bekleyenAdet} bekliyor
+                    </span>
+
+                `;
+
+            }
+
+
+            /*
+               ÜRÜN TOPLAMI
+
+               Örneğin:
+
+               3 bekliyor
+               4 onaylandı
+
+               toplam 7 adet
+
+               FİYAT = yalnızca 4 adet
+            */
+
+
+            urunHtml+=`
+
+            <div class="urun-satir">
+
+                <div class="urun-ust">
+
+                    <div class="urun-ad">
+
+                        ${guvenli(ad)}
+
+                        <span
+                            style="
+                            color:#777;
+                            font-weight:normal;
+                            "
+                        >
+                            × ${u.toplamAdet}
+                        </span>
 
                     </div>
 
+
                     <div class="urun-tutar">
-                        ${u.toplam.toFixed(2)} TL
+
+                        ${
+                            u.onayliTutar>0
+                            ? u.onayliTutar.toFixed(2)+' TL'
+                            : '0 TL'
+                        }
+
                     </div>
 
                 </div>
 
-                `;
 
-            });
+                <div class="urun-detay">
 
-        }
+                    ${detay}
+
+                </div>
+
+            </div>
+
+            `;
+
+        });
 
 
         if(!dolu){
 
             urunHtml=`
 
-            <div class="masa-empty">
+                <div class="masa-empty">
 
-                ☕<br>
+                    ☕<br>
 
-                <strong>Masa Boş</strong>
+                    <strong>Masa Boş</strong>
 
-                <br>
+                    <br>
 
-                <small>Henüz sipariş yok.</small>
+                    <small>
+                        Henüz sipariş yok.
+                    </small>
 
-            </div>
+                </div>
 
             `;
 
         }
 
 
-        masaListesi.innerHTML += `
+        let durum='';
+
+        let durumClass='';
+
+
+        if(!dolu){
+
+            durum='Boş';
+
+        }
+
+        else if(bekleyenSiparisVar){
+
+            durum='⏳ Bekleyen';
+
+            durumClass='bekliyor';
+
+        }
+
+        else{
+
+            durum='🟢 Onaylandı';
+
+            durumClass='onayli';
+
+        }
+
+
+        container.innerHTML+=`
 
         <div class="masa-card ${dolu?'dolu':''}">
 
             <div class="masa-header">
 
                 <div class="masa-title">
+
                     🪑 MASA ${masa}
+
                 </div>
 
-                <div class="masa-status ${dolu?'dolu':''}">
 
-                    ${
-                        !dolu
-                        ? 'Boş'
-                        : bekleyenMasa>0
-                        ? '⏳ Bekleyen'
-                        : '🟢 Dolu'
-                    }
+                <div
+                    class="masa-status ${durumClass}"
+                >
+
+                    ${durum}
 
                 </div>
 
@@ -1229,17 +1473,40 @@ function masaHesaplariniOlustur(){
 
             ${
                 dolu
-                ? `
+                ?
+
+                `
+
+                <div class="bekleyen-toplam">
+
+                    ${
+                        bekleyenToplam>0
+                        ?
+                        '⏳ Bekleyen ürün tutarı: '
+                        +
+                        bekleyenToplam.toFixed(2)
+                        +
+                        ' TL — hesaba dahil değil'
+                        :
+                        ''
+                    }
+
+                </div>
+
 
                 <div class="masa-toplam">
 
-                    <span>TOPLAM</span>
+                    <span>
+                        HESAP
+                    </span>
 
                     <span>
-                        ${masaToplam.toFixed(2)} TL
+                        ${onayliToplam.toFixed(2)}
+                        TL
                     </span>
 
                 </div>
+
 
                 <button
                     class="odeme-btn"
@@ -1249,7 +1516,11 @@ function masaHesaplariniOlustur(){
                 </button>
 
                 `
-                : ''
+
+                :
+
+                ''
+
             }
 
         </div>
@@ -1261,12 +1532,14 @@ function masaHesaplariniOlustur(){
 
     document.getElementById(
         'doluMasaSayisi'
-    ).innerText=doluMasa;
+    ).innerText=
+    doluMasa;
 
 
     document.getElementById(
         'bekleyenSayisi'
-    ).innerText=bekleyen;
+    ).innerText=
+    bekleyenSiparisSayisi;
 
 
     document.getElementById(
@@ -1284,16 +1557,20 @@ function masaHesaplariniOlustur(){
 function hesapOdendi(masa){
 
     const siparisler =
-    Object.entries(tumSiparisler)
-    .filter(([key,siparis])=>
-        String(siparis.masa) === String(masa)
+    Object.entries(
+        tumSiparisler
+    )
+    .filter(
+        ([key,siparis])=>
+        String(siparis.masa)===
+        String(masa)
     );
 
 
     if(siparisler.length===0){
 
         alert(
-            'Bu masada silinecek sipariş bulunamadı.'
+            'Bu masada sipariş yok.'
         );
 
         return;
@@ -1301,56 +1578,81 @@ function hesapOdendi(masa){
     }
 
 
-    let toplam=0;
+    let onayliToplam=0;
 
 
-    siparisler.forEach(([key,siparis])=>{
+    siparisler.forEach(
+        ([key,siparis])=>{
 
-        toplam +=
-        parseFloat(siparis.toplam)||0;
+            if(
+                siparis.durum===
+                'onaylandi'
+            ){
 
-    });
+                onayliToplam +=
+                parseFloat(
+                    siparis.toplam
+                )||0;
 
+            }
 
-    const onay =
-    confirm(
-        'MASA '+masa+
-        '\n\nToplam: '+toplam.toFixed(2)+' TL'+
-        '\n\nHesap ödendi olarak işaretlenip masa sıfırlanacak.'+
-        '\n\nDevam etmek istiyor musunuz?'
+        }
     );
 
 
-    if(!onay) return;
+    const cevap =
+    confirm(
+
+        'MASA '+masa+
+        '\n\n'+
+
+        'Ödenecek hesap: '+
+        onayliToplam.toFixed(2)+
+        ' TL'+
+
+        '\n\nBekleyen siparişler varsa onlar da silinecek.'+
+
+        '\n\nMasa sıfırlansın mı?'
+
+    );
+
+
+    if(!cevap){
+
+        return;
+
+    }
 
 
     const updates={};
 
 
-    siparisler.forEach(([key])=>{
+    siparisler.forEach(
+        ([key])=>{
 
-        updates[
-            'siparisler/'+key
-        ]=null;
+            updates[
+                'siparisler/'+key
+            ]=null;
 
-    });
+        }
+    );
 
 
-    db.ref().update(updates)
-
+    db.ref()
+    .update(updates)
     .then(()=>{
 
         alert(
-            '✅ Masa '+masa+
-            ' hesabı ödendi ve sıfırlandı.'
+            '✅ Masa '+
+            masa+
+            ' sıfırlandı.'
         );
 
     })
-
     .catch(err=>{
 
         alert(
-            '❌ İşlem başarısız: '+
+            '❌ Hata: '+
             err.message
         );
 
@@ -1363,7 +1665,7 @@ function hesapOdendi(masa){
    GÜVENLİ METİN
 ========================================== */
 
-function guvenliMetin(text){
+function guvenli(text){
 
     return String(text ?? '')
     .replace(/&/g,'&amp;')
@@ -1377,7 +1679,7 @@ function guvenliMetin(text){
 
 function guvenliAttr(text){
 
-    return guvenliMetin(text);
+    return guvenli(text);
 
 }
 
