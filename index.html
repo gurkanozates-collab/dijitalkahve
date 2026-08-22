@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dijital Kahvehanem - Müşteri</title>
-    <!-- Firebase Compat Scriptleri (En Kararlı Yapı) -->
+    <!-- Firebase Compat Scriptleri -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
@@ -65,14 +65,16 @@
 
 <script>
     const firebaseConfig = {
-        databaseURL: "https://dijitalkahve-67f0a-default-rtdb.europe-west1.firebasedatabase.app",
+        databaseURL: "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "dijitalkahve-67f0a",
         storageBucket: "dijitalkahve-67f0a.appspot.com",
         messagingSenderId: "326476599239"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.app().database("https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app");
 
     const urlParams = new URLSearchParams(window.location.search);
     const masa = urlParams.get('masa') || '1';
