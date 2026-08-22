@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Garson Paneli</title>
+<title>Garson / Ocak</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
@@ -11,60 +11,116 @@
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;padding:15px;
- font-family:Arial;background:#171313;color:white
+    margin:0;
+    padding:15px;
+    font-family:Arial,sans-serif;
+    background:#171717;
+    color:white;
 }
 .header{
- background:linear-gradient(135deg,#b71c1c,#e53935);
- padding:20px;border-radius:15px;
- text-align:center;margin-bottom:18px;
- box-shadow:0 6px 18px #0006
+    background:linear-gradient(135deg,#b71c1c,#e53935);
+    padding:20px;
+    border-radius:16px;
+    text-align:center;
+    margin-bottom:18px;
+    box-shadow:0 5px 20px #0006;
 }
-.section{
- margin-top:22px
+.header h2{margin:0 0 5px}
+.section-title{
+    margin:24px 0 10px;
+    padding-bottom:7px;
+    border-bottom:1px solid #444;
 }
-.section h3{
- border-bottom:1px solid #444;padding-bottom:8px
+.call-card{
+    background:#292929;
+    border-left:7px solid #ffeb3b;
+    padding:15px;
+    border-radius:13px;
+    margin-bottom:10px;
+    box-shadow:0 3px 10px #0006;
 }
-.card{
- background:#272020;border-radius:14px;
- padding:15px;margin-bottom:12px;
- border-left:6px solid #ff9800;
- box-shadow:0 4px 12px #0005
+.call-card strong{
+    color:#ffeb3b;
+    font-size:20px;
 }
-.card.onay{border-left-color:#4caf50}
-.masa{
- font-size:20px;font-weight:bold;color:#ffeb3b
+.order-card{
+    background:#252f27;
+    border-left:7px solid #ff9800;
+    padding:15px;
+    border-radius:13px;
+    margin-bottom:12px;
+    box-shadow:0 3px 10px #0006;
 }
-.satir{
- display:flex;justify-content:space-between;
- padding:5px 0;border-bottom:1px dashed #444
+.order-card.approved{
+    border-left-color:#66bb6a;
 }
-.toplam{
- text-align:right;color:#ffeb3b;
- font-weight:bold;margin-top:8px
+.order-title{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+.order-title strong{
+    color:#a5d6a7;
+    font-size:20px;
+}
+.product-line{
+    display:flex;
+    justify-content:space-between;
+    padding:6px 0;
+    border-bottom:1px dashed #555;
+}
+.total{
+    text-align:right;
+    color:#ffeb3b;
+    font-weight:bold;
+    margin-top:8px;
 }
 button{
- border:0;border-radius:9px;
- padding:11px;font-weight:bold;cursor:pointer
+    border:0;
+    border-radius:9px;
+    padding:12px;
+    font-weight:bold;
+    cursor:pointer;
 }
-.onayla{
- width:100%;background:#43a047;color:#fff;margin-top:10px
+.approve{
+    width:100%;
+    margin-top:10px;
+    background:#388e3c;
+    color:white;
 }
-.duzenle{
- width:100%;background:#1565c0;color:#fff;margin-top:8px
+.edit{
+    width:100%;
+    margin-top:8px;
+    background:#1565c0;
+    color:white;
 }
-.cagri{
- display:flex;justify-content:space-between;
- align-items:center;background:#302525;
- border-left:6px solid #ffeb3b;
- padding:14px;border-radius:12px;margin-bottom:10px
-}
-.cagri button{
- background:#43a047;color:white
+.done{
+    width:100%;
+    margin-top:8px;
+    background:#555;
+    color:white;
 }
 .empty{
- text-align:center;color:#888;padding:20px
+    text-align:center;
+    color:#777;
+    padding:15px;
+}
+.edit-box{
+    background:#171717;
+    padding:10px;
+    border-radius:10px;
+    margin-top:10px;
+}
+.edit-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:7px 0;
+}
+.edit-row button{
+    padding:6px 12px;
+    background:#555;
+    color:white;
 }
 </style>
 </head>
@@ -73,160 +129,229 @@ button{
 
 <div class="header">
 <h2>☕ OCAK & GARSON</h2>
-<small>Sipariş ve çağrılar canlı olarak güncellenir</small>
+<small>Gelen çağrılar ve siparişler anlık olarak görünür</small>
 </div>
 
-<div class="section">
-<h3>🔔 Garson Çağrıları</h3>
+<h3 class="section-title">🔔 Garson Çağrıları</h3>
 <div id="bildirimListesi"></div>
-</div>
 
-<div class="section">
-<h3>🕐 Bekleyen Siparişler</h3>
+<h3 class="section-title">🕐 Bekleyen Siparişler</h3>
 <div id="bekleyenListesi"></div>
-</div>
 
-<div class="section">
-<h3>✅ Onaylanan Siparişler</h3>
+<h3 class="section-title">✅ Onaylanan Siparişler</h3>
 <div id="onaylananListesi"></div>
-</div>
 
 <script>
 const firebaseConfig={
- databaseURL:"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
- projectId:"dijitalkahve-67f0a",
- storageBucket:"dijitalkahve-67f0a.appspot.com",
- messagingSenderId:"326476599239"
+    databaseURL:"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId:"dijitalkahve-67f0a",
+    storageBucket:"dijitalkahve-67f0a.appspot.com",
+    messagingSenderId:"326476599239"
 };
 
 if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
 
 const db=firebase.app().database(
-"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
+    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
 );
 
-db.ref("bildirimler").on("value",s=>{
- let data=s.val();
- let el=document.getElementById("bildirimListesi");
- el.innerHTML="";
+let siparisData={};
+let duzenleme={};
 
- if(!data){
-  el.innerHTML='<div class="empty">Bekleyen çağrı yok.</div>';
-  return;
- }
+db.ref("bildirimler").on("value",snap=>{
+    const data=snap.val();
+    const box=document.getElementById("bildirimListesi");
 
- Object.keys(data).forEach(k=>{
-  let x=data[k];
+    box.innerHTML="";
 
-  el.innerHTML+=`
-  <div class="cagri">
-   <div>
-    <div class="masa">MASA ${x.masa}</div>
-    <small>Saat: ${x.zaman}</small>
-   </div>
-   <button onclick="bildirimSil('${k}')">GİDİLDİ</button>
-  </div>`;
- });
+    if(!data){
+        box.innerHTML='<div class="empty">Bekleyen çağrı yok.</div>';
+        return;
+    }
+
+    Object.keys(data).forEach(key=>{
+        const x=data[key];
+
+        box.innerHTML+=`
+        <div class="call-card">
+            <strong>MASA ${x.masa}</strong>
+            <div style="color:#bbb;margin-top:5px">Saat: ${x.zaman}</div>
+            <button class="done"
+                onclick="bildirimSil('${key}')">
+                GİDİLDİ / ÇAĞRIYI KAPAT
+            </button>
+        </div>`;
+    });
 });
 
-db.ref("siparisler").on("value",s=>{
- let data=s.val();
- let bekleyen=document.getElementById("bekleyenListesi");
- let onaylanan=document.getElementById("onaylananListesi");
-
- bekleyen.innerHTML="";
- onaylanan.innerHTML="";
-
- let b=false;
-
- if(data){
-  Object.keys(data).forEach(k=>{
-   let sip=data[k];
-
-   let urunler={};
-
-   Object.values(sip.urunler||{}).forEach(u=>{
-    let key=u.ad+"|"+u.fiyat;
-
-    if(!urunler[key])
-     urunler[key]={ad:u.ad,fiyat:u.fiyat,adet:0};
-
-    urunler[key].adet+=Number(u.adet)||0;
-   });
-
-   let html="";
-
-   Object.values(urunler).forEach(u=>{
-    html+=`
-    <div class="satir">
-     <span>${u.ad} × ${u.adet}</span>
-     <span>${u.fiyat*u.adet} TL</span>
-    </div>`;
-   });
-
-   if(sip.durum==="onaylandi"){
-    onaylanan.innerHTML+=`
-    <div class="card onay">
-     <div class="masa">MASA ${sip.masa}</div>
-     <small>Saat: ${sip.zaman}</small>
-     <div style="margin-top:10px">${html}</div>
-     <div class="toplam">Toplam: ${sip.toplam} TL</div>
-    </div>`;
-   }else{
-    b=true;
-
-    bekleyen.innerHTML+=`
-    <div class="card">
-     <div class="masa">MASA ${sip.masa}</div>
-     <small>Saat: ${sip.zaman}</small>
-     <div style="margin-top:10px">${html}</div>
-     <div class="toplam">Toplam: ${sip.toplam} TL</div>
-
-     <button class="onayla"
-      onclick="siparisOnayla('${k}')">
-      ✅ ONAYLA / MALZEMELER GÖTÜRÜLDÜ
-     </button>
-
-     <button class="duzenle"
-      onclick="siparisDuzenle('${k}')">
-      ✏️ DÜZENLE
-     </button>
-    </div>`;
-   }
-  });
- }
-
- if(!b)
-  bekleyen.innerHTML='<div class="empty">Bekleyen sipariş yok.</div>';
+db.ref("siparisler").on("value",snap=>{
+    siparisData=snap.val()||{};
+    renderSiparisler();
 });
 
-function bildirimSil(id){
- db.ref("bildirimler/"+id).remove();
+function renderSiparisler(){
+    const bekleyen=document.getElementById("bekleyenListesi");
+    const onay=document.getElementById("onaylananListesi");
+
+    bekleyen.innerHTML="";
+    onay.innerHTML="";
+
+    let b=false,o=false;
+
+    Object.keys(siparisData).forEach(key=>{
+        const sip=siparisData[key];
+
+        let urunHtml="";
+
+        Object.values(sip.urunler||{}).forEach(u=>{
+            urunHtml+=`
+            <div class="product-line">
+                <span>${u.ad} x${u.adet}</span>
+                <span>${(parseFloat(u.fiyat)||0)*u.adet} TL</span>
+            </div>`;
+        });
+
+        if(sip.durum==="onaylandi"){
+            o=true;
+
+            onay.innerHTML+=`
+            <div class="order-card approved">
+                <div class="order-title">
+                    <strong>MASA ${sip.masa}</strong>
+                    <span>${sip.zaman}</span>
+                </div>
+
+                <div style="margin-top:10px">
+                    ${urunHtml}
+                </div>
+
+                <div class="total">
+                    ${sip.toplam} TL
+                </div>
+            </div>`;
+        }else{
+            b=true;
+
+            bekleyen.innerHTML+=`
+            <div class="order-card">
+                <div class="order-title">
+                    <strong>MASA ${sip.masa}</strong>
+                    <span>${sip.zaman}</span>
+                </div>
+
+                <div style="margin-top:10px">
+                    ${urunHtml}
+                </div>
+
+                <div class="total">
+                    ${sip.toplam} TL
+                </div>
+
+                <button class="approve"
+                    onclick="siparisOnayla('${key}')">
+                    ✅ SİPARİŞİ ONAYLA
+                </button>
+
+                <button class="edit"
+                    onclick="duzenle('${key}')">
+                    ✏️ SİPARİŞİ DÜZENLE
+                </button>
+
+                <div id="edit-${key}"></div>
+            </div>`;
+        }
+    });
+
+    if(!b)bekleyen.innerHTML='<div class="empty">Bekleyen sipariş yok.</div>';
+    if(!o)onay.innerHTML='<div class="empty">Onaylanan sipariş yok.</div>';
 }
 
 function siparisOnayla(id){
- let ref=db.ref("siparisler/"+id);
-
- ref.once("value").then(s=>{
-  let sip=s.val();
-  if(!sip)return;
-
-  ref.update({
-   durum:"onaylandi",
-   onayZamani:new Date().toLocaleTimeString("tr-TR"),
-   onayTarihi:new Date().toISOString().slice(0,10)
-  });
- });
+    db.ref("siparisler/"+id+"/durum").set("onaylandi");
 }
 
-function siparisDuzenle(id){
- let yeni=prompt(
- "Sipariş üzerinde garson düzenleme yapabilir.\n\nYeni sipariş yapısını değiştirmek için ürünü ve adedi yazabilirsiniz."
- );
+function bildirimSil(id){
+    db.ref("bildirimler/"+id).remove();
+}
 
- if(yeni!==null)
-  alert("Düzenleme özelliği için sipariş satırlarını birlikte düzenleyebiliriz.");
+/* SİPARİŞ DÜZENLEME */
+function duzenle(id){
+    const sip=siparisData[id];
+    if(!sip)return;
+
+    if(duzenleme[id]){
+        duzenleme[id]=false;
+        renderSiparisler();
+        return;
+    }
+
+    duzenleme[id]=true;
+
+    const alan=document.getElementById("edit-"+id);
+
+    let html='<div class="edit-box">';
+
+    Object.keys(sip.urunler||{}).forEach(key=>{
+        const u=sip.urunler[key];
+
+        html+=`
+        <div class="edit-row">
+            <span>${u.ad}</span>
+
+            <div>
+                <button onclick="adetDegistir('${id}','${key}',-1)">−</button>
+                <b style="padding:0 10px">${u.adet}</b>
+                <button onclick="adetDegistir('${id}','${key}',1)">+</button>
+            </div>
+        </div>`;
+    });
+
+    html+=`</div>`;
+
+    alan.innerHTML=html;
+}
+
+function adetDegistir(orderId,productId,delta){
+    const ref=db.ref(
+        "siparisler/"+orderId+"/urunler/"+productId
+    );
+
+    ref.once("value").then(snap=>{
+        const u=snap.val();
+        if(!u)return;
+
+        const yeni=Math.max(0,(u.adet||0)+delta);
+
+        if(yeni===0){
+            ref.remove().then(()=>toplamGuncelle(orderId));
+        }else{
+            ref.update({adet:yeni})
+            .then(()=>toplamGuncelle(orderId));
+        }
+    });
+}
+
+function toplamGuncelle(id){
+    db.ref("siparisler/"+id+"/urunler")
+    .once("value")
+    .then(snap=>{
+        const urunler=snap.val()||{};
+
+        if(!Object.keys(urunler).length){
+            db.ref("siparisler/"+id).remove();
+            return;
+        }
+
+        let toplam=0;
+
+        Object.values(urunler).forEach(u=>{
+            toplam+=(parseFloat(u.fiyat)||0)*u.adet;
+        });
+
+        db.ref("siparisler/"+id+"/toplam").set(toplam);
+    });
 }
 </script>
+
 </body>
 </html>
