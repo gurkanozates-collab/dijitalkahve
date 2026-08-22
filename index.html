@@ -3,50 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Dijital Kahvehane</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box;
+}
 
 body{
-    margin:0;
-    padding:15px;
-    padding-bottom:90px;
     font-family:Arial,sans-serif;
-    background:#f5f1ed;
+    background:#f4f1ed;
+    margin:0;
+    padding:10px;
     color:#33251f;
+    padding-bottom:80px;
 }
+
+/* HEADER */
 
 .header{
     background:linear-gradient(135deg,#3e2723,#6d4c41);
     color:white;
-    padding:20px 15px;
-    border-radius:16px;
+    padding:14px;
+    border-radius:12px;
     text-align:center;
-    margin-bottom:14px;
-    box-shadow:0 5px 15px rgba(0,0,0,.15);
+    margin-bottom:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.18);
 }
 
 .header h2{
-    margin:0 0 5px;
-    letter-spacing:1px;
+    margin:0;
+    font-size:21px;
 }
+
+.header small{
+    opacity:.85;
+}
+
+/* NAV */
 
 .nav-btns{
     display:flex;
-    gap:7px;
-    margin-bottom:15px;
+    gap:6px;
+    margin-bottom:10px;
 }
 
 .nav-btns button{
     flex:1;
     border:0;
-    padding:13px 5px;
-    border-radius:10px;
-    background:#e0d6d0;
+    padding:11px 4px;
+    border-radius:8px;
+    background:#ddd3ce;
     color:#4e342e;
     font-weight:bold;
     font-size:13px;
@@ -57,95 +69,103 @@ body{
     color:white;
 }
 
-.page{display:none}
-.page.active{display:block}
+/* PAGE */
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* MENU */
 
 .kategori-baslik{
     color:#5d4037;
+    font-size:17px;
     border-bottom:2px solid #d7ccc8;
-    padding-bottom:7px;
-    margin:20px 0 10px;
-}
-
-.kategori-baslik:first-child{
-    margin-top:0;
+    padding-bottom:5px;
+    margin:14px 0 8px;
 }
 
 .card{
     background:white;
-    padding:14px;
-    margin-bottom:9px;
-    border-radius:12px;
+    padding:10px 12px;
+    margin-bottom:7px;
+    border-radius:9px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    box-shadow:0 2px 7px rgba(0,0,0,.07);
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+
+.card strong{
+    font-size:15px;
 }
 
 .card small{
-    color:#8d6e63;
+    color:#777;
 }
 
 .qty-box{
     display:flex;
     align-items:center;
-    gap:9px;
+    gap:6px;
 }
 
 .qty-box button{
-    width:35px;
-    height:35px;
-    border:0;
+    width:31px;
+    height:31px;
     border-radius:50%;
+    border:0;
     background:#5d4037;
     color:white;
-    font-size:19px;
+    font-size:17px;
     font-weight:bold;
 }
 
 .qty-box span{
-    min-width:20px;
+    min-width:18px;
     text-align:center;
     font-weight:bold;
 }
 
 .btn-red{
     width:100%;
-    padding:16px;
-    margin-top:15px;
     border:0;
-    border-radius:12px;
-    background:#c62828;
+    background:#d32f2f;
     color:white;
-    font-size:17px;
+    padding:13px;
+    border-radius:9px;
+    font-size:16px;
     font-weight:bold;
+    margin-top:10px;
 }
 
-.btn-red:disabled{
-    background:#999;
-}
+/* SEPET */
 
 .sepet-bar{
     position:fixed;
     left:0;
     right:0;
     bottom:0;
-    background:#29201d;
+    background:#263238;
     color:white;
-    padding:12px 15px;
+    padding:10px 13px;
     display:none;
     justify-content:space-between;
     align-items:center;
     z-index:100;
-    box-shadow:0 -4px 15px rgba(0,0,0,.2);
+    box-shadow:0 -3px 10px rgba(0,0,0,.25);
 }
 
 .sepet-bar button{
     border:0;
-    background:#43a047;
+    background:#388e3c;
     color:white;
-    padding:11px 18px;
-    border-radius:9px;
+    padding:9px 16px;
+    border-radius:7px;
     font-weight:bold;
 }
 
@@ -153,539 +173,806 @@ body{
 
 .hesap-card{
     background:white;
-    padding:14px;
-    margin-bottom:10px;
-    border-radius:12px;
-    border-left:6px solid #ff9800;
-    box-shadow:0 2px 7px rgba(0,0,0,.07);
+    padding:11px;
+    margin-bottom:8px;
+    border-radius:9px;
+    border-left:5px solid #ff9800;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
 }
 
 .hesap-card.onayli{
-    border-left-color:#43a047;
+    border-left-color:#388e3c;
 }
 
 .hesap-baslik{
     display:flex;
     justify-content:space-between;
     font-weight:bold;
-    color:#5d4037;
-    margin-bottom:8px;
+    margin-bottom:5px;
 }
 
 .siparis-urun-satir{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:6px;
-    padding:6px 0;
+    padding:4px 0;
     border-bottom:1px dashed #ddd;
+    font-size:14px;
 }
 
 /* YAZ BOZ */
 
-.oyun-sec{
-    display:flex;
-    gap:8px;
-    margin-bottom:12px;
+.yazboz-wrapper{
+    width:100%;
+    max-width:480px;
+    margin:0 auto;
 }
 
-.oyun-sec button{
-    flex:1;
-    padding:14px 5px;
-    border:0;
+/*
+    KOMPAKT TASARIM
+    Yaz-boz normal boyutun yaklaşık 1/4'ü
+*/
+
+.yazboz-panel{
+    background:white;
     border-radius:10px;
-    background:#e0d6d0;
+    padding:7px;
+    box-shadow:0 2px 8px rgba(0,0,0,.10);
+}
+
+.yazboz-title{
+    font-size:14px;
+    font-weight:bold;
+    color:#5d4037;
+    margin-bottom:6px;
+}
+
+.mod-btns{
+    display:flex;
+    gap:4px;
+    margin-bottom:6px;
+}
+
+.mod-btns button{
+    flex:1;
+    padding:6px 3px;
+    border:0;
+    border-radius:5px;
+    background:#eee8e4;
     color:#4e342e;
+    font-size:11px;
     font-weight:bold;
 }
 
-.oyun-sec button.active{
+.mod-btns button.active{
     background:#5d4037;
     color:white;
 }
 
+/* KURULUM */
+
 .kurulum{
-    background:white;
-    padding:16px;
-    border-radius:14px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    background:#fafafa;
+    border:1px solid #ddd;
+    border-radius:7px;
+    padding:7px;
+    margin-bottom:7px;
 }
 
-.kurulum label{
-    display:block;
-    margin-bottom:6px;
-    font-weight:bold;
-}
-
-.kurulum input,
-.kurulum select{
-    width:100%;
-    padding:12px;
-    margin-bottom:12px;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:16px;
-}
-
-.baslat-btn{
-    width:100%;
-    padding:14px;
-    border:0;
-    border-radius:10px;
-    background:#388e3c;
-    color:white;
-    font-weight:bold;
-    font-size:16px;
-}
-
-.oyun-baslik{
-    background:linear-gradient(135deg,#3e2723,#6d4c41);
-    color:white;
-    padding:15px;
-    border-radius:13px;
-    margin-bottom:10px;
-}
-
-.el-karti{
-    background:white;
-    margin-bottom:10px;
-    border-radius:13px;
-    padding:13px;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
-    border-left:6px solid #bdbdbd;
-}
-
-.el-karti.aktif{
-    border-left-color:#43a047;
-}
-
-.el-karti.kilitli{
-    border-left-color:#757575;
-    opacity:.8;
-}
-
-.el-baslik{
+.kurulum-row{
     display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-    font-weight:bold;
-}
-
-.el-numara{
-    color:#5d4037;
-    font-size:17px;
-}
-
-.durum{
-    font-size:13px;
-}
-
-.skor-grid{
-    display:grid;
-    gap:8px;
-}
-
-.skor-oyuncu{
-    background:#f7f3f0;
-    padding:10px;
-    border-radius:9px;
-}
-
-.skor-oyuncu label{
-    display:block;
-    font-weight:bold;
-    font-size:13px;
+    gap:5px;
     margin-bottom:5px;
 }
 
-.skor-oyuncu input{
-    width:100%;
-    padding:11px;
+.kurulum select,
+.kurulum input{
+    flex:1;
+    min-width:0;
+    padding:6px;
     border:1px solid #ccc;
-    border-radius:7px;
-    font-size:18px;
-    text-align:center;
+    border-radius:5px;
+    font-size:12px;
 }
 
-.skor-oyuncu input:disabled{
-    background:#e5e5e5;
-    color:#555;
+.btn-baslat{
+    width:100%;
+    padding:7px;
+    border:0;
+    border-radius:5px;
+    background:#388e3c;
+    color:white;
+    font-weight:bold;
+    font-size:12px;
+}
+
+/* OYUN DURUMU */
+
+.oyun-durum{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#3e2723;
+    color:white;
+    border-radius:6px;
+    padding:5px 7px;
+    font-size:11px;
+    margin-bottom:6px;
 }
 
 .sayac{
+    font-weight:bold;
+    color:#ffeb3b;
+}
+
+/* YAZ BOZ TABLO */
+
+.yazboz-scroll{
+    overflow-x:auto;
+}
+
+.yazboz-table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+    font-size:10px;
+}
+
+.yazboz-table th{
+    background:#5d4037;
+    color:white;
+    padding:4px 2px;
+    border:1px solid #ddd;
+}
+
+.yazboz-table td{
+    border:1px solid #ddd;
+    padding:2px;
     text-align:center;
-    margin-top:10px;
-    padding:8px;
-    border-radius:8px;
-    background:#fff3e0;
-    color:#e65100;
+    height:28px;
+}
+
+.yazboz-table tr.aktif-el{
+    background:#fff8e1;
+}
+
+.yazboz-table tr.kilitli{
+    background:#eeeeee;
+    opacity:.75;
+}
+
+.yazboz-table input{
+    width:100%;
+    min-width:0;
+    border:0;
+    background:transparent;
+    text-align:center;
+    font-size:11px;
+    padding:3px 1px;
+}
+
+.yazboz-table input[type="number"]{
     font-weight:bold;
 }
 
-.kilit-bilgi{
-    margin-top:8px;
+.yazboz-table input:disabled{
+    color:#777;
+}
+
+.el-no{
+    width:27px;
+    font-weight:bold;
+    background:#f1ece8;
+}
+
+.kilit-icon{
+    font-size:10px;
+}
+
+/* SKOR */
+
+.toplam-row{
+    background:#eee;
+    font-weight:bold;
+}
+
+.fark-row{
+    background:#fbe9e7;
+    color:#c62828;
+    font-weight:bold;
+}
+
+/* MESAJ */
+
+.el-mesaj{
     text-align:center;
-    color:#666;
-    font-size:13px;
+    font-size:10px;
+    color:#777;
+    margin:5px 0;
 }
 
-.toplam-kart{
-    background:#3e2723;
-    color:white;
-    padding:15px;
-    border-radius:13px;
-    margin-top:12px;
-}
-
-.toplam-satir{
-    display:flex;
-    justify-content:space-between;
-    padding:6px 0;
-    border-bottom:1px solid rgba(255,255,255,.2);
-}
+/* OYUN BUTON */
 
 .yeni-oyun{
     width:100%;
-    padding:13px;
-    margin-top:10px;
     border:0;
-    border-radius:10px;
+    padding:6px;
+    margin-top:6px;
+    border-radius:5px;
     background:#d32f2f;
     color:white;
+    font-size:11px;
     font-weight:bold;
 }
+
+/* MOBİL */
+
+@media(max-width:380px){
+
+    body{
+        padding:7px;
+    }
+
+    .header h2{
+        font-size:18px;
+    }
+
+    .nav-btns button{
+        font-size:11px;
+        padding:9px 2px;
+    }
+
+    .yazboz-panel{
+        padding:5px;
+    }
+
+    .yazboz-table{
+        font-size:9px;
+    }
+
+    .yazboz-table td{
+        height:25px;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="header">
+
     <h2>☕ DİJİTAL KAHVEHANE</h2>
-    <small id="masaEtiket">MASA 1</small>
+
+    <small id="masaEtiket">
+        Masa Belirtilmedi
+    </small>
+
 </div>
+
 
 <div class="nav-btns">
-    <button id="btn-menu" class="active" onclick="sayfaAc('menu')">☕ Menü</button>
-    <button id="btn-hesap" onclick="sayfaAc('hesap')">🧾 Hesap</button>
-    <button id="btn-yazboz" onclick="sayfaAc('yazboz')">📝 Yaz-Boz</button>
-</div>
 
-<!-- MENÜ -->
-<div id="page-menu" class="page active">
-    <div id="urunListesi">Menü Yükleniyor...</div>
-
-    <button id="garsonBtn" class="btn-red" onclick="garsonCagir()">
-        🔔 GARSON / OCAKÇI ÇAĞIR
+    <button
+        onclick="sayfaAc('menu')"
+        class="active"
+        id="btn-menu">
+        ☕ Menü
     </button>
+
+    <button
+        onclick="sayfaAc('hesap')"
+        id="btn-hesap">
+        🧾 Hesap
+    </button>
+
+    <button
+        onclick="sayfaAc('yazboz')"
+        id="btn-yazboz">
+        📝 Yaz-Boz
+    </button>
+
 </div>
 
-<!-- HESAP -->
-<div id="page-hesap" class="page">
-    <h3>🧾 Masa Hesabı</h3>
-    <div id="hesapListesi">Yükleniyor...</div>
-    <div id="hesapGenelToplam"
-         style="text-align:right;font-weight:bold;font-size:19px;margin-top:12px;color:#3e2723;">
+
+<!-- ================= MENU ================= -->
+
+<div id="page-menu" class="page active">
+
+    <div id="urunListesi">
+        Menü Yükleniyor...
     </div>
+
+    <button
+        class="btn-red"
+        id="garsonBtn"
+        onclick="garsonCagir()">
+
+        🔔 GARSON / OCAKÇI ÇAĞIR
+
+    </button>
+
 </div>
 
-<!-- YAZ BOZ -->
+
+<!-- ================= HESAP ================= -->
+
+<div id="page-hesap" class="page">
+
+    <h3>Masa Hesabı</h3>
+
+    <div id="hesapListesi">
+        Yükleniyor...
+    </div>
+
+    <div
+        id="hesapGenelToplam"
+        style="
+        text-align:right;
+        font-weight:bold;
+        font-size:17px;
+        margin-top:8px;
+        color:#3e2723;
+        ">
+    </div>
+
+</div>
+
+
+<!-- ================= YAZ BOZ ================= -->
+
 <div id="page-yazboz" class="page">
 
-    <h3>📝 Yaz-Boz</h3>
+    <div class="yazboz-wrapper">
 
-    <div class="oyun-sec">
-        <button id="tekliBtn" class="active" onclick="oyunTipiSec('tekli')">
-            👤 Tekli Oyun
-        </button>
+        <div class="yazboz-panel">
 
-        <button id="esliBtn" onclick="oyunTipiSec('esli')">
-            👥 Eşli Oyun
-        </button>
+            <div class="yazboz-title">
+                📝 YAZ-BOZ
+            </div>
+
+            <div class="mod-btns">
+
+                <button
+                    id="mod-tekli"
+                    class="active"
+                    onclick="modSec('tekli')">
+
+                    Tekli Oyun
+
+                </button>
+
+                <button
+                    id="mod-esli"
+                    onclick="modSec('esli')">
+
+                    Eşli Oyun
+
+                </button>
+
+            </div>
+
+            <div id="yazbozAlan"></div>
+
+        </div>
+
     </div>
-
-    <div id="yazbozAlan"></div>
 
 </div>
 
-<!-- SEPET -->
-<div class="sepet-bar" id="sepetBar">
-    <strong id="sepetToplam">0 TL</strong>
-    <button onclick="siparisVer()">Sipariş Ver</button>
+
+<!-- ================= SEPET ================= -->
+
+<div
+    class="sepet-bar"
+    id="sepetBar">
+
+    <span id="sepetToplam">
+        0 TL
+    </span>
+
+    <button onclick="siparisVer()">
+        Sipariş Ver
+    </button>
+
 </div>
 
 
 <script>
 
-/* =========================
+/* =========================================================
    FIREBASE
-========================= */
+========================================================= */
 
 const firebaseConfig = {
-    databaseURL:"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId:"dijitalkahve-67f0a",
-    storageBucket:"dijitalkahve-67f0a.appspot.com",
-    messagingSenderId:"326476599239"
+
+    databaseURL:
+    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+    projectId:
+    "dijitalkahve-67f0a",
+
+    storageBucket:
+    "dijitalkahve-67f0a.appspot.com",
+
+    messagingSenderId:
+    "326476599239"
+
 };
 
 if(!firebase.apps.length){
+
     firebase.initializeApp(firebaseConfig);
+
 }
 
-const db = firebase.app().database(
-    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
+const db =
+firebase.app().database(
+"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
 );
 
 
-/* =========================
+/* =========================================================
    MASA
-========================= */
+========================================================= */
 
-const urlParams = new URLSearchParams(window.location.search);
+const urlParams =
+new URLSearchParams(window.location.search);
 
-const masa = urlParams.get("masa") || "1";
+const masa =
+urlParams.get('masa') || '1';
 
-document.getElementById("masaEtiket").innerText =
-    "MASA " + masa;
+document.getElementById('masaEtiket').innerText =
+"MASA " + masa;
 
 
-/* =========================
+/* =========================================================
    MENÜ
-========================= */
+========================================================= */
 
 let urunlerData = {};
+
 let sepet = {};
 
-const kategoriIkon = {
-    "Sıcak İçecekler":"☕",
-    "Soğuk İçecekler":"🧊",
-    "Tatlılar":"🍰",
-    "Atıştırmalıklar":"🥪",
-    "Diğer":"🍹"
-};
 
-const kategoriSirasi = [
-    "Sıcak İçecekler",
-    "Soğuk İçecekler",
-    "Tatlılar",
-    "Atıştırmalıklar",
-    "Diğer"
-];
+db.ref('urunler').on('value',(snapshot)=>{
 
-db.ref("urunler").on("value",snapshot=>{
-
-    urunlerData = snapshot.val() || {};
+    urunlerData =
+    snapshot.val() || {};
 
     renderMenu();
 
 });
 
 
+const kategoriIkon = {
+
+    'Sıcak İçecekler':'☕',
+
+    'Soğuk İçecekler':'🧊',
+
+    'Tatlılar':'🍰',
+
+    'Atıştırmalıklar':'🥪',
+
+    'Diğer':'🍹'
+
+};
+
+
+const kategoriSirasi = [
+
+    'Sıcak İçecekler',
+
+    'Soğuk İçecekler',
+
+    'Tatlılar',
+
+    'Atıştırmalıklar',
+
+    'Diğer'
+
+];
+
+
 function renderMenu(){
 
-    const menu = document.getElementById("urunListesi");
+    const menuList =
+    document.getElementById('urunListesi');
 
-    menu.innerHTML = "";
+    menuList.innerHTML='';
 
-    const keys = Object.keys(urunlerData);
+    const keys =
+    Object.keys(urunlerData);
 
-    if(keys.length === 0){
+    if(keys.length===0){
 
-        menu.innerHTML =
-            "<p style='text-align:center;'>Henüz ürün eklenmemiş.</p>";
+        menuList.innerHTML =
+        '<p style="text-align:center;">Henüz ürün eklenmemiş.</p>';
 
         return;
+
     }
 
-    const gruplar = {};
+    const gruplar={};
 
     keys.forEach(key=>{
 
         const kat =
-            urunlerData[key].kategori || "Diğer";
+        urunlerData[key].kategori || 'Diğer';
 
         if(!gruplar[kat])
-            gruplar[kat] = [];
+            gruplar[kat]=[];
 
         gruplar[kat].push(key);
 
     });
 
-    const sirali = [
-        ...kategoriSirasi.filter(k=>gruplar[k]),
+
+    const siraliKategoriler = [
+
+        ...kategoriSirasi.filter(
+            k=>gruplar[k]
+        ),
+
         ...Object.keys(gruplar)
         .filter(k=>!kategoriSirasi.includes(k))
+
     ];
 
-    sirali.forEach(kat=>{
 
-        let html =
-            `<h3 class="kategori-baslik">
-                ${kategoriIkon[kat] || "🍽️"} ${kat}
-             </h3>`;
+    siraliKategoriler.forEach(kat=>{
+
+        let html = `
+
+        <h3 class="kategori-baslik">
+
+            ${kategoriIkon[kat] || '🍽️'}
+            ${kat}
+
+        </h3>
+
+        `;
+
 
         gruplar[kat].forEach(key=>{
 
-            const item = urunlerData[key];
+            const item =
+            urunlerData[key];
 
             const adet =
-                sepet[key] ? sepet[key].adet : 0;
+            sepet[key]
+            ? sepet[key].adet
+            : 0;
+
 
             html += `
+
             <div class="card">
 
                 <span>
-                    <strong>${item.ad}</strong><br>
-                    <small>${item.fiyat} TL</small>
+
+                    <strong>
+                        ${item.ad}
+                    </strong>
+
+                    <br>
+
+                    <small>
+                        ${item.fiyat} TL
+                    </small>
+
                 </span>
+
 
                 <div class="qty-box">
 
-                    <button onclick="adetDegistir('${key}',-1)">
-                        −
+                    <button
+                    onclick="adetDegistir('${key}',-1)">
+                        -
                     </button>
 
                     <span id="adet-${key}">
                         ${adet}
                     </span>
 
-                    <button onclick="adetDegistir('${key}',1)">
+                    <button
+                    onclick="adetDegistir('${key}',1)">
                         +
                     </button>
 
                 </div>
 
             </div>
+
             `;
 
         });
 
-        menu.innerHTML += html;
+
+        menuList.innerHTML += html;
 
     });
+
 }
 
 
+/* =========================================================
+   SEPET
+========================================================= */
+
 function adetDegistir(key,delta){
 
-    const item = urunlerData[key];
+    const item =
+    urunlerData[key];
 
-    if(!item) return;
+    if(!item)return;
 
     const mevcut =
-        sepet[key] ? sepet[key].adet : 0;
+    sepet[key]
+    ? sepet[key].adet
+    : 0;
 
     const yeni =
-        Math.max(0,mevcut + delta);
+    Math.max(0,mevcut+delta);
 
-    if(yeni === 0){
+
+    if(yeni===0){
 
         delete sepet[key];
 
     }else{
 
-        sepet[key] = {
+        sepet[key]={
+
             ad:item.ad,
+
             fiyat:item.fiyat,
+
             adet:yeni
+
         };
 
     }
 
-    const span =
-        document.getElementById("adet-"+key);
 
-    if(span)
-        span.innerText = yeni;
+    const adetElement =
+    document.getElementById(
+        `adet-${key}`
+    );
+
+    if(adetElement)
+        adetElement.innerText=yeni;
+
 
     sepetGuncelle();
+
 }
 
 
 function sepetGuncelle(){
 
-    let toplam = 0;
+    let toplam=0;
 
     Object.values(sepet).forEach(i=>{
 
         toplam +=
-            (parseFloat(i.fiyat)||0) * i.adet;
+        (parseFloat(i.fiyat)||0)
+        * i.adet;
 
     });
 
+
     const bar =
-        document.getElementById("sepetBar");
+    document.getElementById(
+        'sepetBar'
+    );
 
-    if(toplam > 0){
 
-        bar.style.display = "flex";
+    if(toplam>0){
 
-        document.getElementById("sepetToplam")
-            .innerText = toplam + " TL";
+        bar.style.display='flex';
+
+        document.getElementById(
+            'sepetToplam'
+        ).innerText =
+        toplam+' TL';
 
     }else{
 
-        bar.style.display = "none";
+        bar.style.display='none';
 
     }
+
 }
 
 
+/* =========================================================
+   SİPARİŞ
+========================================================= */
+
 function siparisVer(){
 
-    if(Object.keys(sepet).length === 0)
+    if(
+        Object.keys(sepet).length===0
+    )
         return;
 
+
     const toplam =
-        Object.values(sepet)
-        .reduce(
-            (s,i)=>
-            s+(parseFloat(i.fiyat)||0)*i.adet,
-            0
-        );
+    Object.values(sepet)
+    .reduce(
+        (s,i)=>
+        s+
+        (parseFloat(i.fiyat)||0)
+        *i.adet,
+        0
+    );
+
 
     const saat =
-        new Date().toLocaleTimeString(
-            "tr-TR",
-            {
-                hour:"2-digit",
-                minute:"2-digit"
-            }
-        );
+    new Date()
+    .toLocaleTimeString(
+        'tr-TR',
+        {
+            hour:'2-digit',
+            minute:'2-digit'
+        }
+    );
 
-    db.ref("siparisler").push({
+
+    db.ref('siparisler')
+    .push({
 
         masa:masa,
+
         urunler:sepet,
+
         toplam:toplam,
+
         zaman:saat,
-        durum:"bekliyor"
 
-    }).then(()=>{
+        durum:'bekliyor'
 
-        alert("Siparişiniz alındı!");
+    })
+    .then(()=>{
 
-        sepet = {};
+        alert(
+            'Siparişiniz alındı!'
+        );
+
+        sepet={};
 
         renderMenu();
 
         sepetGuncelle();
 
+    })
+    .catch(err=>{
+
+        alert(
+            'Hata Oluştu: '+
+            err.message
+        );
+
     });
 
 }
 
 
-/* =========================
+/* =========================================================
    HESAP
-========================= */
+========================================================= */
 
-db.ref("siparisler")
-.orderByChild("masa")
+db.ref('siparisler')
+.orderByChild('masa')
 .equalTo(masa)
-.on("value",snapshot=>{
+.on('value',(snapshot)=>{
 
-    renderHesap(snapshot.val());
+    renderHesap(
+        snapshot.val()
+    );
 
 });
 
@@ -693,107 +980,164 @@ db.ref("siparisler")
 function renderHesap(data){
 
     const container =
-        document.getElementById("hesapListesi");
+    document.getElementById(
+        'hesapListesi'
+    );
 
-    container.innerHTML = "";
+    container.innerHTML='';
 
-    let genelToplam = 0;
+    let genelToplam=0;
+
 
     if(!data){
 
-        container.innerHTML =
-            "<p style='text-align:center;'>Henüz sipariş verilmedi.</p>";
+        container.innerHTML=
+        '<p style="text-align:center;">Henüz sipariş verilmedi.</p>';
 
-        document.getElementById("hesapGenelToplam")
-            .innerText = "";
+        document.getElementById(
+            'hesapGenelToplam'
+        ).innerText='';
 
         return;
+
     }
 
-    Object.keys(data).forEach(orderKey=>{
 
-        const siparis = data[orderKey];
+    Object.keys(data)
+    .forEach(orderKey=>{
+
+        const siparis =
+        data[orderKey];
 
         const urunler =
-            siparis.urunler || {};
+        siparis.urunler || {};
 
         const onaylandi =
-            siparis.durum === "onaylandi";
+        siparis.durum ===
+        'onaylandi';
 
-        let urunHtml = "";
+        let urunHtml='';
 
-        let orderToplam = 0;
+        let orderToplam=0;
 
-        Object.keys(urunler).forEach(pKey=>{
 
-            const u = urunler[pKey];
+        Object.keys(urunler)
+        .forEach(pKey=>{
+
+            const u =
+            urunler[pKey];
 
             const tutar =
-                (parseFloat(u.fiyat)||0)*u.adet;
+            (parseFloat(u.fiyat)||0)
+            *u.adet;
 
-            orderToplam += tutar;
+            orderToplam+=tutar;
+
 
             if(onaylandi){
 
                 urunHtml += `
+
                 <div class="siparis-urun-satir">
-                    <span>${u.ad} x${u.adet}</span>
-                    <span>${tutar} TL</span>
+
+                    <span>
+                        ${u.ad} x${u.adet}
+                    </span>
+
+                    <span>
+                        ${tutar} TL
+                    </span>
+
                 </div>
+
                 `;
 
             }else{
 
                 urunHtml += `
-                <div class="siparis-urun-satir">
 
-                    <span>${u.ad}</span>
+                <div
+                class="siparis-urun-satir">
+
+                    <span>
+                        ${u.ad}
+                    </span>
 
                     <div class="qty-box">
 
                         <button
-                         onclick="siparisAdetDegistir(
-                         '${orderKey}',
-                         '${pKey}',
-                         -1)">
-                         −
+                        onclick="
+                        siparisAdetDegistir(
+                        '${orderKey}',
+                        '${pKey}',
+                        -1
+                        )">
+
+                            -
+
                         </button>
 
-                        <span>${u.adet}</span>
+                        <span>
+                            ${u.adet}
+                        </span>
 
                         <button
-                         onclick="siparisAdetDegistir(
-                         '${orderKey}',
-                         '${pKey}',
-                         1)">
-                         +
+                        onclick="
+                        siparisAdetDegistir(
+                        '${orderKey}',
+                        '${pKey}',
+                        1
+                        )">
+
+                            +
+
                         </button>
 
                     </div>
 
-                    <span>${tutar} TL</span>
+                    <span>
+                        ${tutar} TL
+                    </span>
 
                 </div>
+
                 `;
 
             }
 
         });
 
-        genelToplam += orderToplam;
+
+        genelToplam +=
+        orderToplam;
+
 
         container.innerHTML += `
 
-        <div class="hesap-card ${onaylandi?"onayli":""}">
+        <div
+        class="hesap-card
+        ${onaylandi?'onayli':''}">
 
-            <div class="hesap-baslik">
+            <div
+            class="hesap-baslik">
 
                 <span>
-                    ${onaylandi?"✅ Onaylandı":"⏳ Bekliyor"}
-                    · ${siparis.zaman}
+
+                    ${
+                    onaylandi
+                    ? '✅ Onaylandı'
+                    : '⏳ Bekliyor'
+                    }
+
+                    -
+
+                    Saat ${siparis.zaman}
+
                 </span>
 
-                <span>${orderToplam} TL</span>
+                <span>
+                    ${orderToplam} TL
+                </span>
 
             </div>
 
@@ -805,12 +1149,20 @@ function renderHesap(data){
 
     });
 
-    document.getElementById("hesapGenelToplam")
-        .innerText =
-        "GENEL TOPLAM: " + genelToplam + " TL";
+
+    document.getElementById(
+        'hesapGenelToplam'
+    ).innerText =
+    'GENEL TOPLAM: '+
+    genelToplam+
+    ' TL';
 
 }
 
+
+/* =========================================================
+   SİPARİŞ ADET
+========================================================= */
 
 function siparisAdetDegistir(
     orderKey,
@@ -819,31 +1171,48 @@ function siparisAdetDegistir(
 ){
 
     const ref =
-        db.ref(
-            "siparisler/" +
-            orderKey +
-            "/urunler/" +
-            productKey
+    db.ref(
+        'siparisler/' +
+        orderKey +
+        '/urunler/' +
+        productKey
+    );
+
+
+    ref.once('value')
+    .then(snap=>{
+
+        const u=snap.val();
+
+        if(!u)return;
+
+
+        const yeniAdet =
+        Math.max(
+            0,
+            u.adet+delta
         );
 
-    ref.once("value").then(snap=>{
 
-        const u = snap.val();
-
-        if(!u) return;
-
-        const yeni =
-            Math.max(0,u.adet+delta);
-
-        if(yeni === 0){
+        if(yeniAdet===0){
 
             ref.remove()
-            .then(()=>siparisToplamGuncelle(orderKey));
+            .then(()=>
+                siparisToplamGuncelle(
+                    orderKey
+                )
+            );
 
         }else{
 
-            ref.update({adet:yeni})
-            .then(()=>siparisToplamGuncelle(orderKey));
+            ref.update({
+                adet:yeniAdet
+            })
+            .then(()=>
+                siparisToplamGuncelle(
+                    orderKey
+                )
+            );
 
         }
 
@@ -852,76 +1221,96 @@ function siparisAdetDegistir(
 }
 
 
-function siparisToplamGuncelle(orderKey){
+function siparisToplamGuncelle(
+    orderKey
+){
 
     db.ref(
-        "siparisler/" +
+        'siparisler/' +
         orderKey +
-        "/urunler"
-    ).once("value").then(snap=>{
+        '/urunler'
+    )
+    .once('value')
+    .then(snap=>{
 
         const urunler =
-            snap.val() || {};
+        snap.val() || {};
 
-        if(Object.keys(urunler).length === 0){
+
+        if(
+            Object.keys(urunler)
+            .length===0
+        ){
 
             db.ref(
-                "siparisler/"+orderKey
+                'siparisler/'+
+                orderKey
             ).remove();
 
             return;
+
         }
 
-        let toplam = 0;
 
-        Object.values(urunler).forEach(u=>{
+        let toplam=0;
+
+
+        Object.values(urunler)
+        .forEach(u=>{
 
             toplam +=
-                (parseFloat(u.fiyat)||0)*u.adet;
+            (parseFloat(u.fiyat)||0)
+            *u.adet;
 
         });
 
+
         db.ref(
-            "siparisler/" +
+            'siparisler/' +
             orderKey +
-            "/toplam"
-        ).set(toplam);
+            '/toplam'
+        )
+        .set(toplam);
 
     });
 
 }
 
 
-/* =========================
-   GARSON
-========================= */
+/* =========================================================
+   GARSON ÇAĞIR
+========================================================= */
 
-let cagriBekleniyor = false;
+let cagriBekleniyor=false;
 
-db.ref("bildirimler")
-.orderByChild("masa")
+
+db.ref('bildirimler')
+.orderByChild('masa')
 .equalTo(masa)
-.on("value",snapshot=>{
+.on('value',(snapshot)=>{
 
     cagriBekleniyor =
-        snapshot.exists();
+    snapshot.exists();
 
     const btn =
-        document.getElementById("garsonBtn");
+    document.getElementById(
+        'garsonBtn'
+    );
+
 
     if(cagriBekleniyor){
 
-        btn.disabled = true;
+        btn.disabled=true;
 
         btn.innerText =
-            "⏳ GARSON ÇAĞRILDI, BEKLENİYOR...";
+        '⏳ GARSON ÇAĞRILDI';
 
     }else{
 
-        btn.disabled = false;
+        btn.disabled=false;
 
         btn.innerText =
-            "🔔 GARSON / OCAKÇI ÇAĞIR";
+        '🔔 GARSON / OCAKÇI ÇAĞIR';
 
     }
 
@@ -930,21 +1319,25 @@ db.ref("bildirimler")
 
 function garsonCagir(){
 
-    if(cagriBekleniyor)
-        return;
+    if(cagriBekleniyor)return;
+
 
     const saat =
-        new Date().toLocaleTimeString(
-            "tr-TR",
-            {
-                hour:"2-digit",
-                minute:"2-digit"
-            }
-        );
+    new Date()
+    .toLocaleTimeString(
+        'tr-TR',
+        {
+            hour:'2-digit',
+            minute:'2-digit'
+        }
+    );
 
-    db.ref("bildirimler").push({
+
+    db.ref('bildirimler')
+    .push({
 
         masa:masa,
+
         zaman:saat
 
     });
@@ -952,134 +1345,177 @@ function garsonCagir(){
 }
 
 
-/* =========================
+/* =========================================================
    SAYFA
-========================= */
+========================================================= */
 
 function sayfaAc(sayfa){
 
     document
-    .querySelectorAll(".page")
+    .querySelectorAll('.page')
     .forEach(el=>
-        el.classList.remove("active")
+        el.classList.remove(
+            'active'
+        )
     );
 
+
     document
-    .querySelectorAll(".nav-btns button")
+    .querySelectorAll('.nav-btns button')
     .forEach(el=>
-        el.classList.remove("active")
+        el.classList.remove(
+            'active'
+        )
     );
 
-    document
-    .getElementById("page-"+sayfa)
-    .classList.add("active");
 
     document
-    .getElementById("btn-"+sayfa)
-    .classList.add("active");
+    .getElementById(
+        'page-'+sayfa
+    )
+    .classList.add('active');
+
+
+    document
+    .getElementById(
+        'btn-'+sayfa
+    )
+    .classList.add('active');
 
 }
 
 
-/* =====================================================
+/* =========================================================
    YAZ BOZ
-===================================================== */
+========================================================= */
 
-let oyunTipi = "tekli";
+let mod='tekli';
 
-let oyuncuSayisi = 2;
+let playerCount=2;
 
-let elSayisi = 7;
+let elSayisi=7;
 
-let oyunBasladi = false;
-
-let oyunState = [];
+let oyunBasladi=false;
 
 
-/* =========================
-   OYUN TİPİ
-========================= */
+/*
+    HER EL İÇİN:
 
-function oyunTipiSec(tip){
+    {
+        scores: [],
+        startedAt: null,
+        locked: false
+    }
+*/
 
-    oyunTipi = tip;
+let eller=[];
+
+let oyuncuIsimleri=[];
+
+
+/* =========================================================
+   MOD SEÇ
+========================================================= */
+
+function modSec(secilen){
+
+    mod=secilen;
+
 
     document
-    .getElementById("tekliBtn")
+    .getElementById('mod-tekli')
     .classList.toggle(
-        "active",
-        tip === "tekli"
+        'active',
+        secilen==='tekli'
     );
+
 
     document
-    .getElementById("esliBtn")
+    .getElementById('mod-esli')
     .classList.toggle(
-        "active",
-        tip === "esli"
+        'active',
+        secilen==='esli'
     );
 
-    oyunBaslangicEkrani();
+
+    renderKurulum();
 
 }
 
 
-/* =========================
-   BAŞLANGIÇ
-========================= */
+/* =========================================================
+   KURULUM
+========================================================= */
 
-function oyunBaslangicEkrani(){
+function renderKurulum(){
 
-    document.getElementById("yazbozAlan")
-    .innerHTML = `
+    document.getElementById(
+        'yazbozAlan'
+    ).innerHTML=`
 
     <div class="kurulum">
 
-        ${
-            oyunTipi === "tekli"
+        <div class="kurulum-row">
 
-            ? `
+            ${
+            mod==='tekli'
+            ?
 
-            <label>Oyuncu Sayısı</label>
-
+            `
             <select id="oyuncuSayisi">
 
-                <option value="2">2 Oyuncu</option>
-                <option value="3">3 Oyuncu</option>
-                <option value="4">4 Oyuncu</option>
+                <option value="2">
+                    2 Oyuncu
+                </option>
+
+                <option value="3">
+                    3 Oyuncu
+                </option>
+
+                <option value="4">
+                    4 Oyuncu
+                </option>
 
             </select>
-
             `
 
-            : `
-
-            <div style="
-                background:#f5f1ed;
-                padding:12px;
-                border-radius:8px;
-                margin-bottom:12px;
-            ">
-                <strong>👥 Eşli Oyun</strong><br>
-                <small>2 takım ile oynanır.</small>
-            </div>
+            :
 
             `
-        }
+            <input
+            type="text"
+            value="Takım 1"
+            id="takim1">
 
-        <label>El Sayısı</label>
+            <input
+            type="text"
+            value="Takım 2"
+            id="takim2">
+            `
+            }
 
-        <input
+        </div>
+
+
+        <div class="kurulum-row">
+
+            <input
             type="number"
-            id="elSayisi"
+            id="elSayisiInput"
             min="1"
-            max="50"
+            max="30"
             value="7"
-        >
+            placeholder="El sayısı">
+
+        </div>
+
 
         <button
-            class="baslat-btn"
-            onclick="oyunuBaslat()">
-            🎮 OYUNU BAŞLAT
+        class="btn-baslat"
+        onclick="oyunuBaslat()">
+
+            ▶ OYUNU BAŞLAT
+
         </button>
 
     </div>
@@ -1089,526 +1525,756 @@ function oyunBaslangicEkrani(){
 }
 
 
+/* =========================================================
+   OYUNU BAŞLAT
+========================================================= */
+
 function oyunuBaslat(){
 
     elSayisi =
+    parseInt(
+        document
+        .getElementById(
+            'elSayisiInput'
+        ).value
+    ) || 7;
+
+
+    if(elSayisi<1)
+        elSayisi=1;
+
+
+    if(elSayisi>30)
+        elSayisi=30;
+
+
+    if(mod==='tekli'){
+
+        playerCount =
         parseInt(
-            document.getElementById("elSayisi").value
-        ) || 7;
+            document
+            .getElementById(
+                'oyuncuSayisi'
+            ).value
+        );
 
-    if(elSayisi < 1)
-        elSayisi = 1;
 
-    if(oyunTipi === "tekli"){
+        oyuncuIsimleri=[];
 
-        oyuncuSayisi =
-            parseInt(
-                document.getElementById(
-                    "oyuncuSayisi"
-                ).value
+
+        for(
+            let i=1;
+            i<=playerCount;
+            i++
+        ){
+
+            oyuncuIsimleri.push(
+                'Oyuncu '+i
             );
+
+        }
 
     }else{
 
-        oyuncuSayisi = 2;
+        playerCount=2;
+
+
+        oyuncuIsimleri=[
+
+            document
+            .getElementById(
+                'takim1'
+            ).value ||
+            'Takım 1',
+
+            document
+            .getElementById(
+                'takim2'
+            ).value ||
+            'Takım 2'
+
+        ];
 
     }
 
-    oyunState = [];
 
-    for(let i=0;i<elSayisi;i++){
+    eller=[];
 
-        oyunState.push({
 
-            skorlar:new Array(oyuncuSayisi).fill(null),
+    for(
+        let i=0;
+        i<elSayisi;
+        i++
+    ){
 
-            baslangic:null,
+        eller.push({
 
-            kilit:false
+            scores:
+            new Array(
+                playerCount
+            ).fill(''),
+
+            startedAt:null,
+
+            locked:false
 
         });
 
     }
 
-    oyunBasladi = true;
 
-    renderOyun();
+    oyunBasladi=true;
+
+
+    renderYazboz();
 
 }
 
 
-/* =========================
-   OYUN EKRANI
-========================= */
+/* =========================================================
+   YAZ BOZ RENDER
+========================================================= */
 
-function renderOyun(){
+function renderYazboz(){
 
-    let html = `
+    if(!oyunBasladi){
 
-    <div class="oyun-baslik">
+        renderKurulum();
 
-        <strong>
-            ${oyunTipi === "tekli"
-            ? "👤 Tekli Oyun"
-            : "👥 Eşli Oyun"}
-        </strong>
-
-        <div style="font-size:13px;margin-top:5px;">
-            ${oyuncuSayisi} ${
-                oyunTipi === "tekli"
-                ? "oyuncu"
-                : "takım"
-            } · ${elSayisi} el
-        </div>
-
-    </div>
-
-    `;
-
-    for(let i=0;i<elSayisi;i++){
-
-        const el = oyunState[i];
-
-        const aktif =
-            i === ilkAktifEl();
-
-        html += renderEl(i,el,aktif);
+        return;
 
     }
 
-    html += renderToplam();
 
-    html += `
+    let html=`
+
+    <div class="oyun-durum">
+
+        <span id="aktifElYazisi">
+            Hazırlanıyor...
+        </span>
+
+        <span
+        class="sayac"
+        id="genelSayac">
+        </span>
+
+    </div>
+
+
+    <div class="yazboz-scroll">
+
+    <table class="yazboz-table">
+
+        <thead>
+
+            <tr>
+
+                <th class="el-no">
+                    #
+                </th>
+    `;
+
+
+    oyuncuIsimleri
+    .forEach(isim=>{
+
+        html += `
+
+        <th>
+
+            <input
+            type="text"
+            value="${isim}"
+            onchange="
+            oyuncuAdiDegistir(
+            this,
+            ${oyuncuIsimleri.indexOf(isim)}
+            )">
+
+        </th>
+
+        `;
+
+    });
+
+
+    html+=`
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+    `;
+
+
+    for(
+        let el=0;
+        el<elSayisi;
+        el++
+    ){
+
+        const oyun =
+        eller[el];
+
+        const aktif =
+        el===aktifElBul();
+
+
+        html+=`
+
+        <tr
+        class="
+        ${aktif?'aktif-el':''}
+        ${oyun.locked?'kilitli':''}
+        "
+        id="el-${el}">
+
+            <td class="el-no">
+
+                ${el+1}
+
+                ${
+                oyun.locked
+                ? '<br><span class="kilit-icon">🔒</span>'
+                : ''
+                }
+
+            </td>
+
+        `;
+
+
+        for(
+            let p=0;
+            p<playerCount;
+            p++
+        ){
+
+            const disabled =
+            oyun.locked ||
+            !aktif;
+
+
+            html+=`
+
+            <td>
+
+                <input
+                type="number"
+                value="${oyun.scores[p]}"
+                ${disabled?'disabled':''}
+                onchange="
+                skorDegisti(
+                ${el},
+                ${p},
+                this.value
+                )">
+
+            </td>
+
+            `;
+
+        }
+
+
+        html+=`
+
+        </tr>
+
+        `;
+
+    }
+
+
+    html+=`
+
+        </tbody>
+
+        <tfoot>
+
+            <tr class="toplam-row">
+
+                <td>
+                    Σ
+                </td>
+
+    `;
+
+
+    const toplamlar =
+    hesaplaToplamlar();
+
+
+    for(
+        let p=0;
+        p<playerCount;
+        p++
+    ){
+
+        html+=`
+
+        <td>
+            ${toplamlar[p]}
+        </td>
+
+        `;
+
+    }
+
+
+    html+=`
+
+            </tr>
+
+            <tr class="fark-row">
+
+                <td>
+                    F
+                </td>
+
+    `;
+
+
+    const min =
+    Math.min(...toplamlar);
+
+
+    for(
+        let p=0;
+        p<playerCount;
+        p++
+    ){
+
+        const fark =
+        toplamlar[p]-min;
+
+
+        html+=`
+
+        <td>
+
+            ${
+            fark===0
+            ? 'ÖNDE'
+            : '+'+fark
+            }
+
+        </td>
+
+        `;
+
+    }
+
+
+    html+=`
+
+            </tr>
+
+        </tfoot>
+
+    </table>
+
+    </div>
+
+
+    <div
+    class="el-mesaj"
+    id="elMesaj">
+    </div>
+
 
     <button
-        class="yeni-oyun"
-        onclick="oyunBaslangicEkrani()">
-        🔄 YENİ OYUN
+    class="yeni-oyun"
+    onclick="yeniOyun()">
+
+        ↻ Yeni Oyun
+
     </button>
 
     `;
 
-    document.getElementById("yazbozAlan")
-        .innerHTML = html;
 
-    baslatAktifKontrol();
+    document.getElementById(
+        'yazbozAlan'
+    ).innerHTML=html;
+
+
+    durumGuncelle();
 
 }
 
 
-/* =========================
+/* =========================================================
    AKTİF EL
-========================= */
+========================================================= */
 
-function ilkAktifEl(){
+function aktifElBul(){
 
-    for(let i=0;i<oyunState.length;i++){
+    for(
+        let i=0;
+        i<eller.length;
+        i++
+    ){
 
-        if(!oyunState[i].kilit)
+        if(!eller[i].locked)
             return i;
 
     }
+
 
     return -1;
 
 }
 
 
-/* =========================
-   EL ÇİZ
-========================= */
+/* =========================================================
+   SKOR DEĞİŞTİ
+========================================================= */
 
-function renderEl(index,el,aktif){
-
-    let durum = "";
-
-    if(el.kilit){
-
-        durum =
-            `<span style="color:#666;">
-                🔒 Kilitli
-             </span>`;
-
-    }else if(aktif){
-
-        durum =
-            `<span style="color:#2e7d32;">
-                🟢 Aktif
-             </span>`;
-
-    }else{
-
-        durum =
-            `<span style="color:#999;">
-                🔒 Sırası Bekleniyor
-             </span>`;
-
-    }
-
-    let inputs = "";
-
-    for(let j=0;j<oyuncuSayisi;j++){
-
-        const deger =
-            el.skorlar[j] === null
-            ? ""
-            : el.skorlar[j];
-
-        const isim =
-            oyunTipi === "esli"
-            ? "Takım "+(j+1)
-            : "Oyuncu "+(j+1);
-
-        inputs += `
-
-        <div class="skor-oyuncu">
-
-            <label>${isim}</label>
-
-            <input
-                type="number"
-                value="${deger}"
-                ${(!aktif || el.kilit) ? "disabled":""}
-                onchange="skorGir(${index},${j},this.value)"
-            >
-
-        </div>
-
-        `;
-
-    }
-
-    let sayac = "";
-
-    if(el.baslangic && !el.kilit){
-
-        sayac = `
-
-        <div
-            class="sayac"
-            id="sayac-${index}">
-            ⏱ Süre hesaplanıyor...
-        </div>
-
-        `;
-
-    }
-
-    if(el.kilit){
-
-        sayac = `
-
-        <div class="kilit-bilgi">
-            🔒 Bu el 60 saniye sonunda kilitlendi.
-        </div>
-
-        `;
-
-    }
-
-    return `
-
-    <div class="el-karti
-        ${aktif ? "aktif":""}
-        ${el.kilit ? "kilitli":""}">
-
-        <div class="el-baslik">
-
-            <span class="el-numara">
-                ${index+1}. EL
-            </span>
-
-            <span class="durum">
-                ${durum}
-            </span>
-
-        </div>
-
-        <div
-            class="skor-grid"
-            style="grid-template-columns:
-            repeat(${oyuncuSayisi},1fr);">
-
-            ${inputs}
-
-        </div>
-
-        ${sayac}
-
-    </div>
-
-    `;
-
-}
-
-
-/* =========================
-   SKOR GİR
-========================= */
-
-function skorGir(elIndex,oyuncuIndex,value){
+function skorDegisti(
+    elIndex,
+    playerIndex,
+    value
+){
 
     const el =
-        oyunState[elIndex];
+    eller[elIndex];
 
-    if(!el) return;
 
-    if(el.kilit) return;
-
-    if(elIndex !== ilkAktifEl())
+    if(el.locked)
         return;
 
-    if(value === ""){
 
-        el.skorlar[oyuncuIndex] = null;
+    if(
+        elIndex!==aktifElBul()
+    )
+        return;
 
-    }else{
 
-        el.skorlar[oyuncuIndex] =
-            parseInt(value);
+    el.scores[playerIndex]=value;
 
-    }
 
-    const tumSkorlarGirildi =
-        el.skorlar.every(
-            skor => skor !== null
-        );
+    /*
+        TÜM OYUNCULARIN SKORU
+        GİRİLDİ Mİ?
+    */
 
-    if(tumSkorlarGirildi && !el.baslangic){
+    const tamam =
+    el.scores.every(
+        s =>
+        String(s).trim()!==''
+    );
+
+
+    if(tamam && !el.startedAt){
 
         /*
-         * İKİ / TÜM SKORLAR GİRİLDİ.
-         * TAM BU ANDA 60 SANİYE BAŞLAR.
-         */
+            İKİNCİ / SON OYUNCUNUN
+            SKORU GİRİLDİĞİ ANDA
+            SÜRE BAŞLIYOR
+        */
 
-        el.baslangic =
-            Date.now();
-
-        localStorage.setItem(
-            "yazboz_"+masa,
-            JSON.stringify(oyunState)
-        );
-
-        renderOyun();
-
-    }else{
-
-        localStorage.setItem(
-            "yazboz_"+masa,
-            JSON.stringify(oyunState)
-        );
+        el.startedAt =
+        Date.now();
 
     }
 
-}
 
-
-/* =========================
-   AKTİF EL KONTROLÜ
-========================= */
-
-let kontrolTimer = null;
-
-function baslatAktifKontrol(){
-
-    if(kontrolTimer)
-        clearInterval(kontrolTimer);
-
-    kontrolTimer =
-        setInterval(()=>{
-
-            let degisti = false;
-
-            oyunState.forEach((el,index)=>{
-
-                if(
-                    el.baslangic &&
-                    !el.kilit
-                ){
-
-                    const gecen =
-                        Date.now() - el.baslangic;
-
-                    if(gecen >= 60000){
-
-                        el.kilit = true;
-
-                        degisti = true;
-
-                    }
-
-                }
-
-            });
-
-            if(degisti){
-
-                localStorage.setItem(
-                    "yazboz_"+masa,
-                    JSON.stringify(oyunState)
-                );
-
-                renderOyun();
-
-            }else{
-
-                oyunState.forEach((el,index)=>{
-
-                    if(
-                        el.baslangic &&
-                        !el.kilit
-                    ){
-
-                        const sayac =
-                            document.getElementById(
-                                "sayac-"+index
-                            );
-
-                        if(sayac){
-
-                            const kalan =
-                                Math.max(
-                                    0,
-                                    60000 -
-                                    (Date.now()-el.baslangic)
-                                );
-
-                            const saniye =
-                                Math.ceil(kalan/1000);
-
-                            sayac.innerText =
-                                "⏱ Kilitlenmesine: "
-                                + saniye +
-                                " saniye";
-
-                        }
-
-                    }
-
-                });
-
-            }
-
-        },250);
+    renderYazboz();
 
 }
 
 
-/* =========================
-   TOPLAM
-========================= */
+/* =========================================================
+   OYUNCU ADI
+========================================================= */
 
-function renderToplam(){
+function oyuncuAdiDegistir(
+    input,
+    index
+){
 
-    let toplamlar =
-        new Array(oyuncuSayisi).fill(0);
-
-    oyunState.forEach(el=>{
-
-        el.skorlar.forEach((skor,i)=>{
-
-            if(skor !== null){
-
-                toplamlar[i] +=
-                    Number(skor) || 0;
-
-            }
-
-        });
-
-    });
-
-    let html = `
-
-    <div class="toplam-kart">
-
-        <strong>📊 TOPLAM SKORLAR</strong>
-
-    `;
-
-    toplamlar.forEach((toplam,i)=>{
-
-        const isim =
-            oyunTipi === "esli"
-            ? "Takım "+(i+1)
-            : "Oyuncu "+(i+1);
-
-        html += `
-
-        <div class="toplam-satir">
-
-            <span>${isim}</span>
-
-            <strong>${toplam}</strong>
-
-        </div>
-
-        `;
-
-    });
-
-    html += `</div>`;
-
-    return html;
+    oyuncuIsimleri[index] =
+    input.value || (
+        mod==='esli'
+        ? 'Takım '+(index+1)
+        : 'Oyuncu '+(index+1)
+    );
 
 }
 
 
-/* =========================
-   SAYFA AÇILDIĞINDA
-   KAYITLI OYUNU GERİ GETİR
-========================= */
+/* =========================================================
+   DURUM
+========================================================= */
 
-function yazbozKayitYukle(){
+function durumGuncelle(){
 
-    const kayit =
-        localStorage.getItem(
-            "yazboz_"+masa
-        );
+    const aktif =
+    aktifElBul();
 
-    if(!kayit)
+
+    const yazisi =
+    document.getElementById(
+        'aktifElYazisi'
+    );
+
+
+    const mesaj =
+    document.getElementById(
+        'elMesaj'
+    );
+
+
+    const sayac =
+    document.getElementById(
+        'genelSayac'
+    );
+
+
+    if(aktif===-1){
+
+        yazisi.innerText =
+        '✅ OYUN TAMAMLANDI';
+
+        sayac.innerText='';
+
+        mesaj.innerText =
+        'Tüm eller kilitlendi.';
+
         return;
 
-    try{
+    }
 
-        const data =
-            JSON.parse(kayit);
 
-        if(
-            Array.isArray(data) &&
-            data.length > 0
-        ){
+    const el =
+    eller[aktif];
 
-            oyunState = data;
 
-            elSayisi =
-                data.length;
+    yazisi.innerText =
+    'El '+(aktif+1)+' / '+elSayisi;
 
-            oyuncuSayisi =
-                data[0].skorlar.length;
 
-            oyunBasladi = true;
+    const tamam =
+    el.scores.every(
+        s =>
+        String(s).trim()!==''
+    );
 
-            renderOyun();
+
+    if(!tamam){
+
+        sayac.innerText='';
+
+        mesaj.innerText =
+        'Bu el için tüm oyuncuların skorunu girin.';
+
+        return;
+
+    }
+
+
+    if(el.locked){
+
+        sayac.innerText =
+        '🔒 KİLİTLİ';
+
+        mesaj.innerText =
+        'Bu el artık değiştirilemez.';
+
+        return;
+
+    }
+
+
+    if(el.startedAt){
+
+        const gecen =
+        Math.floor(
+            (
+                Date.now()
+                -
+                el.startedAt
+            )/1000
+        );
+
+
+        const kalan =
+        Math.max(
+            0,
+            60-gecen
+        );
+
+
+        sayac.innerText =
+        '⏱ '+kalan+' sn';
+
+
+        mesaj.innerText =
+        'Tüm skorlar girildi. 60 saniye içinde değiştirilebilir.';
+
+
+        if(kalan<=0){
+
+            el.locked=true;
+
+            renderYazboz();
+
+            return;
 
         }
 
-    }catch(e){
-
-        console.log(e);
-
     }
 
 }
 
 
-/* =========================
+/* =========================================================
+   ARKA PLAN SAYAÇ
+========================================================= */
+
+setInterval(()=>{
+
+    if(!oyunBasladi)
+        return;
+
+
+    const aktif =
+    aktifElBul();
+
+
+    if(aktif===-1)
+        return;
+
+
+    const el =
+    eller[aktif];
+
+
+    /*
+        Sayaç yalnızca bütün
+        oyuncular skor girdikten
+        sonra çalışır.
+    */
+
+    const tamam =
+    el.scores.every(
+        s =>
+        String(s).trim()!==''
+    );
+
+
+    if(
+        tamam &&
+        el.startedAt &&
+        !el.locked
+    ){
+
+        const gecen =
+        Math.floor(
+            (
+                Date.now()
+                -
+                el.startedAt
+            )/1000
+        );
+
+
+        if(gecen>=60){
+
+            el.locked=true;
+
+            renderYazboz();
+
+        }else{
+
+            const sayac =
+            document.getElementById(
+                'genelSayac'
+            );
+
+
+            if(sayac){
+
+                sayac.innerText =
+                '⏱ '+
+                Math.max(
+                    0,
+                    60-gecen
+                )+
+                ' sn';
+
+            }
+
+        }
+
+    }
+
+},1000);
+
+
+/* =========================================================
+   TOPLAMLAR
+========================================================= */
+
+function hesaplaToplamlar(){
+
+    const totals =
+    new Array(
+        playerCount
+    ).fill(0);
+
+
+    eller.forEach(el=>{
+
+        el.scores.forEach(
+            (score,p)=>{
+
+                totals[p] +=
+                parseInt(score)||0;
+
+            }
+        );
+
+    });
+
+
+    return totals;
+
+}
+
+
+/* =========================================================
+   YENİ OYUN
+========================================================= */
+
+function yeniOyun(){
+
+    if(
+        !confirm(
+            'Mevcut yaz-boz silinsin ve yeni oyun başlatılsın mı?'
+        )
+    )
+        return;
+
+
+    oyunBasladi=false;
+
+    eller=[];
+
+    renderKurulum();
+
+}
+
+
+/* =========================================================
    BAŞLANGIÇ
-========================= */
+========================================================= */
 
-oyunBaslangicEkrani();
-
-yazbozKayitYukle();
+renderKurulum();
 
 </script>
 
