@@ -2,1688 +2,469 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Dijital Kahvehane - Yönetim Paneli</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Yönetici Paneli</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <style>
-
-*{
-    box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f3f0ed;
-    color:#33231d;
+ margin:0;padding:15px;
+ font-family:Arial;background:#eef1f3;color:#263238
 }
-
-/* HEADER */
-
 .header{
-    background:linear-gradient(135deg,#3e2723,#6d4c41);
-    color:white;
-    padding:22px 15px;
-    text-align:center;
-    box-shadow:0 3px 12px rgba(0,0,0,.2);
+ background:linear-gradient(135deg,#263238,#455a64);
+ color:white;text-align:center;padding:20px;
+ border-radius:16px;margin-bottom:15px
 }
-
-.header h1{
-    margin:0;
-    font-size:24px;
-}
-
-.header small{
-    opacity:.8;
-}
-
-
-/* LOGIN */
-
-.login-box{
-    width:100%;
-    max-width:400px;
-    margin:60px auto;
-    background:white;
-    padding:30px;
-    border-radius:18px;
-    box-shadow:0 8px 30px rgba(0,0,0,.12);
-    text-align:center;
-}
-
-.login-icon{
-    font-size:48px;
-}
-
-.login-box input{
-    width:100%;
-    padding:14px;
-    border:1px solid #ddd;
-    border-radius:9px;
-    margin:10px 0;
-    font-size:16px;
-}
-
-.login-box button{
-    width:100%;
-}
-
-
-/* ADMIN */
-
-#adminContent{
-    display:none;
-    max-width:1100px;
-    margin:auto;
-    padding:15px;
-}
-
-
-/* NAV */
-
-.admin-nav{
-    display:flex;
-    gap:8px;
-    margin-bottom:18px;
-    position:sticky;
-    top:0;
-    z-index:20;
-    background:#f3f0ed;
-    padding:10px 0;
-}
-
-.admin-nav button{
-    flex:1;
-    padding:13px;
-    border:none;
-    border-radius:10px;
-    background:#d7ccc8;
-    color:#4e342e;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.admin-nav button.active{
-    background:#5d4037;
-    color:white;
-}
-
-
-/* PAGE */
-
-.admin-page{
-    display:none;
-}
-
-.admin-page.active{
-    display:block;
-}
-
-
-/* BOX */
-
 .box{
-    background:white;
-    border-radius:15px;
-    padding:18px;
-    margin-bottom:18px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+ background:white;padding:15px;border-radius:14px;
+ margin-bottom:15px;box-shadow:0 3px 12px #0001
 }
-
-.box-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
+.tabs{display:flex;gap:6px;margin-bottom:15px}
+.tabs button{
+ flex:1;padding:11px;border:0;border-radius:9px;
+ background:#d8dee1;font-weight:bold
 }
-
-.box-title h2{
-    margin:0;
-    font-size:19px;
+.tabs button.active{
+ background:#263238;color:white
 }
-
-
-/* INPUT */
-
-input,
-select{
-    width:100%;
-    padding:12px;
-    margin-bottom:10px;
-    border:1px solid #ddd;
-    border-radius:8px;
-    font-size:15px;
+.page{display:none}.page.active{display:block}
+input,select{
+ width:100%;padding:11px;margin:5px 0 9px;
+ border:1px solid #ccc;border-radius:8px
 }
-
-
-/* BUTTON */
-
 button{
-    border:0;
-    border-radius:8px;
-    padding:12px 15px;
-    font-weight:bold;
-    cursor:pointer;
+ border:0;border-radius:8px;padding:11px;
+ font-weight:bold;cursor:pointer
 }
-
-.btn-green{
-    background:#2e7d32;
-    color:white;
+.green{background:#2e7d32;color:white;width:100%}
+.blue{background:#1565c0;color:white}
+.red{background:#d32f2f;color:white}
+.card{
+ background:#f7f8f9;border:1px solid #ddd;
+ padding:12px;border-radius:10px;margin-bottom:8px
 }
-
-.btn-red{
-    background:#d32f2f;
-    color:white;
-}
-
-.btn-blue{
-    background:#1565c0;
-    color:white;
-}
-
-.btn-primary{
-    background:#5d4037;
-    color:white;
-}
-
-
-/* PRODUCT */
-
-.product-card{
-    background:#fafafa;
-    border:1px solid #e0dbd7;
-    border-radius:12px;
-    padding:13px;
-    margin-bottom:9px;
-}
-
-.product-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-}
-
-.product-name{
-    font-weight:bold;
-    font-size:16px;
-}
-
-.product-price{
-    color:#2e7d32;
-    font-weight:bold;
-}
-
-.product-category{
-    font-size:12px;
-    color:#888;
-    margin-top:4px;
-}
-
-.product-actions{
-    display:flex;
-    gap:7px;
-    margin-top:10px;
-}
-
-.product-actions button{
-    flex:1;
-}
-
-.edit-area{
-    display:none;
-    margin-top:10px;
-    border-top:1px solid #ddd;
-    padding-top:10px;
-}
-
-
-/* SUMMARY */
-
-.summary{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-bottom:18px;
-}
-
-.summary-box{
-    background:white;
-    padding:15px;
-    border-radius:12px;
-    text-align:center;
-    box-shadow:0 2px 8px rgba(0,0,0,.07);
-}
-
-.summary-number{
-    font-size:23px;
-    font-weight:bold;
-    color:#5d4037;
-}
-
-.summary-label{
-    color:#777;
-    font-size:12px;
-}
-
-
-/* MASALAR */
-
-.masa-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
-    gap:15px;
-}
-
 .masa-card{
-    background:white;
-    border-radius:16px;
-    padding:17px;
-    box-shadow:0 3px 12px rgba(0,0,0,.09);
-    border-top:6px solid #bdbdbd;
+ border-left:6px solid #ff9800
 }
-
-.masa-card.dolu{
-    border-top-color:#ef6c00;
+.masa-card.paid{
+ border-left-color:#43a047
 }
-
-.masa-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:14px;
+.urun{
+ display:flex;justify-content:space-between;
+ padding:5px 0;border-bottom:1px dashed #ddd
 }
-
-.masa-title{
-    font-size:21px;
-    font-weight:bold;
-    color:#4e342e;
+.stats{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:8px
 }
-
-.masa-status{
-    padding:5px 9px;
-    border-radius:20px;
-    background:#eee;
-    font-size:12px;
+.stat{
+ background:#263238;color:white;
+ border-radius:12px;padding:15px;text-align:center
 }
-
-.masa-status.bekliyor{
-    background:#fff3e0;
-    color:#e65100;
+.stat strong{
+ display:block;font-size:23px;color:#ffca28
 }
-
-.masa-status.onayli{
-    background:#e8f5e9;
-    color:#2e7d32;
+.product-stat{
+ display:flex;justify-content:space-between;
+ padding:9px;border-bottom:1px solid #eee
 }
-
-
-/* PRODUCT ROW */
-
-.urun-satir{
-    padding:10px 0;
-    border-bottom:1px dashed #ddd;
-}
-
-.urun-ust{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.urun-ad{
-    font-weight:bold;
-}
-
-.urun-tutar{
-    font-weight:bold;
-}
-
-.urun-detay{
-    font-size:12px;
-    margin-top:4px;
-}
-
-.bekleyen-yazi{
-    color:#ef6c00;
-}
-
-.onayli-yazi{
-    color:#2e7d32;
-}
-
-
-/* TOTAL */
-
-.masa-toplam{
-    display:flex;
-    justify-content:space-between;
-    margin-top:15px;
-    padding-top:12px;
-    border-top:2px solid #eee;
-    font-size:20px;
-    font-weight:bold;
-}
-
-.bekleyen-toplam{
-    text-align:right;
-    margin-top:7px;
-    color:#ef6c00;
-    font-size:13px;
-}
-
-.odeme-btn{
-    width:100%;
-    margin-top:14px;
-    background:#2e7d32;
-    color:white;
-    padding:15px;
-    font-size:16px;
-}
-
-.masa-empty{
-    text-align:center;
-    padding:25px 10px;
-    color:#999;
-}
-
-
-/* RESPONSIVE */
-
-@media(max-width:600px){
-
-    .summary{
-        grid-template-columns:repeat(3,1fr);
-    }
-
-    .summary-number{
-        font-size:18px;
-    }
-
-    .summary-label{
-        font-size:10px;
-    }
-
-    .masa-grid{
-        grid-template-columns:1fr;
-    }
-
-    .admin-nav button{
-        font-size:12px;
-        padding:11px 5px;
-    }
-
-}
-
 </style>
 </head>
 
-
 <body>
 
-
-<!-- HEADER -->
-
 <div class="header">
+<h2>⚙️ YÖNETİCİ PANELİ</h2>
+<small>Menü • Masa Hesapları • Günlük İstatistik</small>
+</div>
 
-    <h1>☕ DİJİTAL KAHVEHANE</h1>
+<div id="loginBox" class="box" style="max-width:400px;margin:40px auto">
+<h3>🔐 Yönetici Girişi</h3>
+<input type="password" id="passInput" placeholder="Şifre">
+<button class="blue" style="width:100%" onclick="girisYap()">Giriş Yap</button>
+</div>
 
-    <small>
-        Yönetim & Kasa Paneli
-    </small>
+<div id="adminContent" style="display:none">
+
+<div class="tabs">
+<button class="active" onclick="tabAc('menu',this)">☕ Menü</button>
+<button onclick="tabAc('hesap',this)">🧾 Masa Hesapları</button>
+<button onclick="tabAc('istatistik',this)">📊 İstatistik</button>
+</div>
+
+<!-- MENÜ -->
+<div id="page-menu" class="page active">
+
+<div class="box">
+<h3>➕ Ürün Ekle</h3>
+
+<input id="yeniAd" placeholder="Ürün adı">
+<input id="yeniFiyat" type="number" placeholder="Fiyat">
+
+<select id="yeniKategori">
+<option>Sıcak İçecekler</option>
+<option>Soğuk İçecekler</option>
+<option>Tatlılar</option>
+<option>Atıştırmalıklar</option>
+<option>Diğer</option>
+</select>
+
+<button class="green" onclick="urunEkle()">ÜRÜNÜ EKLE</button>
+</div>
+
+<div class="box">
+<h3>📋 Menü</h3>
+<div id="adminUrunListesi"></div>
+</div>
 
 </div>
 
+<!-- HESAPLAR -->
+<div id="page-hesap" class="page">
 
-<!-- LOGIN -->
-
-<div id="loginBox" class="login-box">
-
-    <div class="login-icon">
-        🔐
-    </div>
-
-    <h2>
-        Yönetici Girişi
-    </h2>
-
-    <p style="color:#777;font-size:14px;">
-        Yönetim paneline giriş yapın.
-    </p>
-
-    <input
-        type="password"
-        id="passInput"
-        placeholder="Yönetici Şifresi"
-        onkeydown="if(event.key==='Enter') girisYap()"
-    >
-
-    <button
-        class="btn-primary"
-        onclick="girisYap()"
-    >
-        Giriş Yap
-    </button>
+<div class="box">
+<h3>🧾 Masa Hesapları</h3>
+<div id="masaListesi">Yükleniyor...</div>
+</div>
 
 </div>
 
+<!-- İSTATİSTİK -->
+<div id="page-istatistik" class="page">
 
-<!-- ADMIN -->
+<div class="box">
+<h3>📊 BUGÜN</h3>
 
-<div id="adminContent">
+<div class="stats">
+<div class="stat">
+Toplam Hasılat
+<strong id="hasılat">0 TL</strong>
+</div>
 
+<div class="stat">
+Sipariş
+<strong id="siparisSayisi">0</strong>
+</div>
+</div>
 
-    <!-- NAV -->
+<h3>☕ Ürün Satışları</h3>
+<div id="urunIstatistik"></div>
+</div>
 
-    <div class="admin-nav">
+<div class="box">
+<h3>⚠️ Günlük Verileri Sıfırla</h3>
+<p>
+Bu işlem yalnızca günlük istatistikleri sıfırlar.
+Masa hesaplarını ve ürün menüsünü silmez.
+</p>
 
-        <button
-            id="nav-urun"
-            class="active"
-            onclick="sayfaAc('urun')"
-        >
-            🍽️ Ürün & Fiyat
-        </button>
-
-        <button
-            id="nav-masa"
-            onclick="sayfaAc('masa')"
-        >
-            🧾 Masa Hesapları
-        </button>
-
-    </div>
-
-
-    <!-- ============================= -->
-    <!-- ÜRÜN -->
-    <!-- ============================= -->
-
-    <div
-        id="page-urun"
-        class="admin-page active"
-    >
-
-        <div class="box">
-
-            <div class="box-title">
-
-                <h2>
-                    ➕ Yeni Ürün
-                </h2>
-
-            </div>
-
-            <input
-                type="text"
-                id="yeniAd"
-                placeholder="Ürün adı"
-            >
-
-            <input
-                type="number"
-                id="yeniFiyat"
-                placeholder="Fiyat (TL)"
-                min="0"
-                step="0.01"
-            >
-
-            <select id="yeniKategori">
-
-                <option value="Sıcak İçecekler">
-                    ☕ Sıcak İçecekler
-                </option>
-
-                <option value="Soğuk İçecekler">
-                    🧊 Soğuk İçecekler
-                </option>
-
-                <option value="Tatlılar">
-                    🍰 Tatlılar
-                </option>
-
-                <option value="Atıştırmalıklar">
-                    🥪 Atıştırmalıklar
-                </option>
-
-                <option value="Diğer">
-                    🍹 Diğer
-                </option>
-
-            </select>
-
-            <button
-                class="btn-green"
-                style="width:100%;"
-                onclick="urunEkle()"
-            >
-                ➕ Ürünü Menüye Ekle
-            </button>
-
-        </div>
-
-
-        <div class="box">
-
-            <div class="box-title">
-
-                <h2>
-                    📋 Menü & Fiyatlar
-                </h2>
-
-                <span
-                    id="urunSayisi"
-                    style="color:#777;font-size:13px;"
-                ></span>
-
-            </div>
-
-            <div id="adminUrunListesi">
-                Yükleniyor...
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ============================= -->
-    <!-- MASALAR -->
-    <!-- ============================= -->
-
-    <div
-        id="page-masa"
-        class="admin-page"
-    >
-
-        <div class="summary">
-
-            <div class="summary-box">
-
-                <div
-                    class="summary-number"
-                    id="doluMasaSayisi"
-                >
-                    0
-                </div>
-
-                <div class="summary-label">
-                    Dolu Masa
-                </div>
-
-            </div>
-
-
-            <div class="summary-box">
-
-                <div
-                    class="summary-number"
-                    id="bekleyenSayisi"
-                >
-                    0
-                </div>
-
-                <div class="summary-label">
-                    Bekleyen
-                </div>
-
-            </div>
-
-
-            <div class="summary-box">
-
-                <div
-                    class="summary-number"
-                    id="genelCiro"
-                >
-                    0 TL
-                </div>
-
-                <div class="summary-label">
-                    Onaylı Toplam
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="box">
-
-            <div class="box-title">
-
-                <h2>
-                    🧾 Masa Hesapları
-                </h2>
-
-                <span
-                    style="color:#2e7d32;font-size:12px;"
-                >
-                    ● CANLI
-                </span>
-
-            </div>
-
-            <div
-                id="masaListesi"
-                class="masa-grid"
-            >
-                Masalar yükleniyor...
-            </div>
-
-        </div>
-
-    </div>
+<button class="red" onclick="istatistikSifirla()">
+GÜNLÜK İSTATİSTİKLERİ SIFIRLA
+</button>
+</div>
 
 </div>
 
+</div>
 
 <script>
-
-/* ==========================================
-   FIREBASE
-========================================== */
-
-const firebaseConfig = {
-
-    databaseURL:
-    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
-
-    projectId:
-    "dijitalkahve-67f0a",
-
-    storageBucket:
-    "dijitalkahve-67f0a.appspot.com",
-
-    messagingSenderId:
-    "326476599239"
-
+const firebaseConfig={
+ databaseURL:"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
+ projectId:"dijitalkahve-67f0a",
+ storageBucket:"dijitalkahve-67f0a.appspot.com",
+ messagingSenderId:"326476599239"
 };
 
+if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
 
-if(!firebase.apps.length){
-
-    firebase.initializeApp(firebaseConfig);
-
-}
-
-
-const db =
-firebase.app().database(
-    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
+const db=firebase.app().database(
+"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
 );
 
-
-/* ==========================================
-   GİRİŞ
-========================================== */
+const SIFRE="1234";
 
 function girisYap(){
-
-    const pass =
-    document.getElementById('passInput').value;
-
-    if(pass === '1234'){
-
-        document.getElementById(
-            'loginBox'
-        ).style.display='none';
-
-        document.getElementById(
-            'adminContent'
-        ).style.display='block';
-
-        urunleriDinle();
-
-        siparisleriDinle();
-
-    }
-
-    else{
-
-        alert('❌ Hatalı şifre!');
-
-    }
-
+ if(document.getElementById("passInput").value===SIFRE){
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("adminContent").style.display="block";
+  baslat();
+ }else alert("Hatalı şifre!");
 }
 
-
-/* ==========================================
-   SAYFA
-========================================== */
-
-function sayfaAc(sayfa){
-
-    document
-    .querySelectorAll('.admin-page')
-    .forEach(el=>{
-        el.classList.remove('active');
-    });
-
-    document
-    .querySelectorAll('.admin-nav button')
-    .forEach(el=>{
-        el.classList.remove('active');
-    });
-
-    document
-    .getElementById('page-'+sayfa)
-    .classList.add('active');
-
-    document
-    .getElementById('nav-'+sayfa)
-    .classList.add('active');
-
+function baslat(){
+ menuYukle();
+ hesaplariYukle();
+ istatistikYukle();
 }
 
+function tabAc(s,btn){
+ document.querySelectorAll(".page")
+ .forEach(x=>x.classList.remove("active"));
 
-/* ==========================================
-   ÜRÜNLER
-========================================== */
+ document.querySelectorAll(".tabs button")
+ .forEach(x=>x.classList.remove("active"));
 
-function urunleriDinle(){
-
-    db.ref('urunler').on(
-        'value',
-        snapshot=>{
-
-            const data =
-            snapshot.val() || {};
-
-            const container =
-            document.getElementById(
-                'adminUrunListesi'
-            );
-
-            container.innerHTML='';
-
-            const keys =
-            Object.keys(data);
-
-            document.getElementById(
-                'urunSayisi'
-            ).innerText =
-            keys.length+' ürün';
-
-
-            if(keys.length===0){
-
-                container.innerHTML=
-                '<p style="text-align:center;color:#999;">Henüz ürün yok.</p>';
-
-                return;
-
-            }
-
-
-            keys.forEach(key=>{
-
-                const item=data[key];
-
-                container.innerHTML+=`
-
-                <div class="product-card">
-
-                    <div class="product-top">
-
-                        <div>
-
-                            <div class="product-name">
-                                ${guvenli(item.ad)}
-                            </div>
-
-                            <div class="product-category">
-                                ${guvenli(item.kategori || 'Diğer')}
-                            </div>
-
-                        </div>
-
-                        <div class="product-price">
-                            ${item.fiyat} TL
-                        </div>
-
-                    </div>
-
-
-                    <div class="product-actions">
-
-                        <button
-                            class="btn-blue"
-                            onclick="duzenleAc('${key}')"
-                        >
-                            ✏️ Düzenle
-                        </button>
-
-                        <button
-                            class="btn-red"
-                            onclick="urunSil('${key}')"
-                        >
-                            🗑️ Sil
-                        </button>
-
-                    </div>
-
-
-                    <div
-                        id="edit-${key}"
-                        class="edit-area"
-                    >
-
-                        <input
-                            type="text"
-                            id="edit-ad-${key}"
-                            value="${guvenliAttr(item.ad)}"
-                        >
-
-                        <input
-                            type="number"
-                            id="edit-fiyat-${key}"
-                            value="${item.fiyat}"
-                            min="0"
-                            step="0.01"
-                        >
-
-                        <select
-                            id="edit-kategori-${key}"
-                        >
-
-                            <option value="Sıcak İçecekler"
-                            ${item.kategori==='Sıcak İçecekler'?'selected':''}>
-                                ☕ Sıcak İçecekler
-                            </option>
-
-                            <option value="Soğuk İçecekler"
-                            ${item.kategori==='Soğuk İçecekler'?'selected':''}>
-                                🧊 Soğuk İçecekler
-                            </option>
-
-                            <option value="Tatlılar"
-                            ${item.kategori==='Tatlılar'?'selected':''}>
-                                🍰 Tatlılar
-                            </option>
-
-                            <option value="Atıştırmalıklar"
-                            ${item.kategori==='Atıştırmalıklar'?'selected':''}>
-                                🥪 Atıştırmalıklar
-                            </option>
-
-                            <option value="Diğer"
-                            ${item.kategori==='Diğer'?'selected':''}>
-                                🍹 Diğer
-                            </option>
-
-                        </select>
-
-                        <button
-                            class="btn-green"
-                            style="width:100%;"
-                            onclick="urunGuncelle('${key}')"
-                        >
-                            💾 Kaydet
-                        </button>
-
-                    </div>
-
-                </div>
-
-                `;
-
-            });
-
-        }
-    );
-
+ document.getElementById("page-"+s).classList.add("active");
+ btn.classList.add("active");
 }
 
+/* MENÜ */
+function menuYukle(){
+ db.ref("urunler").on("value",s=>{
+  let data=s.val();
+  let el=document.getElementById("adminUrunListesi");
+  el.innerHTML="";
 
-/* ==========================================
-   ÜRÜN EKLE
-========================================== */
+  if(!data){
+   el.innerHTML="<p>Ürün yok.</p>";
+   return;
+  }
+
+  Object.keys(data).forEach(k=>{
+   let u=data[k];
+
+   el.innerHTML+=`
+   <div class="card">
+    <b>${u.ad}</b>
+    <span>${u.fiyat} TL</span>
+    <small> (${u.kategori||"Diğer"})</small>
+
+    <div style="display:flex;gap:5px;margin-top:8px">
+     <button class="blue" onclick="urunDuzenle('${k}')">Düzenle</button>
+     <button class="red" onclick="urunSil('${k}')">Sil</button>
+    </div>
+   </div>`;
+  });
+ });
+}
 
 function urunEkle(){
+ let ad=document.getElementById("yeniAd").value.trim();
+ let fiyat=document.getElementById("yeniFiyat").value;
+ let kategori=document.getElementById("yeniKategori").value;
 
-    const ad =
-    document.getElementById(
-        'yeniAd'
-    ).value.trim();
+ if(!ad||!fiyat)return alert("Ürün adı ve fiyat girin.");
 
-    const fiyat =
-    document.getElementById(
-        'yeniFiyat'
-    ).value;
-
-    const kategori =
-    document.getElementById(
-        'yeniKategori'
-    ).value;
-
-
-    if(!ad || !fiyat){
-
-        alert(
-            'Ürün adı ve fiyat girin.'
-        );
-
-        return;
-
-    }
-
-
-    db.ref('urunler')
-    .push({
-
-        ad:ad,
-
-        fiyat:parseFloat(fiyat),
-
-        kategori:kategori
-
-    })
-    .then(()=>{
-
-        document.getElementById(
-            'yeniAd'
-        ).value='';
-
-        document.getElementById(
-            'yeniFiyat'
-        ).value='';
-
-        alert(
-            '✅ Ürün eklendi.'
-        );
-
-    })
-    .catch(err=>{
-
-        alert(
-            '❌ Hata: '+err.message
-        );
-
-    });
-
+ db.ref("urunler").push({
+  ad,fiyat,kategori
+ }).then(()=>{
+  document.getElementById("yeniAd").value="";
+  document.getElementById("yeniFiyat").value="";
+ });
 }
 
+function urunDuzenle(id){
+ db.ref("urunler/"+id).once("value").then(s=>{
+  let u=s.val();
 
-/* ==========================================
-   ÜRÜN DÜZENLE
-========================================== */
+  let ad=prompt("Ürün adı:",u.ad);
+  if(ad===null)return;
 
-function duzenleAc(key){
+  let fiyat=prompt("Fiyat:",u.fiyat);
+  if(fiyat===null)return;
 
-    const area =
-    document.getElementById(
-        'edit-'+key
-    );
-
-    area.style.display =
-    area.style.display==='block'
-    ? 'none'
-    : 'block';
-
+  db.ref("urunler/"+id).update({
+   ad,fiyat
+  });
+ });
 }
 
-
-function urunGuncelle(key){
-
-    const ad =
-    document.getElementById(
-        'edit-ad-'+key
-    ).value.trim();
-
-    const fiyat =
-    document.getElementById(
-        'edit-fiyat-'+key
-    ).value;
-
-    const kategori =
-    document.getElementById(
-        'edit-kategori-'+key
-    ).value;
-
-
-    if(!ad || fiyat===''){
-
-        alert(
-            'Bilgileri eksiksiz girin.'
-        );
-
-        return;
-
-    }
-
-
-    db.ref(
-        'urunler/'+key
-    )
-    .update({
-
-        ad:ad,
-
-        fiyat:parseFloat(fiyat),
-
-        kategori:kategori
-
-    })
-    .then(()=>{
-
-        alert(
-            '✅ Ürün güncellendi.'
-        );
-
-    });
-
+function urunSil(id){
+ if(confirm("Bu ürünü silmek istediğinize emin misiniz?"))
+  db.ref("urunler/"+id).remove();
 }
 
+/* HESAPLAR */
+function hesaplariYukle(){
+ db.ref("siparisler").on("value",s=>{
+  let data=s.val()||{};
+  let masalar={};
 
-/* ==========================================
-   ÜRÜN SİL
-========================================== */
+  Object.keys(data).forEach(k=>{
+   let sip=data[k];
 
-function urunSil(key){
+   if(sip.durum!=="onaylandi")return;
 
-    if(!confirm(
-        'Bu ürünü silmek istediğinize emin misiniz?'
-    )){
+   let m=sip.masa;
 
-        return;
+   if(!masalar[m])
+    masalar[m]={toplam:0,urunler:{}};
 
-    }
+   masalar[m].toplam+=Number(sip.toplam)||0;
 
-    db.ref(
-        'urunler/'+key
-    ).remove();
+   Object.values(sip.urunler||{}).forEach(u=>{
+    let key=u.ad+"|"+u.fiyat;
 
+    if(!masalar[m].urunler[key])
+     masalar[m].urunler[key]={
+      ad:u.ad,fiyat:u.fiyat,adet:0
+     };
+
+    masalar[m].urunler[key].adet+=Number(u.adet)||0;
+   });
+  });
+
+  let el=document.getElementById("masaListesi");
+  el.innerHTML="";
+
+  if(!Object.keys(masalar).length){
+   el.innerHTML="<p style='text-align:center'>Şu anda ödenecek masa hesabı yok.</p>";
+   return;
+  }
+
+  Object.keys(masalar).sort((a,b)=>Number(a)-Number(b))
+  .forEach(m=>{
+   let masa=masalar[m];
+   let html="";
+
+   Object.values(masa.urunler).forEach(u=>{
+    html+=`
+    <div class="urun">
+     <span>${u.ad} × ${u.adet}</span>
+     <span>${u.fiyat*u.adet} TL</span>
+    </div>`;
+   });
+
+   el.innerHTML+=`
+   <div class="card masa-card">
+    <h3>🪑 MASA ${m}</h3>
+    ${html}
+    <h3 style="text-align:right">
+     TOPLAM: ${masa.toplam} TL
+    </h3>
+
+    <button class="green"
+     onclick="hesapOdendi('${m}')">
+     💰 HESAP ÖDENDİ
+    </button>
+   </div>`;
+  });
 }
-
-
-/* ==========================================
-   SİPARİŞLER
-========================================== */
-
-let tumSiparisler={};
-
-
-function siparisleriDinle(){
-
-    db.ref('siparisler')
-    .on(
-        'value',
-        snapshot=>{
-
-            tumSiparisler =
-            snapshot.val() || {};
-
-            masaHesaplariniOlustur();
-
-        }
-    );
-
-}
-
-
-/* ==========================================
-   MASA HESAPLARI
-========================================== */
-
-function masaHesaplariniOlustur(){
-
-    const container =
-    document.getElementById(
-        'masaListesi'
-    );
-
-    container.innerHTML='';
-
-
-    let doluMasa=0;
-
-    let bekleyenSiparisSayisi=0;
-
-    let genelToplam=0;
-
-
-    for(let masa=1;masa<=10;masa++){
-
-        const siparisler =
-        Object.entries(
-            tumSiparisler
-        )
-        .filter(
-            ([key,siparis])=>
-            String(siparis.masa)===
-            String(masa)
-        );
-
-
-        /*
-           ÜRÜNLER
-
-           Her ürün için:
-
-           toplam adet
-           bekleyen adet
-           onaylanan adet
-           onaylanan tutar
-        */
-
-        const urunler={};
-
-
-        let onayliToplam=0;
-
-        let bekleyenToplam=0;
-
-        let bekleyenSiparisVar=false;
-
-
-        siparisler.forEach(
-            ([key,siparis])=>{
-
-                const onayli =
-                siparis.durum===
-                'onaylandi';
-
-
-                if(!onayli){
-
-                    bekleyenSiparisSayisi++;
-
-                    bekleyenSiparisVar=true;
-
-                }
-
-
-                const urunData =
-                siparis.urunler || {};
-
-
-                Object.values(
-                    urunData
-                )
-                .forEach(u=>{
-
-                    const ad=u.ad;
-
-                    const adet=
-                    parseInt(u.adet)||0;
-
-                    const fiyat=
-                    parseFloat(u.fiyat)||0;
-
-
-                    if(!urunler[ad]){
-
-                        urunler[ad]={
-
-                            toplamAdet:0,
-
-                            bekleyenAdet:0,
-
-                            onayliAdet:0,
-
-                            onayliTutar:0,
-
-                            bekleyenTutar:0
-
-                        };
-
-                    }
-
-
-                    urunler[ad].toplamAdet +=
-                    adet;
-
-
-                    if(onayli){
-
-                        urunler[ad].onayliAdet +=
-                        adet;
-
-                        urunler[ad].onayliTutar +=
-                        fiyat*adet;
-
-                        onayliToplam +=
-                        fiyat*adet;
-
-                    }
-
-                    else{
-
-                        urunler[ad].bekleyenAdet +=
-                        adet;
-
-                        urunler[ad].bekleyenTutar +=
-                        fiyat*adet;
-
-                        bekleyenToplam +=
-                        fiyat*adet;
-
-                    }
-
-                });
-
-            }
-        );
-
-
-        const dolu =
-        siparisler.length>0;
-
-
-        if(dolu){
-
-            doluMasa++;
-
-            genelToplam +=
-            onayliToplam;
-
-        }
-
-
-        let urunHtml='';
-
-
-        Object.keys(urunler)
-        .forEach(ad=>{
-
-            const u=urunler[ad];
-
-
-            let detay='';
-
-
-            if(u.onayliAdet>0){
-
-                detay+=`
-
-                    <span class="onayli-yazi">
-                        ✅ ${u.onayliAdet} onaylandı
-                    </span>
-
-                `;
-
-            }
-
-
-            if(u.bekleyenAdet>0){
-
-                if(detay!==''){
-
-                    detay+=
-                    ' &nbsp; ';
-
-                }
-
-
-                detay+=`
-
-                    <span class="bekleyen-yazi">
-                        ⏳ ${u.bekleyenAdet} bekliyor
-                    </span>
-
-                `;
-
-            }
-
-
-            /*
-               ÜRÜN TOPLAMI
-
-               Örneğin:
-
-               3 bekliyor
-               4 onaylandı
-
-               toplam 7 adet
-
-               FİYAT = yalnızca 4 adet
-            */
-
-
-            urunHtml+=`
-
-            <div class="urun-satir">
-
-                <div class="urun-ust">
-
-                    <div class="urun-ad">
-
-                        ${guvenli(ad)}
-
-                        <span
-                            style="
-                            color:#777;
-                            font-weight:normal;
-                            "
-                        >
-                            × ${u.toplamAdet}
-                        </span>
-
-                    </div>
-
-
-                    <div class="urun-tutar">
-
-                        ${
-                            u.onayliTutar>0
-                            ? u.onayliTutar.toFixed(2)+' TL'
-                            : '0 TL'
-                        }
-
-                    </div>
-
-                </div>
-
-
-                <div class="urun-detay">
-
-                    ${detay}
-
-                </div>
-
-            </div>
-
-            `;
-
-        });
-
-
-        if(!dolu){
-
-            urunHtml=`
-
-                <div class="masa-empty">
-
-                    ☕<br>
-
-                    <strong>Masa Boş</strong>
-
-                    <br>
-
-                    <small>
-                        Henüz sipariş yok.
-                    </small>
-
-                </div>
-
-            `;
-
-        }
-
-
-        let durum='';
-
-        let durumClass='';
-
-
-        if(!dolu){
-
-            durum='Boş';
-
-        }
-
-        else if(bekleyenSiparisVar){
-
-            durum='⏳ Bekleyen';
-
-            durumClass='bekliyor';
-
-        }
-
-        else{
-
-            durum='🟢 Onaylandı';
-
-            durumClass='onayli';
-
-        }
-
-
-        container.innerHTML+=`
-
-        <div class="masa-card ${dolu?'dolu':''}">
-
-            <div class="masa-header">
-
-                <div class="masa-title">
-
-                    🪑 MASA ${masa}
-
-                </div>
-
-
-                <div
-                    class="masa-status ${durumClass}"
-                >
-
-                    ${durum}
-
-                </div>
-
-            </div>
-
-
-            ${urunHtml}
-
-
-            ${
-                dolu
-                ?
-
-                `
-
-                <div class="bekleyen-toplam">
-
-                    ${
-                        bekleyenToplam>0
-                        ?
-                        '⏳ Bekleyen ürün tutarı: '
-                        +
-                        bekleyenToplam.toFixed(2)
-                        +
-                        ' TL — hesaba dahil değil'
-                        :
-                        ''
-                    }
-
-                </div>
-
-
-                <div class="masa-toplam">
-
-                    <span>
-                        HESAP
-                    </span>
-
-                    <span>
-                        ${onayliToplam.toFixed(2)}
-                        TL
-                    </span>
-
-                </div>
-
-
-                <button
-                    class="odeme-btn"
-                    onclick="hesapOdendi('${masa}')"
-                >
-                    💰 HESAP ÖDENDİ
-                </button>
-
-                `
-
-                :
-
-                ''
-
-            }
-
-        </div>
-
-        `;
-
-    }
-
-
-    document.getElementById(
-        'doluMasaSayisi'
-    ).innerText=
-    doluMasa;
-
-
-    document.getElementById(
-        'bekleyenSayisi'
-    ).innerText=
-    bekleyenSiparisSayisi;
-
-
-    document.getElementById(
-        'genelCiro'
-    ).innerText=
-    genelToplam.toFixed(2)+' TL';
-
-}
-
-
-/* ==========================================
-   HESAP ÖDENDİ
-========================================== */
 
 function hesapOdendi(masa){
+ if(!confirm(
+  "MASA "+masa+" hesabı ödendi mi?\n\n"+
+  "Ödeme sonrası bu masanın onaylanmış siparişleri "+
+  "günlük istatistiklerde kalacak ancak masa hesabından kaldırılacaktır."
+ ))return;
 
-    const siparisler =
-    Object.entries(
-        tumSiparisler
-    )
-    .filter(
-        ([key,siparis])=>
-        String(siparis.masa)===
-        String(masa)
-    );
+ db.ref("siparisler")
+ .orderByChild("masa")
+ .equalTo(masa)
+ .once("value")
+ .then(s=>{
+  let updates={};
 
+  s.forEach(child=>{
+   let sip=child.val();
 
-    if(siparisler.length===0){
+   if(sip.durum==="onaylandi"){
+    updates[child.key+"/durum"]="odendi";
+    updates[child.key+"/odemeTarihi"]=
+     new Date().toISOString().slice(0,10);
+    updates[child.key+"/odemeSaati"]=
+     new Date().toLocaleTimeString("tr-TR");
+   }
+  });
 
-        alert(
-            'Bu masada sipariş yok.'
-        );
-
-        return;
-
-    }
-
-
-    let onayliToplam=0;
-
-
-    siparisler.forEach(
-        ([key,siparis])=>{
-
-            if(
-                siparis.durum===
-                'onaylandi'
-            ){
-
-                onayliToplam +=
-                parseFloat(
-                    siparis.toplam
-                )||0;
-
-            }
-
-        }
-    );
-
-
-    const cevap =
-    confirm(
-
-        'MASA '+masa+
-        '\n\n'+
-
-        'Ödenecek hesap: '+
-        onayliToplam.toFixed(2)+
-        ' TL'+
-
-        '\n\nBekleyen siparişler varsa onlar da silinecek.'+
-
-        '\n\nMasa sıfırlansın mı?'
-
-    );
-
-
-    if(!cevap){
-
-        return;
-
-    }
-
-
-    const updates={};
-
-
-    siparisler.forEach(
-        ([key])=>{
-
-            updates[
-                'siparisler/'+key
-            ]=null;
-
-        }
-    );
-
-
-    db.ref()
-    .update(updates)
-    .then(()=>{
-
-        alert(
-            '✅ Masa '+
-            masa+
-            ' sıfırlandı.'
-        );
-
-    })
-    .catch(err=>{
-
-        alert(
-            '❌ Hata: '+
-            err.message
-        );
-
-    });
-
+  return db.ref("siparisler").update(updates);
+ })
+ .then(()=>{
+  alert("Masa "+masa+" hesabı ödendi ve masa sıfırlandı.");
+ });
 }
 
+/* İSTATİSTİK */
+function istatistikYukle(){
 
-/* ==========================================
-   GÜVENLİ METİN
-========================================== */
+ db.ref("siparisler").on("value",s=>{
+  let data=s.val()||{};
 
-function guvenli(text){
+  let bugun=new Date().toISOString().slice(0,10);
 
-    return String(text ?? '')
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#039;');
+  let hasılat=0;
+  let siparis=0;
+  let urunler={};
 
+  Object.values(data).forEach(x=>{
+
+   /*
+    Hem onaylanan hem ödenen siparişler
+    gün içinde istatistiğe dahil edilir.
+   */
+
+   if(x.tarih!==bugun &&
+      x.onayTarihi!==bugun &&
+      x.odemeTarihi!==bugun)return;
+
+   if(x.durum!=="onaylandi" &&
+      x.durum!=="odendi")return;
+
+   hasılat+=Number(x.toplam)||0;
+   siparis++;
+
+   Object.values(x.urunler||{}).forEach(u=>{
+    if(!urunler[u.ad])urunler[u.ad]=0;
+    urunler[u.ad]+=Number(u.adet)||0;
+   });
+  });
+
+  document.getElementById("hasılat").innerText=
+   hasılat+" TL";
+
+  document.getElementById("siparisSayisi").innerText=siparis;
+
+  let el=document.getElementById("urunIstatistik");
+  el.innerHTML="";
+
+  Object.keys(urunler)
+  .sort((a,b)=>urunler[b]-urunler[a])
+  .forEach(ad=>{
+   el.innerHTML+=`
+   <div class="product-stat">
+    <span>☕ ${ad}</span>
+    <b>${urunler[ad]} adet</b>
+   </div>`;
+  });
+
+  if(!el.innerHTML)
+   el.innerHTML="<p>Bugün henüz satış yok.</p>";
+ });
 }
 
+/*
+ Günlük sıfırlama:
+ ayrı bir sayaç alanı oluşturulur.
+ Mevcut sipariş geçmişi silinmez.
+ Böylece masa/sipariş geçmişi kaybolmaz.
+*/
+function istatistikSifirla(){
 
-function guvenliAttr(text){
+ if(!confirm(
+  "Bugünkü istatistikleri sıfırlamak istediğinize emin misiniz?"
+ ))return;
 
-    return guvenli(text);
+ let sifre=prompt("Yönetici şifresini tekrar girin:");
 
+ if(sifre!==SIFRE){
+  alert("Şifre yanlış!");
+  return;
+ }
+
+ let tarih=new Date().toISOString().slice(0,10);
+
+ db.ref("istatistikSifirlamalar/"+tarih).set({
+  zaman:new Date().toLocaleTimeString("tr-TR"),
+  tarih
+ }).then(()=>{
+  alert("Bugünkü istatistikler sıfırlandı.");
+  location.reload();
+ });
 }
-
 </script>
-
 </body>
 </html>
