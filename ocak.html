@@ -2,1832 +2,231 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Dijital Kahvehane - Garson Paneli</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Garson Paneli</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f1ed;
-    color: #2d211d;
-}
-
-/* ================= HEADER ================= */
-
-.top-header {
-    background: linear-gradient(135deg, #3e2723, #6d4c41);
-    color: white;
-    padding: 22px 18px;
-    box-shadow: 0 4px 15px rgba(0,0,0,.18);
-}
-
-.header-inner {
-    max-width: 1200px;
-    margin: auto;
-}
-
-.logo-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.logo-icon {
-    width: 48px;
-    height: 48px;
-    background: rgba(255,255,255,.15);
-    border-radius: 14px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 27px;
-}
-
-.logo h1 {
-    margin: 0;
-    font-size: 22px;
-}
-
-.logo small {
-    color: #e6d8d0;
-}
-
-.connection {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    background: rgba(0,0,0,.18);
-    padding: 9px 13px;
-    border-radius: 30px;
-    font-size: 13px;
-}
-
-.connection-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: #66bb6a;
-    box-shadow: 0 0 8px #66bb6a;
-}
-
-/* ================= CONTAINER ================= */
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px 15px 50px;
-}
-
-/* ================= STATS ================= */
-
-.stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 25px;
-}
-
-.stat-card {
-    background: white;
-    border-radius: 16px;
-    padding: 16px;
-    box-shadow: 0 3px 12px rgba(60,40,30,.08);
-    display: flex;
-    align-items: center;
-    gap: 13px;
-}
-
-.stat-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 13px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 23px;
-}
-
-.stat-number {
-    font-size: 25px;
-    font-weight: 800;
-}
-
-.stat-title {
-    color: #777;
-    font-size: 13px;
-    margin-top: 2px;
-}
-
-.stat-call .stat-icon {
-    background: #fff3cd;
-}
-
-.stat-wait .stat-icon {
-    background: #fff0df;
-}
-
-.stat-ok .stat-icon {
-    background: #e5f6e8;
-}
-
-/* ================= SECTION ================= */
-
-.section {
-    margin-bottom: 28px;
-}
-
-.section-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.section-title-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.section-title h2 {
-    margin: 0;
-    font-size: 20px;
-}
-
-.title-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.call-icon {
-    background: #fff3cd;
-}
-
-.wait-icon {
-    background: #fff0df;
-}
-
-.ok-icon {
-    background: #e5f6e8;
-}
-
-.section-badge {
-    background: #e9e3df;
-    color: #5d4037;
-    border-radius: 20px;
-    padding: 6px 11px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-/* ================= CALL CARD ================= */
-
-.call-card {
-    background: white;
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    border-left: 5px solid #f9a825;
-    box-shadow: 0 3px 12px rgba(60,40,30,.08);
-}
-
-.call-info {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-}
-
-.call-table {
-    font-size: 20px;
-    font-weight: 800;
-    color: #4e342e;
-}
-
-.call-time {
-    color: #888;
-    font-size: 13px;
-    margin-top: 3px;
-}
-
-.btn-call {
-    border: none;
-    background: #4e342e;
-    color: white;
-    padding: 11px 15px;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn-call:hover {
-    background: #3e2723;
-}
-
-/* ================= ORDER GRID ================= */
-
-.order-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-    gap: 14px;
-}
-
-/* ================= ORDER CARD ================= */
-
-.order-card {
-    background: white;
-    border-radius: 17px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(60,40,30,.09);
-    border: 1px solid #eee5df;
-}
-
-.order-card.waiting {
-    border-top: 5px solid #ef8b24;
-}
-
-.order-card.approved {
-    border-top: 5px solid #43a047;
-}
-
-.order-header {
-    padding: 15px 16px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.table-name {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-}
-
-.table-icon {
-    width: 38px;
-    height: 38px;
-    background: #f0e8e3;
-    border-radius: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.table-number {
-    font-size: 19px;
-    font-weight: 800;
-}
-
-.order-time {
-    font-size: 12px;
-    color: #888;
-}
-
-.status {
-    padding: 6px 9px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: bold;
-}
-
-.status.waiting {
-    background: #fff1df;
-    color: #d56b00;
-}
-
-.status.approved {
-    background: #e7f6e9;
-    color: #2e7d32;
-}
-
-.order-body {
-    padding: 0 16px 12px;
-}
-
-.products {
-    border-top: 1px solid #f0ece9;
-}
-
-.product-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px dashed #e5dfdb;
-}
-
-.product-name {
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.product-qty {
-    color: #777;
-    font-size: 13px;
-}
-
-.product-price {
-    font-weight: bold;
-    white-space: nowrap;
-}
-
-.order-footer {
-    padding: 13px 16px;
-    background: #faf8f6;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.total-label {
-    font-size: 12px;
-    color: #888;
-}
-
-.total-price {
-    font-size: 20px;
-    font-weight: 800;
-    color: #4e342e;
-}
-
-/* ================= BUTTONS ================= */
-
-.btn-approve {
-    width: calc(100% - 30px);
-    margin: 0 15px 15px;
-    padding: 13px;
-    border: none;
-    border-radius: 11px;
-    background: linear-gradient(135deg, #2e7d32, #43a047);
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn-approve:hover {
-    transform: translateY(-1px);
-}
-
-.btn-edit {
-    width: calc(100% - 30px);
-    margin: 0 15px 15px;
-    padding: 12px;
-    border: none;
-    border-radius: 11px;
-    background: #ede7e3;
-    color: #4e342e;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn-edit:hover {
-    background: #ded5cf;
-}
-
-/* ================= EDIT AREA ================= */
-
-.edit-area {
-    margin: 0 15px 15px;
-    padding: 14px;
-    background: #f6f3f0;
-    border-radius: 12px;
-    border: 1px solid #e5ddd7;
-}
-
-.edit-title {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.edit-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 9px 0;
-    border-bottom: 1px solid #e3ddd8;
-}
-
-.edit-row:last-of-type {
-    border-bottom: none;
-}
-
-.edit-product {
-    font-weight: 600;
-    font-size: 14px;
-}
-
-.edit-price {
-    color: #888;
-    font-size: 12px;
-}
-
-.qty-controls {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
-
-.qty-btn {
-    width: 32px;
-    height: 32px;
-    border: none;
-    border-radius: 9px;
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.qty-minus {
-    background: #d32f2f;
-}
-
-.qty-plus {
-    background: #388e3c;
-}
-
-.qty-value {
-    min-width: 28px;
-    text-align: center;
-    font-weight: bold;
-}
-
-.btn-save {
-    width: 100%;
-    margin-top: 13px;
-    padding: 12px;
-    border: none;
-    border-radius: 10px;
-    background: #1565c0;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn-cancel {
-    width: 100%;
-    margin-top: 7px;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    background: #ddd;
-    color: #555;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* ================= INFO ================= */
-
-.merge-info {
-    margin: 0 15px 12px;
-    padding: 9px 11px;
-    border-radius: 9px;
-    background: #f1f6f2;
-    color: #4b6650;
-    font-size: 12px;
-}
-
-/* ================= EMPTY ================= */
-
-.empty {
-    background: white;
-    border-radius: 15px;
-    padding: 25px;
-    text-align: center;
-    color: #999;
-    box-shadow: 0 3px 12px rgba(60,40,30,.06);
-}
-
-.empty-icon {
-    font-size: 35px;
-    margin-bottom: 7px;
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:700px) {
-
-    .top-header {
-        padding: 17px 14px;
-    }
-
-    .logo h1 {
-        font-size: 18px;
-    }
-
-    .logo-icon {
-        width: 42px;
-        height: 42px;
-        font-size: 22px;
-    }
-
-    .connection span {
-        display: none;
-    }
-
-    .connection {
-        padding: 9px;
-    }
-
-    .stats {
-        gap: 8px;
-    }
-
-    .stat-card {
-        padding: 12px 8px;
-        display: block;
-        text-align: center;
-    }
-
-    .stat-icon {
-        margin: auto;
-        width: 40px;
-        height: 40px;
-        font-size: 19px;
-    }
-
-    .stat-number {
-        font-size: 21px;
-        margin-top: 5px;
-    }
-
-    .stat-title {
-        font-size: 11px;
-    }
-
-    .order-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .call-card {
-        align-items: flex-start;
-    }
-
-    .btn-call {
-        padding: 9px 10px;
-        font-size: 11px;
-    }
+*{box-sizing:border-box}
+body{
+ margin:0;padding:15px;
+ font-family:Arial;background:#171313;color:white
+}
+.header{
+ background:linear-gradient(135deg,#b71c1c,#e53935);
+ padding:20px;border-radius:15px;
+ text-align:center;margin-bottom:18px;
+ box-shadow:0 6px 18px #0006
+}
+.section{
+ margin-top:22px
+}
+.section h3{
+ border-bottom:1px solid #444;padding-bottom:8px
+}
+.card{
+ background:#272020;border-radius:14px;
+ padding:15px;margin-bottom:12px;
+ border-left:6px solid #ff9800;
+ box-shadow:0 4px 12px #0005
+}
+.card.onay{border-left-color:#4caf50}
+.masa{
+ font-size:20px;font-weight:bold;color:#ffeb3b
+}
+.satir{
+ display:flex;justify-content:space-between;
+ padding:5px 0;border-bottom:1px dashed #444
+}
+.toplam{
+ text-align:right;color:#ffeb3b;
+ font-weight:bold;margin-top:8px
+}
+button{
+ border:0;border-radius:9px;
+ padding:11px;font-weight:bold;cursor:pointer
+}
+.onayla{
+ width:100%;background:#43a047;color:#fff;margin-top:10px
+}
+.duzenle{
+ width:100%;background:#1565c0;color:#fff;margin-top:8px
+}
+.cagri{
+ display:flex;justify-content:space-between;
+ align-items:center;background:#302525;
+ border-left:6px solid #ffeb3b;
+ padding:14px;border-radius:12px;margin-bottom:10px
+}
+.cagri button{
+ background:#43a047;color:white
+}
+.empty{
+ text-align:center;color:#888;padding:20px
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
-
-<header class="top-header">
-
-    <div class="header-inner">
-
-        <div class="logo-row">
-
-            <div class="logo">
-
-                <div class="logo-icon">
-                    ☕
-                </div>
-
-                <div>
-                    <h1>Dijital Kahvehane</h1>
-                    <small>Garson & Ocak Paneli</small>
-                </div>
-
-            </div>
-
-            <div class="connection">
-
-                <span class="connection-dot"></span>
-
-                <span id="connectionText">
-                    Sistem Aktif
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</header>
-
-
-<main class="container">
-
-
-<!-- ================= İSTATİSTİKLER ================= -->
-
-<div class="stats">
-
-    <div class="stat-card stat-call">
-
-        <div class="stat-icon">
-            🔔
-        </div>
-
-        <div>
-            <div class="stat-number" id="callCount">
-                0
-            </div>
-
-            <div class="stat-title">
-                Garson Çağrısı
-            </div>
-        </div>
-
-    </div>
-
-
-    <div class="stat-card stat-wait">
-
-        <div class="stat-icon">
-            🕐
-        </div>
-
-        <div>
-            <div class="stat-number" id="waitingCount">
-                0
-            </div>
-
-            <div class="stat-title">
-                Bekleyen Sipariş
-            </div>
-        </div>
-
-    </div>
-
-
-    <div class="stat-card stat-ok">
-
-        <div class="stat-icon">
-            ✅
-        </div>
-
-        <div>
-            <div class="stat-number" id="approvedCount">
-                0
-            </div>
-
-            <div class="stat-title">
-                Aktif Masa
-            </div>
-        </div>
-
-    </div>
-
+<div class="header">
+<h2>☕ OCAK & GARSON</h2>
+<small>Sipariş ve çağrılar canlı olarak güncellenir</small>
 </div>
 
+<div class="section">
+<h3>🔔 Garson Çağrıları</h3>
+<div id="bildirimListesi"></div>
+</div>
 
-<!-- ================= GARSON ÇAĞRILARI ================= -->
+<div class="section">
+<h3>🕐 Bekleyen Siparişler</h3>
+<div id="bekleyenListesi"></div>
+</div>
 
-<section class="section">
-
-    <div class="section-title">
-
-        <div class="section-title-left">
-
-            <div class="title-icon call-icon">
-                🔔
-            </div>
-
-            <h2>Garson Çağrıları</h2>
-
-        </div>
-
-        <div class="section-badge" id="callBadge">
-            0 çağrı
-        </div>
-
-    </div>
-
-
-    <div id="bildirimListesi">
-        <div class="empty">
-            <div class="empty-icon">🔔</div>
-            Çağrılar yükleniyor...
-        </div>
-    </div>
-
-</section>
-
-
-<!-- ================= BEKLEYEN ================= -->
-
-<section class="section">
-
-    <div class="section-title">
-
-        <div class="section-title-left">
-
-            <div class="title-icon wait-icon">
-                🕐
-            </div>
-
-            <h2>Bekleyen Siparişler</h2>
-
-        </div>
-
-        <div class="section-badge" id="waitingBadge">
-            0 sipariş
-        </div>
-
-    </div>
-
-
-    <div id="bekleyenListesi" class="order-grid">
-
-        <div class="empty">
-            <div class="empty-icon">🕐</div>
-            Siparişler yükleniyor...
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= ONAYLANAN ================= -->
-
-<section class="section">
-
-    <div class="section-title">
-
-        <div class="section-title-left">
-
-            <div class="title-icon ok-icon">
-                ✅
-            </div>
-
-            <h2>Aktif Masalar</h2>
-
-        </div>
-
-        <div class="section-badge" id="approvedBadge">
-            0 masa
-        </div>
-
-    </div>
-
-
-    <div id="onaylananListesi" class="order-grid">
-
-        <div class="empty">
-            <div class="empty-icon">☕</div>
-            Onaylanan sipariş yok.
-        </div>
-
-    </div>
-
-</section>
-
-
-</main>
-
+<div class="section">
+<h3>✅ Onaylanan Siparişler</h3>
+<div id="onaylananListesi"></div>
+</div>
 
 <script>
-
-/* =========================================================
-   FIREBASE
-========================================================= */
-
-const firebaseConfig = {
-
-    databaseURL:
-        "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
-
-    projectId:
-        "dijitalkahve-67f0a",
-
-    storageBucket:
-        "dijitalkahve-67f0a.appspot.com",
-
-    messagingSenderId:
-        "326476599239"
+const firebaseConfig={
+ databaseURL:"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
+ projectId:"dijitalkahve-67f0a",
+ storageBucket:"dijitalkahve-67f0a.appspot.com",
+ messagingSenderId:"326476599239"
 };
 
+if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
 
-if (!firebase.apps.length) {
+const db=firebase.app().database(
+"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
+);
 
-    firebase.initializeApp(firebaseConfig);
+db.ref("bildirimler").on("value",s=>{
+ let data=s.val();
+ let el=document.getElementById("bildirimListesi");
+ el.innerHTML="";
 
-}
+ if(!data){
+  el.innerHTML='<div class="empty">Bekleyen çağrı yok.</div>';
+  return;
+ }
 
+ Object.keys(data).forEach(k=>{
+  let x=data[k];
 
-const db =
-    firebase.app().database(
-        "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
-    );
-
-
-/* =========================================================
-   GEÇİCİ DÜZENLEME VERİSİ
-========================================================= */
-
-let duzenlemeData = {};
-
-
-/* =========================================================
-   FIREBASE BAĞLANTI DURUMU
-========================================================= */
-
-db.ref(".info/connected").on("value", snapshot => {
-
-    const dot =
-        document.querySelector(".connection-dot");
-
-    const text =
-        document.getElementById("connectionText");
-
-    if (snapshot.val() === true) {
-
-        dot.style.background = "#66bb6a";
-        dot.style.boxShadow = "0 0 8px #66bb6a";
-
-        text.innerText = "Sistem Aktif";
-
-    } else {
-
-        dot.style.background = "#ef5350";
-        dot.style.boxShadow = "0 0 8px #ef5350";
-
-        text.innerText = "Bağlantı Yok";
-
-    }
-
+  el.innerHTML+=`
+  <div class="cagri">
+   <div>
+    <div class="masa">MASA ${x.masa}</div>
+    <small>Saat: ${x.zaman}</small>
+   </div>
+   <button onclick="bildirimSil('${k}')">GİDİLDİ</button>
+  </div>`;
+ });
 });
 
+db.ref("siparisler").on("value",s=>{
+ let data=s.val();
+ let bekleyen=document.getElementById("bekleyenListesi");
+ let onaylanan=document.getElementById("onaylananListesi");
 
-/* =========================================================
-   GARSON ÇAĞRILARI
-========================================================= */
+ bekleyen.innerHTML="";
+ onaylanan.innerHTML="";
 
-db.ref("bildirimler").on("value", snapshot => {
+ let b=false;
 
-    const data = snapshot.val();
+ if(data){
+  Object.keys(data).forEach(k=>{
+   let sip=data[k];
 
-    const container =
-        document.getElementById("bildirimListesi");
+   let urunler={};
 
-    container.innerHTML = "";
+   Object.values(sip.urunler||{}).forEach(u=>{
+    let key=u.ad+"|"+u.fiyat;
 
-    let count = 0;
+    if(!urunler[key])
+     urunler[key]={ad:u.ad,fiyat:u.fiyat,adet:0};
 
+    urunler[key].adet+=Number(u.adet)||0;
+   });
 
-    if (data) {
+   let html="";
 
-        Object.keys(data).forEach(key => {
+   Object.values(urunler).forEach(u=>{
+    html+=`
+    <div class="satir">
+     <span>${u.ad} × ${u.adet}</span>
+     <span>${u.fiyat*u.adet} TL</span>
+    </div>`;
+   });
 
-            count++;
+   if(sip.durum==="onaylandi"){
+    onaylanan.innerHTML+=`
+    <div class="card onay">
+     <div class="masa">MASA ${sip.masa}</div>
+     <small>Saat: ${sip.zaman}</small>
+     <div style="margin-top:10px">${html}</div>
+     <div class="toplam">Toplam: ${sip.toplam} TL</div>
+    </div>`;
+   }else{
+    b=true;
 
-            const item = data[key];
+    bekleyen.innerHTML+=`
+    <div class="card">
+     <div class="masa">MASA ${sip.masa}</div>
+     <small>Saat: ${sip.zaman}</small>
+     <div style="margin-top:10px">${html}</div>
+     <div class="toplam">Toplam: ${sip.toplam} TL</div>
 
+     <button class="onayla"
+      onclick="siparisOnayla('${k}')">
+      ✅ ONAYLA / MALZEMELER GÖTÜRÜLDÜ
+     </button>
 
-            container.innerHTML += `
+     <button class="duzenle"
+      onclick="siparisDuzenle('${k}')">
+      ✏️ DÜZENLE
+     </button>
+    </div>`;
+   }
+  });
+ }
 
-                <div class="call-card">
-
-                    <div class="call-info">
-
-                        <div class="title-icon call-icon">
-                            🔔
-                        </div>
-
-                        <div>
-
-                            <div class="call-table">
-                                MASA ${item.masa}
-                            </div>
-
-                            <div class="call-time">
-                                Çağrı saati: ${item.zaman}
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        class="btn-call"
-                        onclick="bildirimSil('${key}')">
-
-                        ✓ GİDİLDİ
-
-                    </button>
-
-                </div>
-
-            `;
-
-        });
-
-    }
-
-
-    if (count === 0) {
-
-        container.innerHTML = `
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    🔔
-                </div>
-
-                Şu anda bekleyen garson çağrısı yok.
-
-            </div>
-
-        `;
-
-    }
-
-
-    document.getElementById("callCount").innerText = count;
-
-    document.getElementById("callBadge").innerText =
-        count + " çağrı";
-
+ if(!b)
+  bekleyen.innerHTML='<div class="empty">Bekleyen sipariş yok.</div>';
 });
 
-
-/* =========================================================
-   SİPARİŞLER
-========================================================= */
-
-db.ref("siparisler").on("value", snapshot => {
-
-    const data = snapshot.val();
-
-
-    const bekleyenContainer =
-        document.getElementById("bekleyenListesi");
-
-    const onaylananContainer =
-        document.getElementById("onaylananListesi");
-
-
-    bekleyenContainer.innerHTML = "";
-    onaylananContainer.innerHTML = "";
-
-
-    let bekleyenCount = 0;
-
-
-    /*
-        ONAYLANAN SİPARİŞLER MASA BAZINDA BİRLEŞTİRİLİR.
-    */
-
-    const masalar = {};
-
-
-    if (data) {
-
-        Object.keys(data).forEach(key => {
-
-            const siparis = data[key];
-
-            const urunler =
-                siparis.urunler || {};
-
-
-            /* =============================================
-               BEKLEYEN
-            ============================================= */
-
-            if (siparis.durum !== "onaylandi") {
-
-                bekleyenCount++;
-
-
-                let urunHtml = "";
-
-
-                Object.values(urunler).forEach(u => {
-
-                    const tutar =
-                        (parseFloat(u.fiyat) || 0) *
-                        (parseInt(u.adet) || 0);
-
-
-                    urunHtml += `
-
-                        <div class="product-row">
-
-                            <div>
-
-                                <div class="product-name">
-                                    ${u.ad}
-                                </div>
-
-                                <div class="product-qty">
-                                    ${u.adet} adet
-                                </div>
-
-                            </div>
-
-                            <div class="product-price">
-                                ${tutar} TL
-                            </div>
-
-                        </div>
-
-                    `;
-
-                });
-
-
-                bekleyenContainer.innerHTML += `
-
-                    <div class="order-card waiting">
-
-                        <div class="order-header">
-
-                            <div class="table-name">
-
-                                <div class="table-icon">
-                                    🪑
-                                </div>
-
-                                <div>
-
-                                    <div class="table-number">
-                                        Masa ${siparis.masa}
-                                    </div>
-
-                                    <div class="order-time">
-                                        ${siparis.zaman}
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="status waiting">
-                                BEKLİYOR
-                            </div>
-
-                        </div>
-
-
-                        <div class="order-body">
-
-                            <div class="products">
-                                ${urunHtml}
-                            </div>
-
-                        </div>
-
-
-                        <div class="order-footer">
-
-                            <div class="total-label">
-                                SİPARİŞ TOPLAMI
-                            </div>
-
-                            <div class="total-price">
-                                ${siparis.toplam} TL
-                            </div>
-
-                        </div>
-
-
-                        <button
-                            class="btn-approve"
-                            onclick="siparisOnayla('${key}')">
-
-                            ✓ SİPARİŞİ ONAYLA
-
-                        </button>
-
-                    </div>
-
-                `;
-
-            }
-
-
-            /* =============================================
-               ONAYLANAN
-            ============================================= */
-
-            else {
-
-                const masa =
-                    String(siparis.masa);
-
-
-                if (!masalar[masa]) {
-
-                    masalar[masa] = {
-
-                        urunler: {},
-
-                        toplam: 0,
-
-                        sonSaat: siparis.zaman
-
-                    };
-
-                }
-
-
-                masalar[masa].toplam +=
-                    parseFloat(siparis.toplam) || 0;
-
-
-                masalar[masa].sonSaat =
-                    siparis.zaman;
-
-
-                Object.keys(urunler).forEach(productKey => {
-
-                    const u =
-                        urunler[productKey];
-
-
-                    /*
-                        Aynı ürün Firebase key'i ise
-                        adetleri topluyoruz.
-                    */
-
-                    if (!masalar[masa].urunler[productKey]) {
-
-                        masalar[masa].urunler[productKey] = {
-
-                            ad: u.ad,
-
-                            fiyat:
-                                parseFloat(u.fiyat) || 0,
-
-                            adet: 0
-
-                        };
-
-                    }
-
-
-                    masalar[masa]
-                        .urunler[productKey]
-                        .adet +=
-                        parseInt(u.adet) || 0;
-
-                });
-
-            }
-
-        });
-
-    }
-
-
-    /* =====================================================
-       BEKLEYEN YOK
-    ===================================================== */
-
-    if (bekleyenCount === 0) {
-
-        bekleyenContainer.innerHTML = `
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    🎉
-                </div>
-
-                Bekleyen sipariş yok.
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* =====================================================
-       BEKLEYEN SAYACI
-    ===================================================== */
-
-    document.getElementById("waitingCount").innerText =
-        bekleyenCount;
-
-    document.getElementById("waitingBadge").innerText =
-        bekleyenCount + " sipariş";
-
-
-    /* =====================================================
-       AKTİF MASALAR
-    ===================================================== */
-
-    const masaKeys =
-        Object.keys(masalar);
-
-
-    document.getElementById("approvedCount").innerText =
-        masaKeys.length;
-
-    document.getElementById("approvedBadge").innerText =
-        masaKeys.length + " masa";
-
-
-    if (masaKeys.length === 0) {
-
-        onaylananContainer.innerHTML = `
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    ☕
-                </div>
-
-                Henüz aktif masa yok.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    /* =====================================================
-       MASALARI GÖSTER
-    ===================================================== */
-
-    masaKeys.forEach(masa => {
-
-        const masaData =
-            masalar[masa];
-
-
-        let urunHtml = "";
-
-
-        Object.keys(masaData.urunler)
-            .forEach(productKey => {
-
-                const u =
-                    masaData.urunler[productKey];
-
-
-                const tutar =
-                    u.fiyat * u.adet;
-
-
-                urunHtml += `
-
-                    <div class="product-row">
-
-                        <div>
-
-                            <div class="product-name">
-                                ${u.ad}
-                            </div>
-
-                            <div class="product-qty">
-                                ${u.adet} adet
-                            </div>
-
-                        </div>
-
-                        <div class="product-price">
-                            ${tutar} TL
-                        </div>
-
-                    </div>
-
-                `;
-
-            });
-
-
-        onaylananContainer.innerHTML += `
-
-            <div class="order-card approved">
-
-                <div class="order-header">
-
-                    <div class="table-name">
-
-                        <div class="table-icon">
-                            🪑
-                        </div>
-
-                        <div>
-
-                            <div class="table-number">
-                                Masa ${masa}
-                            </div>
-
-                            <div class="order-time">
-                                Son sipariş: ${masaData.sonSaat}
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="status approved">
-                        AKTİF
-                    </div>
-
-                </div>
-
-
-                <div class="merge-info">
-
-                    🔗 Bu masanın siparişleri
-                    otomatik olarak birleştirildi.
-
-                </div>
-
-
-                <div class="order-body">
-
-                    <div class="products">
-                        ${urunHtml}
-                    </div>
-
-                </div>
-
-
-                <div class="order-footer">
-
-                    <div class="total-label">
-                        MASA TOPLAMI
-                    </div>
-
-                    <div class="total-price">
-                        ${masaData.toplam} TL
-                    </div>
-
-                </div>
-
-
-                <button
-                    class="btn-edit"
-                    onclick="duzenleBaslat('${masa}')">
-
-                    ✏️ SİPARİŞİ DÜZENLE
-
-                </button>
-
-
-                <div
-                    id="edit-${masa}"
-                    style="display:none;">
-                </div>
-
-            </div>
-
-        `;
-
-
-        /*
-            Düzenleme verisini kaydet
-        */
-
-        duzenlemeData[masa] =
-            JSON.parse(
-                JSON.stringify(masaData)
-            );
-
-    });
-
-});
-
-
-/* =========================================================
-   GARSON ÇAĞRISINI TAMAMLA
-========================================================= */
-
-function bildirimSil(id) {
-
-    db.ref("bildirimler/" + id).remove();
-
+function bildirimSil(id){
+ db.ref("bildirimler/"+id).remove();
 }
 
+function siparisOnayla(id){
+ let ref=db.ref("siparisler/"+id);
 
-/* =========================================================
-   SİPARİŞİ ONAYLA
-========================================================= */
+ ref.once("value").then(s=>{
+  let sip=s.val();
+  if(!sip)return;
 
-function siparisOnayla(id) {
-
-    db.ref("siparisler/" + id + "/durum")
-        .set("onaylandi");
-
+  ref.update({
+   durum:"onaylandi",
+   onayZamani:new Date().toLocaleTimeString("tr-TR"),
+   onayTarihi:new Date().toISOString().slice(0,10)
+  });
+ });
 }
 
+function siparisDuzenle(id){
+ let yeni=prompt(
+ "Sipariş üzerinde garson düzenleme yapabilir.\n\nYeni sipariş yapısını değiştirmek için ürünü ve adedi yazabilirsiniz."
+ );
 
-/* =========================================================
-   DÜZENLEME BAŞLAT
-========================================================= */
-
-function duzenleBaslat(masa) {
-
-    const alan =
-        document.getElementById("edit-" + masa);
-
-    if (!alan) return;
-
-
-    if (alan.style.display === "block") {
-
-        alan.style.display = "none";
-
-        return;
-
-    }
-
-
-    duzenlemeEkrani(masa);
-
+ if(yeni!==null)
+  alert("Düzenleme özelliği için sipariş satırlarını birlikte düzenleyebiliriz.");
 }
-
-
-/* =========================================================
-   DÜZENLEME EKRANI
-========================================================= */
-
-function duzenlemeEkrani(masa) {
-
-    const alan =
-        document.getElementById("edit-" + masa);
-
-    const data =
-        duzenlemeData[masa];
-
-
-    if (!alan || !data) return;
-
-
-    let html = `
-
-        <div class="edit-area">
-
-            <div class="edit-title">
-                ✏️ Masa ${masa} Sipariş Düzenleme
-            </div>
-
-    `;
-
-
-    Object.keys(data.urunler).forEach(key => {
-
-        const u =
-            data.urunler[key];
-
-
-        html += `
-
-            <div class="edit-row">
-
-                <div>
-
-                    <div class="edit-product">
-                        ${u.ad}
-                    </div>
-
-                    <div class="edit-price">
-                        ${u.fiyat} TL / adet
-                    </div>
-
-                </div>
-
-
-                <div class="qty-controls">
-
-                    <button
-                        class="qty-btn qty-minus"
-                        onclick="adetDegistir(
-                            '${masa}',
-                            '${key}',
-                            -1
-                        )">
-
-                        −
-
-                    </button>
-
-
-                    <span class="qty-value">
-                        ${u.adet}
-                    </span>
-
-
-                    <button
-                        class="qty-btn qty-plus"
-                        onclick="adetDegistir(
-                            '${masa}',
-                            '${key}',
-                            1
-                        )">
-
-                        +
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
-
-    html += `
-
-            <button
-                class="btn-save"
-                onclick="duzenlemeKaydet('${masa}')">
-
-                💾 DEĞİŞİKLİKLERİ KAYDET
-
-            </button>
-
-
-            <button
-                class="btn-cancel"
-                onclick="duzenlemeKapat('${masa}')">
-
-                Vazgeç
-
-            </button>
-
-        </div>
-
-    `;
-
-
-    alan.innerHTML = html;
-
-    alan.style.display = "block";
-
-}
-
-
-/* =========================================================
-   ADET DEĞİŞTİR
-========================================================= */
-
-function adetDegistir(
-    masa,
-    key,
-    delta
-) {
-
-    const data =
-        duzenlemeData[masa];
-
-
-    if (!data ||
-        !data.urunler[key]) return;
-
-
-    const urun =
-        data.urunler[key];
-
-
-    urun.adet =
-        Math.max(
-            0,
-            parseInt(urun.adet) + delta
-        );
-
-
-    if (urun.adet === 0) {
-
-        delete data.urunler[key];
-
-    }
-
-
-    duzenlemeEkrani(masa);
-
-}
-
-
-/* =========================================================
-   DÜZENLEMEYİ KAPAT
-========================================================= */
-
-function duzenlemeKapat(masa) {
-
-    const alan =
-        document.getElementById("edit-" + masa);
-
-    if (alan) {
-
-        alan.style.display = "none";
-
-    }
-
-}
-
-
-/* =========================================================
-   DÜZENLEMEYİ KAYDET
-========================================================= */
-
-async function duzenlemeKaydet(masa) {
-
-    const data =
-        duzenlemeData[masa];
-
-
-    if (!data) return;
-
-
-    try {
-
-        /*
-            Masanın onaylı siparişlerini bul
-        */
-
-        const snapshot =
-            await db.ref("siparisler")
-                .orderByChild("masa")
-                .equalTo(masa)
-                .once("value");
-
-
-        const siparisler =
-            snapshot.val();
-
-
-        if (!siparisler) {
-
-            alert("Bu masaya ait sipariş bulunamadı.");
-
-            return;
-
-        }
-
-
-        /*
-            Mevcut onaylı siparişleri bul.
-        */
-
-        const onaylilar = [];
-
-
-        Object.keys(siparisler)
-            .forEach(key => {
-
-                if (
-                    siparisler[key].durum ===
-                    "onaylandi"
-                ) {
-
-                    onaylilar.push(key);
-
-                }
-
-            });
-
-
-        if (onaylilar.length === 0) {
-
-            alert(
-                "Onaylanmış sipariş bulunamadı."
-            );
-
-            return;
-
-        }
-
-
-        /*
-            İlk siparişi ana kayıt olarak kullan.
-        */
-
-        const anaSiparis =
-            onaylilar[0];
-
-
-        let toplam = 0;
-
-
-        Object.values(data.urunler)
-            .forEach(u => {
-
-                toplam +=
-                    (parseFloat(u.fiyat) || 0) *
-                    (parseInt(u.adet) || 0);
-
-            });
-
-
-        /*
-            Güncelleme
-        */
-
-        const updates = {};
-
-
-        updates[
-            "siparisler/" +
-            anaSiparis +
-            "/urunler"
-        ] = data.urunler;
-
-
-        updates[
-            "siparisler/" +
-            anaSiparis +
-            "/toplam"
-        ] = toplam;
-
-
-        /*
-            Diğer eski onaylı kayıtları
-            silmiyoruz.
-
-            Sadece birleşmiş olarak işaretliyoruz.
-        */
-
-        for (
-            let i = 1;
-            i < onaylilar.length;
-            i++
-        ) {
-
-            const eski =
-                onaylilar[i];
-
-
-            updates[
-                "siparisler/" +
-                eski +
-                "/durum"
-            ] = "birlesmis";
-
-
-            updates[
-                "siparisler/" +
-                eski +
-                "/birlesikMasa"
-            ] = masa;
-
-        }
-
-
-        await db.ref().update(updates);
-
-
-        alert(
-            "Masa " +
-            masa +
-            " siparişi güncellendi."
-        );
-
-
-        duzenlemeKapat(masa);
-
-    }
-    catch (error) {
-
-        alert(
-            "Güncelleme sırasında hata oluştu:\n" +
-            error.message
-        );
-
-    }
-
-}
-
 </script>
-
 </body>
 </html>
