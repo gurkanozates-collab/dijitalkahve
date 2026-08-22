@@ -11,7 +11,7 @@
         body { font-family: Arial, sans-serif; background: #eceff1; margin: 0; padding: 15px; color: #333; }
         .header { background: #263238; color: white; padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 15px; }
         .box { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        input[type="text"], input[type="number"], input[type="password"] { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
+        input[type="text"], input[type="number"], input[type="password"], select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
         button { padding: 12px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; }
         .btn-green { background: #2e7d32; color: white; }
         .btn-blue { background: #1565c0; color: white; }
@@ -38,6 +38,13 @@
         <h3>➕ Yeni Ürün / Fiyat Ekle</h3>
         <input type="text" id="yeniAd" placeholder="Ürün Adı (Örn: Çay)">
         <input type="number" id="yeniFiyat" placeholder="Fiyat (TL)">
+        <select id="yeniKategori">
+            <option value="Sıcak İçecekler">☕ Sıcak İçecekler</option>
+            <option value="Soğuk İçecekler">🧊 Soğuk İçecekler</option>
+            <option value="Tatlılar">🍰 Tatlılar</option>
+            <option value="Atıştırmalıklar">🥪 Atıştırmalıklar</option>
+            <option value="Diğer">🍹 Diğer</option>
+        </select>
         <button class="btn-green" onclick="urunEkle()">Ürünü Menüye Ekle</button>
     </div>
 
@@ -79,7 +86,7 @@
             if(data) {
                 Object.keys(data).forEach(key => {
                     const item = data[key];
-                    adminList.innerHTML += `<div class="card"><span><strong>${item.ad}</strong> - ${item.fiyat} TL</span><button onclick="urunSil('${key}')" style="background:#d32f2f; color:white; border:none; padding:6px 12px; width:auto;">Sil</button></div>`;
+                    adminList.innerHTML += `<div class="card"><span><strong>${item.ad}</strong> - ${item.fiyat} TL <small style="color:#888;">(${item.kategori || 'Diğer'})</small></span><button onclick="urunSil('${key}')" style="background:#d32f2f; color:white; border:none; padding:6px 12px; width:auto;">Sil</button></div>`;
                 });
             } else {
                 adminList.innerHTML = '<p>Henüz eklenmiş ürün yok.</p>';
@@ -90,8 +97,9 @@
     function urunEkle() {
         const ad = document.getElementById('yeniAd').value;
         const fiyat = document.getElementById('yeniFiyat').value;
+        const kategori = document.getElementById('yeniKategori').value;
         if(ad && fiyat) {
-            db.ref('urunler').push({ ad: ad, fiyat: fiyat }).then(() => {
+            db.ref('urunler').push({ ad: ad, fiyat: fiyat, kategori: kategori }).then(() => {
                 document.getElementById('yeniAd').value = '';
                 document.getElementById('yeniFiyat').value = '';
             });
