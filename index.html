@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dijital Kahvehanem</title>
+    <title>Dijital Kahvehanem - Müşteri</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 15px; color: #333; }
         .header { text-align: center; background: #3e2723; color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; }
-        .nav-btns { display: flex; gap: 5px; margin-bottom: 15px; overflow-x: auto; }
-        .nav-btns button { flex: 1; padding: 10px 5px; border: none; background: #d7ccc8; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 13px; white-space: nowrap; }
+        .nav-btns { display: flex; gap: 5px; margin-bottom: 15px; }
+        .nav-btns button { flex: 1; padding: 12px 5px; border: none; background: #d7ccc8; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 14px; }
         .nav-btns button.active { background: #5d4037; color: white; }
         .page { display: none; }
         .page.active { display: block; }
-        .card { background: white; padding: 12px; margin-bottom: 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .btn-red { background: #d32f2f; color: white; border: none; width: 100%; padding: 14px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .card { background: white; padding: 12px 16px; margin-bottom: 8px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 16px; }
+        .btn-red { background: #d32f2f; color: white; border: none; width: 100%; padding: 16px; border-radius: 6px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .btn-red:active { background: #b71c1c; }
         .yazboz-table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; }
         .yazboz-table th, .yazboz-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
         .yazboz-table input { width: 90%; text-align: center; border: none; font-size: 16px; }
-        .ocak-card { background: #333; color: white; padding: 12px; margin-bottom: 8px; border-left: 5px solid #ffeb3b; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
-        input[type="text"], input[type="number"] { padding: 8px; font-size: 14px; width: 100%; box-sizing: border-box; margin-bottom: 10px; }
         .iban-box { background: #e8f5e9; border: 1px dashed #2e7d32; padding: 15px; border-radius: 8px; text-align: center; margin-top: 15px; }
         .iban-box code { font-size: 16px; font-weight: bold; color: #1b5e20; word-break: break-all; }
     </style>
@@ -31,20 +30,18 @@
 </div>
 
 <div class="nav-btns">
-    <button onclick="sayfaAc('menu')" class="active" id="btn-menu">Menü</button>
-    <button onclick="sayfaAc('yazboz')" id="btn-yazboz">Yaz-Boz</button>
-    <button onclick="sayfaAc('iban')" id="btn-iban">IBAN / Ödeme</button>
-    <button onclick="sayfaAc('ocak')" id="btn-ocak">Ocak Ekranı</button>
-    <button onclick="sayfaAc('admin')" id="btn-admin">Fiyat Paneli</button>
+    <button onclick="sayfaAc('menu')" class="active" id="btn-menu">☕ Menü</button>
+    <button onclick="sayfaAc('yazboz')" id="btn-yazboz">📝 Yaz-Boz</button>
+    <button onclick="sayfaAc('iban')" id="btn-iban">💳 IBAN / Ödeme</button>
 </div>
 
-<!-- 1. MÜŞTERİ MENÜSÜ -->
+<!-- MÜŞTERİ MENÜSÜ -->
 <div id="page-menu" class="page active">
     <div id="urunListesi">Menü Yükleniyor...</div>
     <button class="btn-red" onclick="garsonCagir()">🔔 GARSON / OCAKÇI ÇAĞIR</button>
 </div>
 
-<!-- 2. DİJİTAL YAZ-BOZ -->
+<!-- DİJİTAL YAZ-BOZ -->
 <div id="page-yazboz" class="page">
     <h3>Skor Tahtası</h3>
     <table class="yazboz-table">
@@ -63,48 +60,24 @@
             </tr>
         </tfoot>
     </table>
-    <button onclick="satirEkle()" style="margin-top:10px; padding:8px 15px;">+ El Ekle</button>
+    <button onclick="satirEkle()" style="margin-top:10px; padding:10px 15px; background:#5d4037; color:white; border:none; border-radius:4px;">+ El Ekle</button>
 </div>
 
-<!-- 3. IBAN ÖDEME EKRANI -->
+<!-- IBAN ÖDEME EKRANI -->
 <div id="page-iban" class="page">
     <h3>EFT / Havale Ödeme Bilgileri</h3>
     <div class="iban-box">
-        <p style="margin-top:0;"><strong>Hesap Sahibi:</strong> <span id="displayAlici">İşletme Adı</span></p>
+        <p style="margin-top:0;"><strong>Hesap Sahibi:</strong> <br><span id="displayAlici">Yükleniyor...</span></p>
         <p><strong>IBAN:</strong></p>
-        <code id="displayIban">TR00 0000 0000 0000 0000 0000 00</code>
-        <p style="font-size:12px; color:#555; margin-bottom:0; margin-top:10px;">Lütfen açıklama kısmına <strong>Masa Numarasını</strong> yazınız.</p>
+        <code id="displayIban">Yükleniyor...</code>
+        <p style="font-size:12px; color:#555; margin-bottom:0; margin-top:15px;">Lütfen açıklama kısmına <strong id="ibanMasaAçıklama">Masa Numarasını</strong> yazınız.</p>
     </div>
 </div>
 
-<!-- 4. OCAK / GARSON EKRANI -->
-<div id="page-ocak" class="page">
-    <h3>Gelen Çağrılar</h3>
-    <div id="bildirimListesi">Çağrı yok...</div>
-</div>
-
-<!-- 5. YÖNETİM / FİYAT PANELİ -->
-<div id="page-admin" class="page">
-    <h3>Ürün & Fiyat Güncelle</h3>
-    <input type="text" id="yeniAd" placeholder="Ürün Adı (Örn: Çay)">
-    <input type="number" id="yeniFiyat" placeholder="Fiyat (TL)">
-    <button onclick="urunEkle()" style="padding:10px; background:#388e3c; color:white; border:none; width:100%; margin-bottom:20px;">Kaydet</button>
-
-    <h3>IBAN Bilgisi Güncelle</h3>
-    <input type="text" id="aliciAd" placeholder="Alıcı Adı Soyadı">
-    <input type="text" id="ibanNo" placeholder="TR00...">
-    <button onclick="ibanGuncelle()" style="padding:10px; background:#1976d2; color:white; border:none; width:100%;">IBAN Kaydet</button>
-
-    <h4>Mevcut Ürünler</h4>
-    <div id="adminUrunListesi"></div>
-</div>
-
-<!-- FIREBASE SCRIPT -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, onValue, push, remove, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // KENDİ FIREBASE BİLGİLERİNİZİ BURAYA YAPIŞTIRIN
     const firebaseConfig = {
         apiKey: "YOUR_API_KEY",
         authDomain: "dijitalkahve-67f0a.firebaseapp.com",
@@ -121,21 +94,20 @@
     const urlParams = new URLSearchParams(window.location.search);
     const masa = urlParams.get('masa') || '1';
     document.getElementById('masaEtiket').innerText = "MASA " + masa;
+    document.getElementById('ibanMasaAçıklama').innerText = "MASA " + masa;
 
     // Ürünleri Dinle
     onValue(ref(db, 'urunler'), (snapshot) => {
         const data = snapshot.val();
         const menuList = document.getElementById('urunListesi');
-        const adminList = document.getElementById('adminUrunListesi');
         menuList.innerHTML = '';
-        adminList.innerHTML = '';
-
         if(data) {
             Object.keys(data).forEach(key => {
                 const item = data[key];
-                menuList.innerHTML += `<div class="card"><span><strong>${item.ad}</strong></span><span>${item.fiyat} TL</span></div>`;
-                adminList.innerHTML += `<div class="card"><span>${item.ad} - ${item.fiyat} TL</span><button onclick="urunSil('${key}')" style="background:red; color:white; border:none; padding:4px 8px;">Sil</button></div>`;
+                menuList.innerHTML += `<div class="card"><span><strong>${item.ad}</strong></span><span><strong>${item.fiyat} TL</strong></span></div>`;
             });
+        } else {
+            menuList.innerHTML = '<p style="text-align:center;">Henüz ürün eklenmemiş.</p>';
         }
     });
 
@@ -154,46 +126,6 @@
             alert("Garsona haber verildi!");
         });
     };
-
-    // Bildirimleri Dinle (Ocak Ekranı)
-    onValue(ref(db, 'bildirimler'), (snapshot) => {
-        const data = snapshot.val();
-        const container = document.getElementById('bildirimListesi');
-        container.innerHTML = '';
-        if(data) {
-            Object.keys(data).forEach(key => {
-                const item = data[key];
-                container.innerHTML += `<div class="ocak-card"><div><strong>MASA ${item.masa}</strong> - Garson Çağırıyor (${item.zaman})</div><button onclick="bildirimSil('${key}')" style="background:#4caf50; color:white; border:none; padding:8px;">Tamam</button></div>`;
-            });
-        }
-    });
-
-    // Admin Ürün ve IBAN İşlemleri
-    window.urunEkle = function() {
-        const ad = document.getElementById('yeniAd').value;
-        const fiyat = document.getElementById('yeniFiyat').value;
-        if(ad && fiyat) {
-            push(ref(db, 'urunler'), { ad: ad, fiyat: fiyat }).then(() => {
-                document.getElementById('yeniAd').value = '';
-                document.getElementById('yeniFiyat').value = '';
-            });
-        }
-    };
-
-    window.ibanGuncelle = function() {
-        const alici = document.getElementById('aliciAd').value;
-        const iban = document.getElementById('ibanNo').value;
-        if(alici && iban) {
-            set(ref(db, 'ibanBilgi'), { alici: alici, iban: iban }).then(() => {
-                alert("IBAN bilgileri güncellendi!");
-                document.getElementById('aliciAd').value = '';
-                document.getElementById('ibanNo').value = '';
-            });
-        }
-    };
-
-    window.urunSil = (id) => remove(ref(db, 'urunler/' + id));
-    window.bildirimSil = (id) => remove(ref(db, 'bildirimler/' + id));
 </script>
 
 <script>
