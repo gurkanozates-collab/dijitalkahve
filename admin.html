@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Paneli</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #eceff1; margin: 0; padding: 15px; color: #333; }
+        .header { background: #263238; color: white; padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 15px; }
+        .box { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        input[type="text"], input[type="number"], input[type="password"] { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 15px; }
+        button { padding: 12px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; font-size: 15px; }
+        .btn-green { background: #2e7d32; color: white; }
+        .btn-blue { background: #1565c0; color: white; }
+        .card { background: #f9f9f9; padding: 10px; margin-bottom: 6px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd; }
+        #adminContent { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h2 style="margin:0;">⚙️ YÖNETİCİ PANELİ</h2>
+</div>
+
+<!-- ŞİFRE GİRİŞ EKRANI -->
+<div id="loginBox" class="box" style="max-width: 400px; margin: 40px auto; text-align: center;">
+    <h3>Yönetici Girişi</h3>
+    <input type="password" id="passInput" placeholder="Yönetici Şifrenizi Girin">
+    <button class="btn-blue" onclick="girisYap()">Giriş Yap</button>
+</div>
+
+<!-- YÖNETİM İÇERİĞİ -->
+<div id="adminContent">
+    <div class="box">
+        <h3>➕ Yeni Ürün / Fiyat Ekle</h3>
+        <input type="text" id="yeniAd" placeholder="Ürün Adı (Örn: Çay)">
+        <input type="number" id="yeniFiyat" placeholder="Fiyat (TL)">
+        <button class="btn-green" onclick="urunEkle()">Ürünü Menüye Ekle</button>
+    </div>
+
+    <div class="box">
+        <h3>💳 IBAN Bilgisi Güncelle</h3>
+        <input type="text" id="aliciAd" placeholder="Alıcı Adı Soyadı">
+        <input type="text" id="ibanNo" placeholder="TR00 0000 0000...">
+        <button class="btn-blue" onclick="ibanGuncelle()">IBAN Kaydet</button>
+    </div>
+
+    <div class="box">
+        <h3>📋 Mevcut Menü ve Fiyatlar</h3>
+        <div id="adminUrunListesi">Yükleniyor...</div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, onValue, push, remove, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "dijitalkahve-67f0a.firebaseapp.com",
+        databaseURL: "https://dijitalkahve-67f0a-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "dijitalkahve-67f0a",
+        storageBucket: "dijitalkahve-67f0a.appspot.com",
+        messagingSenderId: "326476599239",
+        appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Şifre Kontrolü
+    window.girisYap = function() {
+        const pass = document.getElementById('passInput').value;
+        if(pass === '1234') { // VARSAYILAN ŞİFRE: 1234
+            document.getElementById('loginBox').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            verileriYukle();
+        } else {
+            alert('Hatalı Şifre!');
+        }
+    };
+
+    function verileriYukle() {
+        onValue(ref(db, 'urunler'), (snapshot) => {
+            const data = snapshot.val();
+            const adminList = document.getElementById('adminUrunListesi');
+            adminList.innerHTML = '';
+            if(data) {
+                Object.keys(data).forEach(key => {
+                    const item = data[key];
+                    adminList.innerHTML += `<div class="card"><span><strong>${item.ad}</strong> - ${item.fiyat} TL</span><button onclick="urunSil('${key}')" style="background:#d32f2f; color:white; border:none; padding:6px 12px; width:auto;">Sil</button></div>`;
+                });
+            } else {
+                adminList.innerHTML = '<p>Henüz eklenmiş ürün yok.</p>';
+            }
+        });
+    }
+
+    window.urunEkle = function() {
+        const ad = document.getElementById('yeniAd').value;
+        const fiyat = document.getElementById('yeniFiyat').value;
+        if(ad && fiyat) {
+            push(ref(db, 'urunler'), { ad: ad, fiyat: fiyat }).then(() => {
+                document.getElementById('yeniAd').value = '';
+                document.getElementById('yeniFiyat').value = '';
+            });
+        }
+    };
+
+    window.ibanGuncelle = function() {
+        const alici = document.getElementById('aliciAd').value;
+        const iban = document.getElementById('ibanNo').value;
+        if(alici && iban) {
+            set(ref(db, 'ibanBilgi'), { alici: alici, iban: iban }).then(() => {
+                alert("IBAN bilgileri güncellendi!");
+                document.getElementById('aliciAd').value = '';
+                document.getElementById('ibanNo').value = '';
+            });
+        }
+    };
+
+    window.urunSil = (id) => remove(ref(db, 'urunler/' + id));
+</script>
+</body>
+</html>
