@@ -3,252 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>Dijital Kahve</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <style>
-*{
-    box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f4f1ee;
-    color:#3e2723;
+margin:0;font-family:Arial,Helvetica,sans-serif;
+background:#f4f1ee;color:#3e2723
 }
-
 .header{
-    background:linear-gradient(135deg,#3e2723,#795548);
-    color:white;
-    padding:28px 18px 24px;
-    text-align:center;
-    box-shadow:0 4px 18px rgba(0,0,0,.18);
+background:linear-gradient(135deg,#3e2723,#795548);
+color:white;padding:28px 18px 24px;text-align:center;
+box-shadow:0 4px 18px rgba(0,0,0,.18)
 }
-
-.logo{
-    font-size:42px;
-    margin-bottom:5px;
-}
-
-.header h1{
-    margin:0;
-    font-size:27px;
-}
-
-.header p{
-    margin:7px 0 0;
-    font-size:13px;
-    color:#eee;
-}
-
+.logo{font-size:42px;margin-bottom:5px}
+.header h1{margin:0;font-size:27px}
+.header p{margin:7px 0 0;font-size:13px;color:#eee}
 .masa{
-    display:inline-block;
-    margin-top:12px;
-    padding:6px 13px;
-    border-radius:20px;
-    background:rgba(255,255,255,.15);
-    font-size:13px;
+display:inline-block;margin-top:12px;padding:6px 13px;
+border-radius:20px;background:rgba(255,255,255,.15);font-size:13px
 }
-
-.container{
-    max-width:700px;
-    margin:auto;
-    padding:16px;
-}
-
-/* ANA BUTONLAR */
-
-.ana-butonlar{
-    display:grid;
-    gap:12px;
-    margin-bottom:25px;
-}
-
+.container{max-width:700px;margin:auto;padding:16px}
+.ana-butonlar{display:grid;gap:12px;margin-bottom:25px}
 .ana-btn{
-    border:0;
-    width:100%;
-    padding:17px;
-    border-radius:14px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,.10);
-    transition:.15s;
+border:0;width:100%;padding:17px;border-radius:14px;font-size:16px;
+font-weight:bold;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.10)
 }
-
-.ana-btn:active{
-    transform:scale(.98);
-}
-
-.garson-btn{
-    background:#ffb300;
-    color:#3e2723;
-}
-
-.siparis-btn{
-    background:#43a047;
-    color:white;
-}
-
-.menu-btn{
-    background:#5d4037;
-    color:white;
-}
-
-/* MENÜ */
-
-.menu-baslik{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:8px 0 13px;
-}
-
-.menu-baslik h2{
-    margin:0;
-    font-size:20px;
-}
-
-.menu{
-    display:grid;
-    gap:12px;
-}
-
-.urun{
-    background:white;
-    padding:16px;
-    border-radius:14px;
-    box-shadow:0 3px 10px rgba(0,0,0,.07);
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.urun-ad{
-    font-weight:bold;
-    font-size:16px;
-}
-
-.urun-kategori{
-    color:#999;
-    font-size:11px;
-    margin-top:4px;
-}
-
-.urun-sag{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.fiyat{
-    font-weight:bold;
-    color:#795548;
-}
-
-.adet{
-    display:flex;
-    align-items:center;
-    gap:6px;
-}
-
-.adet button{
-    width:30px;
-    height:30px;
-    border:0;
-    border-radius:50%;
-    background:#eee;
-    font-size:18px;
-    cursor:pointer;
-}
-
-.adet span{
-    min-width:22px;
-    text-align:center;
-    font-weight:bold;
-}
-
-/* SİPARİŞ PANELİ */
+.ana-btn:active{transform:scale(.98)}
+.garson-btn{background:#ffb300;color:#3e2723}
+.siparis-btn{background:#43a047;color:white}
+.menu-btn{background:#5d4037;color:white}
 
 .siparis-panel{
-    display:none;
-    background:white;
-    padding:18px;
-    border-radius:16px;
-    box-shadow:0 5px 20px rgba(0,0,0,.10);
-    margin-bottom:20px;
+display:none;background:white;padding:18px;border-radius:16px;
+box-shadow:0 5px 20px rgba(0,0,0,.10);margin-bottom:20px
 }
-
-.siparis-panel h3{
-    margin-top:0;
-}
-
+.siparis-panel h3{margin-top:0}
 .sepet-row{
-    display:flex;
-    justify-content:space-between;
-    padding:9px 0;
-    border-bottom:1px solid #eee;
+display:flex;justify-content:space-between;padding:9px 0;
+border-bottom:1px solid #eee
 }
-
 .sepet-toplam{
-    text-align:right;
-    font-size:20px;
-    font-weight:bold;
-    margin-top:14px;
-    color:#2e7d32;
+text-align:right;font-size:20px;font-weight:bold;
+margin-top:14px;color:#2e7d32
 }
-
 .gonder{
-    width:100%;
-    margin-top:14px;
-    padding:14px;
-    border:0;
-    border-radius:10px;
-    background:#2e7d32;
-    color:white;
-    font-weight:bold;
-    font-size:15px;
-    cursor:pointer;
+width:100%;margin-top:14px;padding:14px;border:0;border-radius:10px;
+background:#2e7d32;color:white;font-weight:bold;font-size:15px;cursor:pointer
 }
-
-/* BİLDİRİM */
-
+.menu-baslik{display:flex;justify-content:space-between;align-items:center;margin:8px 0 13px}
+.menu-baslik h2{margin:0;font-size:20px}
+.menu{display:grid;gap:12px}
+.urun{
+background:white;padding:16px;border-radius:14px;
+box-shadow:0 3px 10px rgba(0,0,0,.07);
+display:flex;justify-content:space-between;align-items:center
+}
+.urun-ad{font-weight:bold;font-size:16px}
+.urun-kategori{color:#999;font-size:11px;margin-top:4px}
+.urun-sag{display:flex;align-items:center;gap:10px}
+.fiyat{font-weight:bold;color:#795548}
+.adet{display:flex;align-items:center;gap:6px}
+.adet button{
+width:30px;height:30px;border:0;border-radius:50%;
+background:#eee;font-size:18px;cursor:pointer
+}
+.adet span{min-width:22px;text-align:center;font-weight:bold}
 .toast{
-    display:none;
-    position:fixed;
-    left:15px;
-    right:15px;
-    bottom:20px;
-    padding:15px;
-    border-radius:12px;
-    background:#323232;
-    color:white;
-    text-align:center;
-    box-shadow:0 5px 20px rgba(0,0,0,.25);
-    z-index:1000;
+display:none;position:fixed;left:15px;right:15px;bottom:20px;
+padding:15px;border-radius:12px;background:#323232;color:white;
+text-align:center;box-shadow:0 5px 20px rgba(0,0,0,.25);z-index:1000
 }
-
 @media(max-width:500px){
-
-    .header h1{
-        font-size:23px;
-    }
-
-    .urun{
-        padding:13px;
-    }
-
-    .urun-sag{
-        gap:6px;
-    }
-
-    .fiyat{
-        font-size:13px;
-    }
+.header h1{font-size:23px}
+.urun{padding:13px}
+.urun-sag{gap:6px}
+.fiyat{font-size:13px}
 }
 </style>
 </head>
@@ -256,700 +89,275 @@ body{
 <body>
 
 <header class="header">
-
-    <div class="logo">☕</div>
-
-    <h1>DİJİTAL KAHVE</h1>
-
-    <p>Hoş geldiniz</p>
-
-    <div class="masa" id="masaNo">
-        Masa -
-    </div>
-
+<div class="logo">☕</div>
+<h1>DİJİTAL KAHVE</h1>
+<p>Hoş geldiniz</p>
+<div class="masa" id="masaNo">Masa -</div>
 </header>
-
 
 <div class="container">
 
-
-<!-- ==================================================
-     BUTONLAR
-================================================== -->
-
 <div class="ana-butonlar">
 
-    <!-- 1 -->
-    <button
-        class="ana-btn garson-btn"
-        onclick="garsonCagir()">
+<button class="ana-btn garson-btn" onclick="garsonCagir()">
+🔔 GARSON ÇAĞIR
+</button>
 
-        🔔 GARSON ÇAĞIR
+<button class="ana-btn siparis-btn" onclick="siparisPanelAc()">
+🛎️ SİPARİŞ VER
+</button>
 
-    </button>
-
-
-    <!-- 2 -->
-    <button
-        class="ana-btn siparis-btn"
-        onclick="siparisPanelAc()">
-
-        🛎️ SİPARİŞ VER
-
-    </button>
-
-
-    <!-- 3 -->
-    <button
-        class="ana-btn menu-btn"
-        onclick="menuyaGit()">
-
-        ☕ MENÜ
-
-    </button>
+<button class="ana-btn menu-btn" onclick="menuyaGit()">
+☕ MENÜ
+</button>
 
 </div>
 
+<div id="siparisPanel" class="siparis-panel">
+<h3>🛎️ Siparişiniz</h3>
 
-<!-- ==================================================
-     SİPARİŞ PANELİ
-================================================== -->
-
-<div
-    id="siparisPanel"
-    class="siparis-panel">
-
-    <h3>🛎️ Siparişiniz</h3>
-
-    <div id="sepet">
-
-        <div style="
-            text-align:center;
-            color:#999;
-            padding:15px;
-        ">
-            Henüz ürün seçmediniz.
-        </div>
-
-    </div>
-
-    <div
-        id="sepetToplam"
-        class="sepet-toplam">
-
-        0 TL
-
-    </div>
-
-    <button
-        class="gonder"
-        onclick="siparisGonder()">
-
-        ✓ SİPARİŞİ GÖNDER
-
-    </button>
-
+<div id="sepet">
+<div style="text-align:center;color:#999;padding:15px">
+Henüz ürün seçmediniz.
+</div>
 </div>
 
+<div id="sepetToplam" class="sepet-toplam">0 TL</div>
 
-<!-- ==================================================
-     MENÜ
-================================================== -->
+<button class="gonder" onclick="siparisGonder()">
+✓ SİPARİŞİ GÖNDER
+</button>
+</div>
 
 <div id="menuAlan">
 
-    <div class="menu-baslik">
-
-        <h2>☕ Menü</h2>
-
-    </div>
-
-    <div
-        id="menu"
-        class="menu">
-
-        <div class="urun">
-
-            <span>Menü yükleniyor...</span>
-
-        </div>
-
-    </div>
-
+<div class="menu-baslik">
+<h2>☕ Menü</h2>
 </div>
 
-
+<div id="menu" class="menu">
+<div class="urun"><span>Menü yükleniyor...</span></div>
 </div>
 
-
-<div
-    id="toast"
-    class="toast">
+</div>
 </div>
 
+<div id="toast" class="toast"></div>
 
 <script>
-
-/* =====================================================
-   FIREBASE
-===================================================== */
-
 const firebaseConfig={
-
-    databaseURL:
-    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
-
-    projectId:
-    "dijitalkahve-67f0a",
-
-    storageBucket:
-    "dijitalkahve-67f0a.appspot.com",
-
-    messagingSenderId:
-    "326476599239"
-
+databaseURL:"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
+projectId:"dijitalkahve-67f0a",
+storageBucket:"dijitalkahve-67f0a.appspot.com",
+messagingSenderId:"326476599239"
 };
 
-if(!firebase.apps.length){
-
-    firebase.initializeApp(firebaseConfig);
-
-}
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
 const db=firebase.app().database(
-    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
+"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
 );
 
+const params=new URLSearchParams(window.location.search);
+const masa=params.get("masa") || "1";
 
-/* =====================================================
-   MASA
-===================================================== */
-
-const params=
-    new URLSearchParams(
-        window.location.search
-    );
-
-const masa=
-    params.get("masa") || "1";
-
-
-document.getElementById(
-    "masaNo"
-).innerText=
-    "Masa "+masa;
-
-
-/* =====================================================
-   ÜRÜNLER
-===================================================== */
+document.getElementById("masaNo").innerText="Masa "+masa;
 
 let urunler={};
-
 let sepet={};
 
-
-db.ref("urunler")
-.on("value",snapshot=>{
-
-    const data=
-        snapshot.val() || {};
-
-    urunler=data;
-
-    menuGoster(data);
-
+db.ref("urunler").on("value",snapshot=>{
+urunler=snapshot.val()||{};
+menuGoster(urunler);
 });
 
-
-/* =====================================================
-   MENÜ
-===================================================== */
-
 function menuGoster(data){
+const menu=document.getElementById("menu");
+menu.innerHTML="";
 
-    const menu=
-        document.getElementById("menu");
+const keys=Object.keys(data);
 
-    menu.innerHTML="";
-
-
-    const keys=
-        Object.keys(data);
-
-
-    if(keys.length===0){
-
-        menu.innerHTML=`
-
-            <div class="urun">
-
-                Menüde ürün bulunamadı.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    keys.forEach(key=>{
-
-        const u=data[key];
-
-
-        menu.innerHTML+=`
-
-            <div class="urun">
-
-                <div>
-
-                    <div class="urun-ad">
-                        ${u.ad}
-                    </div>
-
-                    <div class="urun-kategori">
-                        ${u.kategori || ""}
-                    </div>
-
-                </div>
-
-
-                <div class="urun-sag">
-
-                    <span class="fiyat">
-                        ${u.fiyat} TL
-                    </span>
-
-
-                    <div class="adet">
-
-                        <button
-                            onclick="
-                            adetDegistir(
-                            '${key}',
-                            -1
-                            )">
-
-                            −
-
-                        </button>
-
-
-                        <span
-                            id="adet-${key}">
-
-                            0
-
-                        </span>
-
-
-                        <button
-                            onclick="
-                            adetDegistir(
-                            '${key}',
-                            1
-                            )">
-
-                            +
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        `;
-
-    });
-
+if(!keys.length){
+menu.innerHTML='<div class="urun">Menüde ürün bulunamadı.</div>';
+return;
 }
 
+keys.forEach(key=>{
+const u=data[key];
 
-/* =====================================================
-   ADET
-===================================================== */
+menu.innerHTML+=`
+<div class="urun">
 
-function adetDegistir(
-    id,
-    fark
-){
+<div>
+<div class="urun-ad">${u.ad}</div>
+<div class="urun-kategori">${u.kategori||""}</div>
+</div>
 
-    if(!sepet[id]){
+<div class="urun-sag">
 
-        sepet[id]={
+<span class="fiyat">${parseFloat(u.fiyat||0).toFixed(2)} TL</span>
 
-            ad:urunler[id].ad,
+<div class="adet">
 
-            fiyat:
-            parseFloat(
-                urunler[id].fiyat
-            ) || 0,
+<button onclick="adetDegistir('${key}',-1)">−</button>
 
-            adet:0
+<span id="adet-${key}">0</span>
 
-        };
+<button onclick="adetDegistir('${key}',1)">+</button>
 
-    }
-
-
-    sepet[id].adet += fark;
-
-
-    if(sepet[id].adet<=0){
-
-        delete sepet[id];
-
-        document.getElementById(
-            "adet-"+id
-        ).innerText="0";
-
-    }else{
-
-        document.getElementById(
-            "adet-"+id
-        ).innerText=
-            sepet[id].adet;
-
-    }
-
-
-    sepetGoster();
-
+</div>
+</div>
+</div>`;
+});
 }
 
+function adetDegistir(id,fark){
 
-/* =====================================================
-   SEPET
-===================================================== */
+if(!urunler[id]) return;
+
+if(!sepet[id]){
+sepet[id]={
+ad:urunler[id].ad,
+fiyat:parseFloat(urunler[id].fiyat)||0,
+adet:0
+};
+}
+
+sepet[id].adet+=fark;
+
+if(sepet[id].adet<=0){
+delete sepet[id];
+document.getElementById("adet-"+id).innerText="0";
+}else{
+document.getElementById("adet-"+id).innerText=sepet[id].adet;
+}
+
+sepetGoster();
+}
 
 function sepetGoster(){
 
-    const sepetDiv=
-        document.getElementById(
-            "sepet"
-        );
+const div=document.getElementById("sepet");
+let toplam=0;
+div.innerHTML="";
 
-    let toplam=0;
+const keys=Object.keys(sepet);
 
-    sepetDiv.innerHTML="";
-
-
-    const keys=
-        Object.keys(sepet);
-
-
-    if(keys.length===0){
-
-        sepetDiv.innerHTML=`
-
-            <div style="
-                text-align:center;
-                color:#999;
-                padding:15px;
-            ">
-
-                Henüz ürün seçmediniz.
-
-            </div>
-
-        `;
-
-        document.getElementById(
-            "sepetToplam"
-        ).innerText="0 TL";
-
-        return;
-
-    }
-
-
-    keys.forEach(key=>{
-
-        const u=sepet[key];
-
-        const tutar=
-            u.adet*u.fiyat;
-
-        toplam+=tutar;
-
-
-        sepetDiv.innerHTML+=`
-
-            <div class="sepet-row">
-
-                <span>
-
-                    ${u.ad}
-                    × ${u.adet}
-
-                </span>
-
-                <strong>
-
-                    ${tutar.toFixed(2)}
-                    TL
-
-                </strong>
-
-            </div>
-
-        `;
-
-    });
-
-
-    document.getElementById(
-        "sepetToplam"
-    ).innerText=
-        toplam.toFixed(2)+" TL";
-
+if(!keys.length){
+div.innerHTML='<div style="text-align:center;color:#999;padding:15px">Henüz ürün seçmediniz.</div>';
+document.getElementById("sepetToplam").innerText="0 TL";
+return;
 }
 
+keys.forEach(key=>{
+const u=sepet[key];
+const tutar=u.adet*u.fiyat;
+toplam+=tutar;
 
-/* =====================================================
-   SİPARİŞ PANELİ
-===================================================== */
+div.innerHTML+=`
+<div class="sepet-row">
+<span>${u.ad} × ${u.adet}</span>
+<strong>${tutar.toFixed(2)} TL</strong>
+</div>`;
+});
+
+document.getElementById("sepetToplam").innerText=toplam.toFixed(2)+" TL";
+}
 
 function siparisPanelAc(){
-
-    const panel=
-        document.getElementById(
-            "siparisPanel"
-        );
-
-    panel.style.display="block";
-
-    panel.scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-    });
-
+const panel=document.getElementById("siparisPanel");
+panel.style.display="block";
+panel.scrollIntoView({behavior:"smooth",block:"start"});
 }
-
-
-/* =====================================================
-   MENÜYE GİT
-===================================================== */
 
 function menuyaGit(){
-
-    document.getElementById(
-        "menuAlan"
-    ).scrollIntoView({
-
-        behavior:"smooth",
-
-        block:"start"
-
-    });
-
+document.getElementById("menuAlan").scrollIntoView({
+behavior:"smooth",block:"start"
+});
 }
-
-
-/* =====================================================
-   SİPARİŞ GÖNDER
-===================================================== */
 
 function siparisGonder(){
 
-    const keys=
-        Object.keys(sepet);
+const keys=Object.keys(sepet);
 
-
-    if(keys.length===0){
-
-        toast(
-            "Önce menüden ürün seçin."
-        );
-
-        return;
-
-    }
-
-
-    let toplam=0;
-
-    const urunler={};
-
-
-    keys.forEach(key=>{
-
-        const u=sepet[key];
-
-        toplam+=
-            u.adet*u.fiyat;
-
-
-        urunler[key]={
-
-            ad:u.ad,
-
-            fiyat:u.fiyat,
-
-            adet:u.adet
-
-        };
-
-    });
-
-
-    const now=
-        new Date();
-
-
-    const zaman=
-        now.toLocaleTimeString(
-            "tr-TR",
-            {
-                hour:"2-digit",
-                minute:"2-digit"
-            }
-        );
-
-
-    db.ref("siparisler")
-    .push({
-
-        masa:masa,
-
-        urunler:urunler,
-
-        toplam:toplam,
-
-        durum:"bekliyor",
-
-        zaman:zaman,
-
-        tarih:
-        now.toLocaleDateString(
-            "tr-TR"
-        )
-
-    })
-    .then(()=>{
-
-        toast(
-            "✓ Siparişiniz garsona gönderildi."
-        );
-
-
-        sepet={};
-
-        document
-            .querySelectorAll(
-                '[id^="adet-"]'
-            )
-            .forEach(x=>{
-                x.innerText="0";
-            });
-
-
-        sepetGoster();
-
-    })
-    .catch(error=>{
-
-        toast(
-            "Sipariş gönderilemedi."
-        );
-
-        console.error(error);
-
-    });
-
+if(!keys.length){
+toast("Önce menüden ürün seçin.");
+return;
 }
 
+let toplam=0;
+const siparisUrunleri={};
 
-/* =====================================================
-   GARSON ÇAĞIR
-===================================================== */
+keys.forEach(key=>{
+const u=sepet[key];
+
+toplam+=u.adet*u.fiyat;
+
+siparisUrunleri[key]={
+ad:u.ad,
+fiyat:u.fiyat,
+adet:u.adet
+};
+});
+
+const now=new Date();
+
+db.ref("siparisler").push({
+masa:String(masa),
+urunler:siparisUrunleri,
+toplam:toplam,
+durum:"bekliyor",
+zaman:now.toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"}),
+tarih:now.toLocaleDateString("tr-TR"),
+timestamp:Date.now()
+}).then(()=>{
+
+toast("✓ Siparişiniz garsona gönderildi.");
+
+sepet={};
+
+document.querySelectorAll('[id^="adet-"]').forEach(x=>{
+x.innerText="0";
+});
+
+sepetGoster();
+
+}).catch(error=>{
+console.error(error);
+toast("Sipariş gönderilemedi.");
+});
+}
 
 function garsonCagir(){
 
-    const now=
-        new Date();
+const now=new Date();
 
-
-    const zaman=
-        now.toLocaleTimeString(
-            "tr-TR",
-            {
-                hour:"2-digit",
-                minute:"2-digit"
-            }
-        );
-
-
-    db.ref("bildirimler")
-    .push({
-
-        masa:masa,
-
-        zaman:zaman,
-
-        tarih:
-        now.toLocaleDateString(
-            "tr-TR"
-        )
-
-    })
-    .then(()=>{
-
-        toast(
-            "🔔 Garson çağrınız gönderildi."
-        );
-
-    })
-    .catch(error=>{
-
-        toast(
-            "Garson çağrısı gönderilemedi."
-        );
-
-        console.error(error);
-
-    });
-
+db.ref("bildirimler").push({
+masa:String(masa),
+zaman:now.toLocaleTimeString("tr-TR",{hour:"2-digit",minute:"2-digit"}),
+tarih:now.toLocaleDateString("tr-TR"),
+timestamp:Date.now()
+}).then(()=>{
+toast("🔔 Garson çağrınız gönderildi.");
+}).catch(error=>{
+console.error(error);
+toast("Garson çağrısı gönderilemedi.");
+});
 }
-
-
-/* =====================================================
-   TOAST
-===================================================== */
 
 let toastTimer;
 
-
 function toast(mesaj){
+const t=document.getElementById("toast");
+t.innerText=mesaj;
+t.style.display="block";
 
-    const t=
-        document.getElementById(
-            "toast"
-        );
+clearTimeout(toastTimer);
 
-
-    t.innerText=mesaj;
-
-    t.style.display="block";
-
-
-    clearTimeout(toastTimer);
-
-
-    toastTimer=
-        setTimeout(()=>{
-
-            t.style.display="none";
-
-        },3000);
-
+toastTimer=setTimeout(()=>{
+t.style.display="none";
+},3000);
 }
-
 </script>
 
 </body>
