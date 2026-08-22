@@ -13,7 +13,6 @@
         .ocak-card { background: #333; color: white; padding: 15px; margin-bottom: 12px; border-left: 8px solid #ffeb3b; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .ocak-card strong { font-size: 20px; color: #ffeb3b; }
         .btn-tamam { background: #388e3c; color: white; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; }
-        .btn-tamam:active { background: #1b5e20; }
     </style>
 </head>
 <body>
@@ -27,16 +26,18 @@
 
 <script>
     const firebaseConfig = {
-        databaseURL: "https://dijitalkahve-67f0a-default-rtdb.europe-west1.firebasedatabase.app",
+        databaseURL: "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
         projectId: "dijitalkahve-67f0a",
         storageBucket: "dijitalkahve-67f0a.appspot.com",
         messagingSenderId: "326476599239"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.app().database("https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app");
 
-    // Bildirimleri Anlık Dinle
+    // Bildirimleri Dinle
     db.ref('bildirimler').on('value', (snapshot) => {
         const data = snapshot.val();
         const container = document.getElementById('bildirimListesi');
@@ -57,6 +58,8 @@
         } else {
             container.innerHTML = '<p style="text-align:center; color:#888; margin-top:30px;">Şu an bekleyen çağrı yok.</p>';
         }
+    }, (error) => {
+        document.getElementById('bildirimListesi').innerHTML = '<p style="color:red; text-align:center;">Bağlantı Hatası: ' + error.message + '</p>';
     });
 
     function bildirimSil(id) {
