@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dijital Kahvehanem - Müşteri</title>
+    <!-- Firebase Compat Scriptleri (En Kararlı Yapı) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 15px; color: #333; }
         .header { text-align: center; background: #3e2723; color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; }
@@ -60,10 +63,7 @@
     <button onclick="satirEkle()" style="margin-top:10px; padding:10px 15px; background:#5d4037; color:white; border:none; border-radius:4px;">+ El Ekle</button>
 </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
+<script>
     const firebaseConfig = {
         databaseURL: "https://dijitalkahve-67f0a-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "dijitalkahve-67f0a",
@@ -71,15 +71,15 @@
         messagingSenderId: "326476599239"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
     const urlParams = new URLSearchParams(window.location.search);
     const masa = urlParams.get('masa') || '1';
     document.getElementById('masaEtiket').innerText = "MASA " + masa;
 
     // Ürünleri Dinle
-    onValue(ref(db, 'urunler'), (snapshot) => {
+    db.ref('urunler').on('value', (snapshot) => {
         const data = snapshot.val();
         const menuList = document.getElementById('urunListesi');
         menuList.innerHTML = '';
@@ -94,19 +94,18 @@
     });
 
     // Garson Çağır
-    window.garsonCagir = function() {
-        push(ref(db, 'bildirimler'), { 
-            masa: masa, 
-            zaman: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) 
+    function garsonCagir() {
+        const saat = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+        db.ref('bildirimler').push({
+            masa: masa,
+            zaman: saat
         }).then(() => {
-            alert("Garsona ve ocağa haber verildi!");
+            alert("Garsona haber verildi!");
         }).catch((err) => {
-            alert("Bildirim gönderilemedi: " + err.message);
+            alert("Hata Oluştu: " + err.message);
         });
-    };
-</script>
+    }
 
-<script>
     function sayfaAc(sayfa) {
         document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-btns button').forEach(el => el.classList.remove('active'));
