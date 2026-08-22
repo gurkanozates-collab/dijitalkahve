@@ -10,19 +10,27 @@
     <style>
         body { font-family: Arial, sans-serif; background: #222; color: white; margin: 0; padding: 15px; }
         .header { background: #d32f2f; padding: 15px; text-align: center; border-radius: 8px; margin-bottom: 20px; }
+        h3.baslik { border-bottom: 2px solid #444; padding-bottom: 6px; margin-top: 25px; }
         .ocak-card { background: #333; color: white; padding: 15px; margin-bottom: 12px; border-left: 8px solid #ffeb3b; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
         .ocak-card strong { font-size: 20px; color: #ffeb3b; }
-        .btn-tamam { background: #388e3c; color: white; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .siparis-card { background: #2b3a2b; color: white; padding: 15px; margin-bottom: 12px; border-left: 8px solid #66bb6a; border-radius: 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+        .siparis-card strong { font-size: 20px; color: #a5d6a7; }
+        .siparis-urun { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px dashed #555; font-size: 15px; }
+        .siparis-toplam { text-align: right; font-weight: bold; margin-top: 6px; color: #ffeb3b; }
+        .btn-tamam { background: #388e3c; color: white; border: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; margin-top: 10px; width: 100%; }
     </style>
 </head>
 <body>
-
 <div class="header">
     <h2 style="margin:0;">☕ OCAK & GARSON BİLDİRİM PANELİ</h2>
-    <small>Gelen Çağrılar Anlık Olarak Aşağıya Düşer</small>
+    <small>Gelen Çağrılar ve Siparişler Anlık Olarak Aşağıya Düşer</small>
 </div>
 
+<h3 class="baslik">🔔 Garson Çağrıları</h3>
 <div id="bildirimListesi">Çağrılar Yükleniyor...</div>
+
+<h3 class="baslik">🧾 Siparişler</h3>
+<div id="siparisListesi">Siparişler Yükleniyor...</div>
 
 <script>
     const firebaseConfig = {
@@ -31,7 +39,6 @@
         storageBucket: "dijitalkahve-67f0a.appspot.com",
         messagingSenderId: "326476599239"
     };
-
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
@@ -42,7 +49,6 @@
         const data = snapshot.val();
         const container = document.getElementById('bildirimListesi');
         container.innerHTML = '';
-
         if(data) {
             Object.keys(data).forEach(key => {
                 const item = data[key];
@@ -52,18 +58,51 @@
                             <strong>MASA ${item.masa}</strong> <br>
                             <span style="font-size:14px; color:#ccc;">Saat: ${item.zaman}</span>
                         </div>
-                        <button class="btn-tamam" onclick="bildirimSil('${key}')">GİDİLDİ / SİL</button>
+                        <button class="btn-tamam" style="width:auto;" onclick="bildirimSil('${key}')">GİDİLDİ / SİL</button>
                     </div>`;
             });
         } else {
-            container.innerHTML = '<p style="text-align:center; color:#888; margin-top:30px;">Şu an bekleyen çağrı yok.</p>';
+            container.innerHTML = '<p style="text-align:center; color:#888;">Şu an bekleyen çağrı yok.</p>';
         }
     }, (error) => {
         document.getElementById('bildirimListesi').innerHTML = '<p style="color:red; text-align:center;">Bağlantı Hatası: ' + error.message + '</p>';
     });
 
+    // Siparişleri Dinle
+    db.ref('siparisler').on('value', (snapshot) => {
+        const data = snapshot.val();
+        const container = document.getElementById('siparisListesi');
+        container.innerHTML = '';
+        if(data) {
+            Object.keys(data).forEach(key => {
+                const siparis = data[key];
+                const urunler = siparis.urunler || [];
+                let urunHtml = '';
+                urunler.forEach(u => {
+                    urunHtml += `<div class="siparis-urun"><span>${u.ad} x${u.adet}</span><span>${(parseFloat(u.fiyat) || 0) * u.adet} TL</span></div>`;
+                });
+                container.innerHTML += `
+                    <div class="siparis-card">
+                        <strong>MASA ${siparis.masa}</strong>
+                        <span style="float:right; font-size:14px; color:#ccc;">Saat: ${siparis.zaman}</span>
+                        <div style="margin-top:8px;">${urunHtml}</div>
+                        <div class="siparis-toplam">Toplam: ${siparis.toplam} TL</div>
+                        <button class="btn-tamam" onclick="siparisSil('${key}')">HAZIRLANDI / TAMAMLANDI</button>
+                    </div>`;
+            });
+        } else {
+            container.innerHTML = '<p style="text-align:center; color:#888;">Şu an bekleyen sipariş yok.</p>';
+        }
+    }, (error) => {
+        document.getElementById('siparisListesi').innerHTML = '<p style="color:red; text-align:center;">Bağlantı Hatası: ' + error.message + '</p>';
+    });
+
     function bildirimSil(id) {
         db.ref('bildirimler/' + id).remove();
+    }
+
+    function siparisSil(id) {
+        db.ref('siparisler/' + id).remove();
     }
 </script>
 </body>
