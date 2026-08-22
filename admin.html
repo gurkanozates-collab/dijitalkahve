@@ -39,13 +39,6 @@
     </div>
 
     <div class="box">
-        <h3>💳 IBAN Bilgisi Güncelle</h3>
-        <input type="text" id="aliciAd" placeholder="Alıcı Adı Soyadı">
-        <input type="text" id="ibanNo" placeholder="TR00 0000 0000...">
-        <button class="btn-blue" onclick="ibanGuncelle()">IBAN Kaydet</button>
-    </div>
-
-    <div class="box">
         <h3>📋 Mevcut Menü ve Fiyatlar</h3>
         <div id="adminUrunListesi">Yükleniyor...</div>
     </div>
@@ -53,16 +46,13 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, onValue, push, remove, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "dijitalkahve-67f0a.firebaseapp.com",
         databaseURL: "https://dijitalkahve-67f0a-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "dijitalkahve-67f0a",
         storageBucket: "dijitalkahve-67f0a.appspot.com",
-        messagingSenderId: "326476599239",
-        appId: "YOUR_APP_ID"
+        messagingSenderId: "326476599239"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -71,7 +61,7 @@
     // Şifre Kontrolü
     window.girisYap = function() {
         const pass = document.getElementById('passInput').value;
-        if(pass === '1234') { // VARSAYILAN ŞİFRE: 1234
+        if(pass === '1234') {
             document.getElementById('loginBox').style.display = 'none';
             document.getElementById('adminContent').style.display = 'block';
             verileriYukle();
@@ -103,18 +93,6 @@
             push(ref(db, 'urunler'), { ad: ad, fiyat: fiyat }).then(() => {
                 document.getElementById('yeniAd').value = '';
                 document.getElementById('yeniFiyat').value = '';
-            });
-        }
-    };
-
-    window.ibanGuncelle = function() {
-        const alici = document.getElementById('aliciAd').value;
-        const iban = document.getElementById('ibanNo').value;
-        if(alici && iban) {
-            set(ref(db, 'ibanBilgi'), { alici: alici, iban: iban }).then(() => {
-                alert("IBAN bilgileri güncellendi!");
-                document.getElementById('aliciAd').value = '';
-                document.getElementById('ibanNo').value = '';
             });
         }
     };
