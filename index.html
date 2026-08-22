@@ -8,7 +8,7 @@
         body { font-family: Arial, sans-serif; background: #f4f4f9; margin: 0; padding: 15px; color: #333; }
         .header { text-align: center; background: #3e2723; color: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; }
         .nav-btns { display: flex; gap: 5px; margin-bottom: 15px; }
-        .nav-btns button { flex: 1; padding: 12px 5px; border: none; background: #d7ccc8; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .nav-btns button { flex: 1; padding: 12px 5px; border: none; background: #d7ccc8; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 15px; }
         .nav-btns button.active { background: #5d4037; color: white; }
         .page { display: none; }
         .page.active { display: block; }
@@ -18,8 +18,6 @@
         .yazboz-table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; }
         .yazboz-table th, .yazboz-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
         .yazboz-table input { width: 90%; text-align: center; border: none; font-size: 16px; }
-        .iban-box { background: #e8f5e9; border: 1px dashed #2e7d32; padding: 15px; border-radius: 8px; text-align: center; margin-top: 15px; }
-        .iban-box code { font-size: 16px; font-weight: bold; color: #1b5e20; word-break: break-all; }
     </style>
 </head>
 <body>
@@ -32,7 +30,6 @@
 <div class="nav-btns">
     <button onclick="sayfaAc('menu')" class="active" id="btn-menu">☕ Menü</button>
     <button onclick="sayfaAc('yazboz')" id="btn-yazboz">📝 Yaz-Boz</button>
-    <button onclick="sayfaAc('iban')" id="btn-iban">💳 IBAN / Ödeme</button>
 </div>
 
 <!-- MÜŞTERİ MENÜSÜ -->
@@ -63,29 +60,15 @@
     <button onclick="satirEkle()" style="margin-top:10px; padding:10px 15px; background:#5d4037; color:white; border:none; border-radius:4px;">+ El Ekle</button>
 </div>
 
-<!-- IBAN ÖDEME EKRANI -->
-<div id="page-iban" class="page">
-    <h3>EFT / Havale Ödeme Bilgileri</h3>
-    <div class="iban-box">
-        <p style="margin-top:0;"><strong>Hesap Sahibi:</strong> <br><span id="displayAlici">Yükleniyor...</span></p>
-        <p><strong>IBAN:</strong></p>
-        <code id="displayIban">Yükleniyor...</code>
-        <p style="font-size:12px; color:#555; margin-bottom:0; margin-top:15px;">Lütfen açıklama kısmına <strong id="ibanMasaAçıklama">Masa Numarasını</strong> yazınız.</p>
-    </div>
-</div>
-
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getDatabase, ref, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "dijitalkahve-67f0a.firebaseapp.com",
         databaseURL: "https://dijitalkahve-67f0a-default-rtdb.europe-west1.firebasedatabase.app",
         projectId: "dijitalkahve-67f0a",
         storageBucket: "dijitalkahve-67f0a.appspot.com",
-        messagingSenderId: "326476599239",
-        appId: "YOUR_APP_ID"
+        messagingSenderId: "326476599239"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -94,7 +77,6 @@
     const urlParams = new URLSearchParams(window.location.search);
     const masa = urlParams.get('masa') || '1';
     document.getElementById('masaEtiket').innerText = "MASA " + masa;
-    document.getElementById('ibanMasaAçıklama').innerText = "MASA " + masa;
 
     // Ürünleri Dinle
     onValue(ref(db, 'urunler'), (snapshot) => {
@@ -111,19 +93,15 @@
         }
     });
 
-    // IBAN Bilgisini Dinle
-    onValue(ref(db, 'ibanBilgi'), (snapshot) => {
-        const data = snapshot.val();
-        if(data) {
-            document.getElementById('displayAlici').innerText = data.alici || 'İşletme Adı';
-            document.getElementById('displayIban').innerText = data.iban || 'TR00...';
-        }
-    });
-
     // Garson Çağır
     window.garsonCagir = function() {
-        push(ref(db, 'bildirimler'), { masa: masa, zaman: new Date().toLocaleTimeString('tr-TR') }).then(() => {
-            alert("Garsona haber verildi!");
+        push(ref(db, 'bildirimler'), { 
+            masa: masa, 
+            zaman: new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' }) 
+        }).then(() => {
+            alert("Garsona ve ocağa haber verildi!");
+        }).catch((err) => {
+            alert("Bildirim gönderilemedi: " + err.message);
         });
     };
 </script>
