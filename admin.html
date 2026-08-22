@@ -11,66 +11,101 @@
 <style>
 *{box-sizing:border-box}
 body{
- margin:0;padding:15px;
- font-family:Arial;background:#eef1f3;color:#263238
+    margin:0;
+    padding:15px;
+    background:#eceff1;
+    font-family:Arial,sans-serif;
+    color:#263238;
 }
 .header{
- background:linear-gradient(135deg,#263238,#455a64);
- color:white;text-align:center;padding:20px;
- border-radius:16px;margin-bottom:15px
+    background:linear-gradient(135deg,#263238,#455a64);
+    color:white;
+    padding:20px;
+    text-align:center;
+    border-radius:16px;
+    margin-bottom:15px;
 }
 .box{
- background:white;padding:15px;border-radius:14px;
- margin-bottom:15px;box-shadow:0 3px 12px #0001
+    background:white;
+    padding:15px;
+    border-radius:14px;
+    margin-bottom:15px;
+    box-shadow:0 2px 10px #00000012;
 }
-.tabs{display:flex;gap:6px;margin-bottom:15px}
-.tabs button{
- flex:1;padding:11px;border:0;border-radius:9px;
- background:#d8dee1;font-weight:bold
-}
-.tabs button.active{
- background:#263238;color:white
-}
-.page{display:none}.page.active{display:block}
 input,select{
- width:100%;padding:11px;margin:5px 0 9px;
- border:1px solid #ccc;border-radius:8px
+    width:100%;
+    padding:11px;
+    margin:5px 0 10px;
+    border:1px solid #ccc;
+    border-radius:8px;
 }
 button{
- border:0;border-radius:8px;padding:11px;
- font-weight:bold;cursor:pointer
+    width:100%;
+    padding:12px;
+    border:0;
+    border-radius:8px;
+    font-weight:bold;
 }
-.green{background:#2e7d32;color:white;width:100%}
+.green{background:#2e7d32;color:white}
 .blue{background:#1565c0;color:white}
 .red{background:#d32f2f;color:white}
-.card{
- background:#f7f8f9;border:1px solid #ddd;
- padding:12px;border-radius:10px;margin-bottom:8px
+.orange{background:#ef6c00;color:white}
+.menu-tabs{
+    display:flex;
+    gap:6px;
+    margin-bottom:15px;
 }
-.masa-card{
- border-left:6px solid #ff9800
+.menu-tabs button{
+    background:#cfd8dc;
+    color:#263238;
 }
-.masa-card.paid{
- border-left-color:#43a047
+.menu-tabs button.active{
+    background:#37474f;
+    color:white;
 }
-.urun{
- display:flex;justify-content:space-between;
- padding:5px 0;border-bottom:1px dashed #ddd
+.panel{display:none}
+.panel.active{display:block}
+.product{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#fafafa;
+    border:1px solid #ddd;
+    padding:10px;
+    border-radius:9px;
+    margin-bottom:7px;
 }
-.stats{
- display:grid;grid-template-columns:1fr 1fr;
- gap:8px
+.masacard{
+    border-left:6px solid #ff9800;
+    background:#fff;
+    padding:13px;
+    border-radius:10px;
+    margin-bottom:10px;
+    box-shadow:0 2px 7px #0001;
+}
+.masacard h3{
+    margin:0 0 8px;
 }
 .stat{
- background:#263238;color:white;
- border-radius:12px;padding:15px;text-align:center
+    display:flex;
+    justify-content:space-between;
+    padding:9px;
+    background:#f5f5f5;
+    margin-bottom:5px;
+    border-radius:7px;
 }
-.stat strong{
- display:block;font-size:23px;color:#ffca28
+.bigstat{
+    text-align:center;
+    background:#263238;
+    color:white;
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:10px;
 }
-.product-stat{
- display:flex;justify-content:space-between;
- padding:9px;border-bottom:1px solid #eee
+.bigstat strong{
+    display:block;
+    font-size:28px;
+    color:#ffca28;
 }
 </style>
 </head>
@@ -78,29 +113,35 @@ button{
 <body>
 
 <div class="header">
-<h2>⚙️ YÖNETİCİ PANELİ</h2>
-<small>Menü • Masa Hesapları • Günlük İstatistik</small>
+    <h2>⚙️ YÖNETİCİ PANELİ</h2>
+    <small>Menü • Masalar • Hesaplar • Günlük İstatistik</small>
 </div>
 
-<div id="loginBox" class="box" style="max-width:400px;margin:40px auto">
-<h3>🔐 Yönetici Girişi</h3>
-<input type="password" id="passInput" placeholder="Şifre">
-<button class="blue" style="width:100%" onclick="girisYap()">Giriş Yap</button>
+<div id="loginBox" class="box" style="max-width:400px;margin:40px auto;text-align:center">
+    <h3>🔐 Yönetici Girişi</h3>
+    <input type="password" id="passInput" placeholder="Yönetici Şifresi">
+    <button class="blue" onclick="girisYap()">Giriş Yap</button>
 </div>
 
 <div id="adminContent" style="display:none">
 
-<div class="tabs">
-<button class="active" onclick="tabAc('menu',this)">☕ Menü</button>
-<button onclick="tabAc('hesap',this)">🧾 Masa Hesapları</button>
-<button onclick="tabAc('istatistik',this)">📊 İstatistik</button>
+<div class="menu-tabs">
+    <button id="tabMenu" class="active" onclick="panelAc('menu')">
+        ☕ Ürünler
+    </button>
+    <button id="tabHesap" onclick="panelAc('hesap')">
+        🧾 Masa Hesapları
+    </button>
+    <button id="tabIstatistik" onclick="panelAc('istatistik')">
+        📊 İstatistik
+    </button>
 </div>
 
-<!-- MENÜ -->
-<div id="page-menu" class="page active">
+<!-- ÜRÜN -->
+<div id="panel-menu" class="panel active">
 
 <div class="box">
-<h3>➕ Ürün Ekle</h3>
+<h3>➕ Ürün / Fiyat Ekle</h3>
 
 <input id="yeniAd" placeholder="Ürün adı">
 <input id="yeniFiyat" type="number" placeholder="Fiyat">
@@ -113,7 +154,7 @@ button{
 <option>Diğer</option>
 </select>
 
-<button class="green" onclick="urunEkle()">ÜRÜNÜ EKLE</button>
+<button class="green" onclick="urunEkle()">Ürünü Ekle</button>
 </div>
 
 <div class="box">
@@ -124,347 +165,340 @@ button{
 </div>
 
 <!-- HESAPLAR -->
-<div id="page-hesap" class="page">
+<div id="panel-hesap" class="panel">
 
 <div class="box">
-<h3>🧾 Masa Hesapları</h3>
+<h3>🧾 Aktif Masa Hesapları</h3>
 <div id="masaListesi">Yükleniyor...</div>
 </div>
 
 </div>
 
 <!-- İSTATİSTİK -->
-<div id="page-istatistik" class="page">
+<div id="panel-istatistik" class="panel">
 
 <div class="box">
-<h3>📊 BUGÜN</h3>
+<h3>📊 Bugünkü İstatistik</h3>
 
-<div class="stats">
-<div class="stat">
-Toplam Hasılat
-<strong id="hasılat">0 TL</strong>
+<div class="bigstat">
+    <small>TOPLAM HASILAT</small>
+    <strong id="gunlukHasılat">0 TL</strong>
 </div>
 
-<div class="stat">
-Sipariş
-<strong id="siparisSayisi">0</strong>
-</div>
+<div class="bigstat">
+    <small>TOPLAM SİPARİŞ</small>
+    <strong id="gunlukSiparis">0</strong>
 </div>
 
-<h3>☕ Ürün Satışları</h3>
+<h3>🥤 Ürün Satışları</h3>
 <div id="urunIstatistik"></div>
-</div>
 
-<div class="box">
-<h3>⚠️ Günlük Verileri Sıfırla</h3>
-<p>
-Bu işlem yalnızca günlük istatistikleri sıfırlar.
-Masa hesaplarını ve ürün menüsünü silmez.
-</p>
+<hr>
 
 <button class="red" onclick="istatistikSifirla()">
-GÜNLÜK İSTATİSTİKLERİ SIFIRLA
+    ⚠️ BUGÜNKÜ İSTATİSTİKLERİ SIFIRLA
 </button>
-</div>
 
+</div>
 </div>
 
 </div>
 
 <script>
 const firebaseConfig={
- databaseURL:"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
- projectId:"dijitalkahve-67f0a",
- storageBucket:"dijitalkahve-67f0a.appspot.com",
- messagingSenderId:"326476599239"
+    databaseURL:"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId:"dijitalkahve-67f0a",
+    storageBucket:"dijitalkahve-67f0a.appspot.com",
+    messagingSenderId:"326476599239"
 };
 
 if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
 
 const db=firebase.app().database(
-"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
+    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
 );
 
-const SIFRE="1234";
+const ADMIN_SIFRE="1234";
 
 function girisYap(){
- if(document.getElementById("passInput").value===SIFRE){
-  document.getElementById("loginBox").style.display="none";
-  document.getElementById("adminContent").style.display="block";
-  baslat();
- }else alert("Hatalı şifre!");
+    const p=document.getElementById("passInput").value;
+
+    if(p===ADMIN_SIFRE){
+        document.getElementById("loginBox").style.display="none";
+        document.getElementById("adminContent").style.display="block";
+
+        urunleriYukle();
+        siparisleriYukle();
+    }else{
+        alert("❌ Hatalı şifre!");
+    }
 }
 
-function baslat(){
- menuYukle();
- hesaplariYukle();
- istatistikYukle();
+function panelAc(panel){
+    document.querySelectorAll(".panel")
+        .forEach(x=>x.classList.remove("active"));
+
+    document.querySelectorAll(".menu-tabs button")
+        .forEach(x=>x.classList.remove("active"));
+
+    document.getElementById("panel-"+panel)
+        .classList.add("active");
+
+    if(panel==="menu")
+        document.getElementById("tabMenu").classList.add("active");
+
+    if(panel==="hesap")
+        document.getElementById("tabHesap").classList.add("active");
+
+    if(panel==="istatistik"){
+        document.getElementById("tabIstatistik").classList.add("active");
+        istatistikHesapla();
+    }
 }
 
-function tabAc(s,btn){
- document.querySelectorAll(".page")
- .forEach(x=>x.classList.remove("active"));
+/* ÜRÜNLER */
+function urunleriYukle(){
+    db.ref("urunler").on("value",snap=>{
+        const data=snap.val()||{};
+        const box=document.getElementById("adminUrunListesi");
 
- document.querySelectorAll(".tabs button")
- .forEach(x=>x.classList.remove("active"));
+        box.innerHTML="";
 
- document.getElementById("page-"+s).classList.add("active");
- btn.classList.add("active");
-}
+        if(!Object.keys(data).length){
+            box.innerHTML="<p>Ürün bulunmuyor.</p>";
+            return;
+        }
 
-/* MENÜ */
-function menuYukle(){
- db.ref("urunler").on("value",s=>{
-  let data=s.val();
-  let el=document.getElementById("adminUrunListesi");
-  el.innerHTML="";
+        Object.keys(data).forEach(key=>{
+            const x=data[key];
 
-  if(!data){
-   el.innerHTML="<p>Ürün yok.</p>";
-   return;
-  }
+            box.innerHTML+=`
+            <div class="product">
+                <div>
+                    <b>${x.ad}</b><br>
+                    ${x.fiyat} TL
+                    <small>(${x.kategori||"Diğer"})</small>
+                </div>
 
-  Object.keys(data).forEach(k=>{
-   let u=data[k];
-
-   el.innerHTML+=`
-   <div class="card">
-    <b>${u.ad}</b>
-    <span>${u.fiyat} TL</span>
-    <small> (${u.kategori||"Diğer"})</small>
-
-    <div style="display:flex;gap:5px;margin-top:8px">
-     <button class="blue" onclick="urunDuzenle('${k}')">Düzenle</button>
-     <button class="red" onclick="urunSil('${k}')">Sil</button>
-    </div>
-   </div>`;
-  });
- });
+                <button class="red"
+                    style="width:auto"
+                    onclick="urunSil('${key}')">
+                    Sil
+                </button>
+            </div>`;
+        });
+    });
 }
 
 function urunEkle(){
- let ad=document.getElementById("yeniAd").value.trim();
- let fiyat=document.getElementById("yeniFiyat").value;
- let kategori=document.getElementById("yeniKategori").value;
+    const ad=document.getElementById("yeniAd").value.trim();
+    const fiyat=document.getElementById("yeniFiyat").value;
+    const kategori=document.getElementById("yeniKategori").value;
 
- if(!ad||!fiyat)return alert("Ürün adı ve fiyat girin.");
+    if(!ad||!fiyat){
+        alert("Ürün adı ve fiyat girin.");
+        return;
+    }
 
- db.ref("urunler").push({
-  ad,fiyat,kategori
- }).then(()=>{
-  document.getElementById("yeniAd").value="";
-  document.getElementById("yeniFiyat").value="";
- });
-}
-
-function urunDuzenle(id){
- db.ref("urunler/"+id).once("value").then(s=>{
-  let u=s.val();
-
-  let ad=prompt("Ürün adı:",u.ad);
-  if(ad===null)return;
-
-  let fiyat=prompt("Fiyat:",u.fiyat);
-  if(fiyat===null)return;
-
-  db.ref("urunler/"+id).update({
-   ad,fiyat
-  });
- });
+    db.ref("urunler").push({
+        ad:ad,
+        fiyat:fiyat,
+        kategori:kategori
+    }).then(()=>{
+        document.getElementById("yeniAd").value="";
+        document.getElementById("yeniFiyat").value="";
+    });
 }
 
 function urunSil(id){
- if(confirm("Bu ürünü silmek istediğinize emin misiniz?"))
-  db.ref("urunler/"+id).remove();
+    if(!confirm("Bu ürünü silmek istediğine emin misin?"))return;
+
+    db.ref("urunler/"+id).remove();
 }
 
-/* HESAPLAR */
-function hesaplariYukle(){
- db.ref("siparisler").on("value",s=>{
-  let data=s.val()||{};
-  let masalar={};
+/* SİPARİŞLER */
+let siparisler={};
 
-  Object.keys(data).forEach(k=>{
-   let sip=data[k];
-
-   if(sip.durum!=="onaylandi")return;
-
-   let m=sip.masa;
-
-   if(!masalar[m])
-    masalar[m]={toplam:0,urunler:{}};
-
-   masalar[m].toplam+=Number(sip.toplam)||0;
-
-   Object.values(sip.urunler||{}).forEach(u=>{
-    let key=u.ad+"|"+u.fiyat;
-
-    if(!masalar[m].urunler[key])
-     masalar[m].urunler[key]={
-      ad:u.ad,fiyat:u.fiyat,adet:0
-     };
-
-    masalar[m].urunler[key].adet+=Number(u.adet)||0;
-   });
-  });
-
-  let el=document.getElementById("masaListesi");
-  el.innerHTML="";
-
-  if(!Object.keys(masalar).length){
-   el.innerHTML="<p style='text-align:center'>Şu anda ödenecek masa hesabı yok.</p>";
-   return;
-  }
-
-  Object.keys(masalar).sort((a,b)=>Number(a)-Number(b))
-  .forEach(m=>{
-   let masa=masalar[m];
-   let html="";
-
-   Object.values(masa.urunler).forEach(u=>{
-    html+=`
-    <div class="urun">
-     <span>${u.ad} × ${u.adet}</span>
-     <span>${u.fiyat*u.adet} TL</span>
-    </div>`;
-   });
-
-   el.innerHTML+=`
-   <div class="card masa-card">
-    <h3>🪑 MASA ${m}</h3>
-    ${html}
-    <h3 style="text-align:right">
-     TOPLAM: ${masa.toplam} TL
-    </h3>
-
-    <button class="green"
-     onclick="hesapOdendi('${m}')">
-     💰 HESAP ÖDENDİ
-    </button>
-   </div>`;
-  });
+function siparisleriYukle(){
+    db.ref("siparisler").on("value",snap=>{
+        siparisler=snap.val()||{};
+        masaHesaplariniGoster();
+        istatistikHesapla();
+    });
 }
 
-function hesapOdendi(masa){
- if(!confirm(
-  "MASA "+masa+" hesabı ödendi mi?\n\n"+
-  "Ödeme sonrası bu masanın onaylanmış siparişleri "+
-  "günlük istatistiklerde kalacak ancak masa hesabından kaldırılacaktır."
- ))return;
+/* MASA HESAPLARI */
+function masaHesaplariniGoster(){
+    const box=document.getElementById("masaListesi");
 
- db.ref("siparisler")
- .orderByChild("masa")
- .equalTo(masa)
- .once("value")
- .then(s=>{
-  let updates={};
+    const masalar={};
 
-  s.forEach(child=>{
-   let sip=child.val();
+    Object.keys(siparisler).forEach(key=>{
+        const s=siparisler[key];
 
-   if(sip.durum==="onaylandi"){
-    updates[child.key+"/durum"]="odendi";
-    updates[child.key+"/odemeTarihi"]=
-     new Date().toISOString().slice(0,10);
-    updates[child.key+"/odemeSaati"]=
-     new Date().toLocaleTimeString("tr-TR");
-   }
-  });
+        if(s.durum!=="onaylandi")return;
 
-  return db.ref("siparisler").update(updates);
- })
- .then(()=>{
-  alert("Masa "+masa+" hesabı ödendi ve masa sıfırlandı.");
- });
+        if(!masalar[s.masa])
+            masalar[s.masa]=[];
+
+        masalar[s.masa].push({
+            key:key,
+            sip:s
+        });
+    });
+
+    box.innerHTML="";
+
+    if(!Object.keys(masalar).length){
+        box.innerHTML="<p style='text-align:center'>Aktif hesap bulunmuyor.</p>";
+        return;
+    }
+
+    Object.keys(masalar)
+    .sort((a,b)=>parseInt(a)-parseInt(b))
+    .forEach(masa=>{
+
+        let toplam=0;
+        let urunHtml="";
+
+        masalar[masa].forEach(o=>{
+            const s=o.sip;
+
+            Object.values(s.urunler||{}).forEach(u=>{
+                const tutar=(parseFloat(u.fiyat)||0)*u.adet;
+                toplam+=tutar;
+
+                urunHtml+=`
+                <div class="stat">
+                    <span>${u.ad} x${u.adet}</span>
+                    <b>${tutar} TL</b>
+                </div>`;
+            });
+        });
+
+        box.innerHTML+=`
+        <div class="masacard">
+            <h3>🪑 MASA ${masa}</h3>
+
+            ${urunHtml}
+
+            <div style="text-align:right;font-size:20px;font-weight:bold;margin:10px 0">
+                TOPLAM: ${toplam} TL
+            </div>
+
+            <button class="green"
+                onclick="hesapOde('${masa}')">
+                💰 HESAP ÖDENDİ / MASAYI SIFIRLA
+            </button>
+        </div>`;
+    });
+}
+
+/* HESAP ÖDENDİ */
+function hesapOde(masa){
+
+    if(!confirm(
+        "Masa "+masa+
+        " hesabı ödendi mi?\n\n"+
+        "Ödendiğinde bu masanın mevcut onaylı siparişleri silinecek."
+    ))return;
+
+    const updates={};
+
+    Object.keys(siparisler).forEach(key=>{
+        const s=siparisler[key];
+
+        if(String(s.masa)===String(masa)){
+            updates["siparisler/"+key]=null;
+        }
+    });
+
+    db.ref().update(updates).then(()=>{
+        alert("✅ Masa "+masa+" hesabı ödendi ve sıfırlandı.");
+    });
 }
 
 /* İSTATİSTİK */
-function istatistikYukle(){
+function bugun(){
+    const d=new Date();
 
- db.ref("siparisler").on("value",s=>{
-  let data=s.val()||{};
-
-  let bugun=new Date().toISOString().slice(0,10);
-
-  let hasılat=0;
-  let siparis=0;
-  let urunler={};
-
-  Object.values(data).forEach(x=>{
-
-   /*
-    Hem onaylanan hem ödenen siparişler
-    gün içinde istatistiğe dahil edilir.
-   */
-
-   if(x.tarih!==bugun &&
-      x.onayTarihi!==bugun &&
-      x.odemeTarihi!==bugun)return;
-
-   if(x.durum!=="onaylandi" &&
-      x.durum!=="odendi")return;
-
-   hasılat+=Number(x.toplam)||0;
-   siparis++;
-
-   Object.values(x.urunler||{}).forEach(u=>{
-    if(!urunler[u.ad])urunler[u.ad]=0;
-    urunler[u.ad]+=Number(u.adet)||0;
-   });
-  });
-
-  document.getElementById("hasılat").innerText=
-   hasılat+" TL";
-
-  document.getElementById("siparisSayisi").innerText=siparis;
-
-  let el=document.getElementById("urunIstatistik");
-  el.innerHTML="";
-
-  Object.keys(urunler)
-  .sort((a,b)=>urunler[b]-urunler[a])
-  .forEach(ad=>{
-   el.innerHTML+=`
-   <div class="product-stat">
-    <span>☕ ${ad}</span>
-    <b>${urunler[ad]} adet</b>
-   </div>`;
-  });
-
-  if(!el.innerHTML)
-   el.innerHTML="<p>Bugün henüz satış yok.</p>";
- });
+    return d.getFullYear()+"-"+
+        String(d.getMonth()+1).padStart(2,"0")+"-"+
+        String(d.getDate()).padStart(2,"0");
 }
 
-/*
- Günlük sıfırlama:
- ayrı bir sayaç alanı oluşturulur.
- Mevcut sipariş geçmişi silinmez.
- Böylece masa/sipariş geçmişi kaybolmaz.
+function istatistikHesapla(){
+
+    const tarih=bugun();
+
+    let hasılat=0;
+    let siparisSayisi=0;
+    const urunler={};
+
+    Object.keys(siparisler).forEach(key=>{
+        const s=siparisler[key];
+
+        if(s.durum!=="onaylandi")return;
+        if(s.tarih && s.tarih!==tarih)return;
+
+        siparisSayisi++;
+
+        Object.values(s.urunler||{}).forEach(u=>{
+            const adet=parseInt(u.adet)||0;
+            const fiyat=parseFloat(u.fiyat)||0;
+
+            hasılat+=adet*fiyat;
+
+            if(!urunler[u.ad])
+                urunler[u.ad]=0;
+
+            urunler[u.ad]+=adet;
+        });
+    });
+
+    document.getElementById("gunlukHasılat").innerText=
+        hasılat.toFixed(2)+" TL";
+
+    document.getElementById("gunlukSiparis").innerText=
+        siparisSayisi;
+
+    const box=document.getElementById("urunIstatistik");
+
+    box.innerHTML="";
+
+    Object.keys(urunler)
+    .sort((a,b)=>urunler[b]-urunler[a])
+    .forEach(ad=>{
+        box.innerHTML+=`
+        <div class="stat">
+            <span>🥤 ${ad}</span>
+            <b>${urunler[ad]} adet</b>
+        </div>`;
+    });
+
+    if(!Object.keys(urunler).length){
+        box.innerHTML="<p>Bugün henüz satış yok.</p>";
+    }
+}
+
+/* İSTATİSTİK SIFIRLAMA
+   Siparişleri silmiyoruz.
+   Sadece istatistik başlangıç zamanını kaydediyoruz.
 */
 function istatistikSifirla(){
 
- if(!confirm(
-  "Bugünkü istatistikleri sıfırlamak istediğinize emin misiniz?"
- ))return;
+    if(!confirm(
+        "Bugünkü istatistikleri sıfırlamak istediğine emin misin?"
+    ))return;
 
- let sifre=prompt("Yönetici şifresini tekrar girin:");
-
- if(sifre!==SIFRE){
-  alert("Şifre yanlış!");
-  return;
- }
-
- let tarih=new Date().toISOString().slice(0,10);
-
- db.ref("istatistikSifirlamalar/"+tarih).set({
-  zaman:new Date().toLocaleTimeString("tr-TR"),
-  tarih
- }).then(()=>{
-  alert("Bugünkü istatistikler sıfırlandı.");
-  location.reload();
- });
+    db.ref("ayarlar/istatistikBaslangic").set(
+        new Date().toISOString()
+    ).then(()=>{
+        alert("✅ İstatistikler sıfırlandı.");
+        istatistikHesapla();
+    });
 }
 </script>
+
 </body>
 </html>
