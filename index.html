@@ -1,30 +1,37 @@
-```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Dijital Kahve</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f4f1ee;
-    color:#33251f;
+    background:#f4f1ed;
+    color:#30251f;
+}
+
+button{
+    font-family:inherit;
 }
 
 .header{
     background:linear-gradient(135deg,#3e2723,#795548);
-    color:#fff;
-    padding:18px 14px;
+    color:white;
+    padding:18px 15px 20px;
     text-align:center;
-    box-shadow:0 3px 15px rgba(0,0,0,.18);
+    box-shadow:0 4px 15px rgba(0,0,0,.18);
 }
 
 .header h1{
@@ -35,75 +42,78 @@ body{
 .header p{
     margin:5px 0 0;
     font-size:12px;
-    color:#eee;
+    opacity:.9;
 }
 
 .masa-bilgi{
-    margin-top:8px;
-    font-size:14px;
-    font-weight:bold;
+    margin-top:10px;
+    display:inline-block;
+    padding:6px 13px;
+    border-radius:20px;
+    background:rgba(255,255,255,.15);
+    font-size:12px;
 }
 
 .container{
-    max-width:1000px;
+    max-width:900px;
     margin:auto;
     padding:12px;
 }
 
-/* ÜST BUTONLAR */
+/* ================= ÜST BUTONLAR ================= */
 
 .ust-butonlar{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:10px;
-    margin-bottom:14px;
+    margin-bottom:12px;
 }
 
-.ust-buton{
+.ust-btn{
     border:0;
-    border-radius:12px;
-    padding:13px 8px;
-    font-weight:bold;
-    font-size:14px;
-    cursor:pointer;
-    box-shadow:0 3px 10px rgba(0,0,0,.10);
-}
-
-.btn-siparis{
-    background:#5d4037;
+    padding:15px 10px;
+    border-radius:13px;
     color:white;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 3px 10px rgba(0,0,0,.12);
 }
 
-.btn-garson{
-    background:#ffb300;
+.garson-btn{
+    background:#f9a825;
     color:#222;
 }
 
-/* SEKMELER */
-
-.sekmeler{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
-    margin-bottom:14px;
+.siparis-btn{
+    background:#2e7d32;
 }
 
-.sekme{
+/* ================= SEKME ================= */
+
+.tabs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+    margin-bottom:12px;
+}
+
+.tab{
     border:0;
-    padding:11px;
-    border-radius:10px;
-    background:#fff;
-    color:#5d4037;
+    background:white;
+    color:#795548;
+    padding:12px 5px;
+    border-radius:11px;
+    font-size:13px;
     font-weight:bold;
     cursor:pointer;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
 }
 
-.sekme.active{
+.tab.active{
     background:#5d4037;
     color:white;
 }
-
-/* PANELLER */
 
 .panel{
     display:none;
@@ -113,78 +123,77 @@ body{
     display:block;
 }
 
-/* MENÜ */
+/* ================= MENÜ ================= */
 
 .kategori{
-    margin-bottom:18px;
+    margin-bottom:16px;
 }
 
 .kategori-baslik{
-    font-size:18px;
+    color:#5d4037;
+    font-size:17px;
     font-weight:bold;
-    color:#4e342e;
-    margin-bottom:9px;
-}
-
-.urun-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:9px;
+    margin-bottom:8px;
 }
 
 .urun{
-    background:#fff;
-    border-radius:12px;
-    padding:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,.07);
+    background:white;
+    padding:13px;
+    border-radius:13px;
+    margin-bottom:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.urun-bilgi{
+    flex:1;
 }
 
 .urun-ad{
     font-weight:bold;
-    font-size:14px;
+    color:#4e342e;
+    font-size:15px;
 }
 
-.urun-alt{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-top:9px;
-}
-
-.fiyat{
+.urun-fiyat{
+    margin-top:4px;
     color:#e65100;
     font-weight:bold;
+    font-size:14px;
 }
 
 .adet{
     display:flex;
     align-items:center;
-    gap:7px;
+    gap:8px;
 }
 
 .adet button{
-    width:30px;
-    height:30px;
+    width:32px;
+    height:32px;
     border:0;
     border-radius:50%;
     background:#eee;
-    font-size:18px;
+    font-size:19px;
     cursor:pointer;
 }
 
 .adet span{
-    min-width:20px;
+    min-width:22px;
     text-align:center;
     font-weight:bold;
 }
 
-/* SEPET */
+/* ================= ALT SİPARİŞ ÖZET ================= */
 
 .sepet{
     background:white;
+    padding:15px;
     border-radius:14px;
-    padding:14px;
-    margin-top:15px;
+    margin-top:14px;
     box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
@@ -197,429 +206,701 @@ body{
     justify-content:space-between;
     padding:8px 0;
     border-bottom:1px dashed #ddd;
-    font-size:14px;
+}
+
+.sepet-row:last-child{
+    border-bottom:0;
 }
 
 .sepet-toplam{
     text-align:right;
     margin-top:12px;
+    padding-top:10px;
+    border-top:1px solid #eee;
     font-size:19px;
     font-weight:bold;
     color:#e65100;
 }
 
-.btn-siparis-gonder{
-    width:100%;
-    margin-top:12px;
-    padding:14px;
-    border:0;
-    border-radius:10px;
-    background:#2e7d32;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
+.bos-sepet{
+    color:#999;
+    text-align:center;
+    padding:10px;
 }
 
-/* HESAP */
+/* ================= HESAP ================= */
 
 .hesap-box{
     background:white;
     border-radius:15px;
-    padding:16px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    padding:17px;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
 }
 
 .hesap-baslik{
-    font-size:19px;
-    font-weight:bold;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
     margin-bottom:12px;
 }
 
-.hesap-row{
+.hesap-baslik h2{
+    margin:0;
+    font-size:19px;
+    color:#4e342e;
+}
+
+.hesap-durum{
+    font-size:11px;
+    padding:6px 9px;
+    border-radius:15px;
+    background:#fff3e0;
+    color:#e65100;
+    font-weight:bold;
+}
+
+.hesap-urun{
     display:flex;
     justify-content:space-between;
-    padding:9px 0;
+    padding:10px 0;
     border-bottom:1px dashed #ddd;
 }
 
+.hesap-urun:last-child{
+    border-bottom:0;
+}
+
 .hesap-toplam{
+    margin-top:14px;
+    padding-top:13px;
+    border-top:2px solid #eee;
     text-align:right;
     font-size:21px;
     font-weight:bold;
-    color:#e65100;
-    padding-top:13px;
-}
-
-.bos{
-    text-align:center;
-    color:#999;
-    padding:25px 10px;
-}
-
-/* GARSON */
-
-.garson-box{
-    background:white;
-    border-radius:15px;
-    padding:22px;
-    text-align:center;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-}
-
-.garson-icon{
-    font-size:50px;
-}
-
-.btn-cagir{
-    width:100%;
-    padding:15px;
-    border:0;
-    border-radius:11px;
-    background:#ffb300;
-    color:#222;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.cagri-durum{
-    margin-top:12px;
     color:#2e7d32;
-    font-weight:bold;
 }
 
-/* ================= YAZBOZ ================= */
+/* ================= YAZ BOZ ================= */
 
 .yazboz{
     background:white;
-    border-radius:15px;
-    padding:10px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    border-radius:16px;
+    padding:14px;
+    box-shadow:0 3px 12px rgba(0,0,0,.07);
 }
 
 /*
-   Her el ekranın yaklaşık 1/4'ünü
-   kaplayacak şekilde küçük tutuluyor.
+   YAZ-BOZ KÜÇÜK TUTULUYOR
+   PANELİN YAKLAŞIK 1/4'Ü
 */
 
-.eller{
+.yazboz-baslik{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.yazboz-baslik h2{
+    margin:0;
+    color:#4e342e;
+    font-size:18px;
+}
+
+.yazboz-badge{
+    background:#5d4037;
+    color:white;
+    padding:5px 9px;
+    border-radius:15px;
+    font-size:10px;
+}
+
+.yazboz-kurulum{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:7px;
+    margin-bottom:10px;
+}
+
+.yazboz-kurulum select{
+    width:100%;
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:9px 5px;
+    background:white;
+    font-size:12px;
+}
+
+.yazboz-baslat{
+    width:100%;
+    border:0;
+    background:#795548;
+    color:white;
+    padding:10px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-bottom:10px;
+}
+
+.yazboz-oyunlar{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:6px;
 }
 
-.el{
-    min-height:145px;
-    background:#fafafa;
+.oyun-kart{
     border:1px solid #ddd;
-    border-radius:10px;
+    border-radius:9px;
     padding:7px;
-    overflow:hidden;
-}
-
-.el.baslik{
-    background:#5d4037;
-    color:white;
-    border:0;
-}
-
-.el h4{
-    margin:0 0 5px;
-    font-size:12px;
     text-align:center;
+    background:#fafafa;
+    min-width:0;
 }
 
-.oyuncular{
+.oyun-kart.aktif{
+    border:2px solid #795548;
+    background:#fff8f4;
+}
+
+.oyun-kart.kilitli{
+    background:#e8f5e9;
+    border-color:#81c784;
+}
+
+.oyun-no{
+    font-size:10px;
+    color:#777;
+    margin-bottom:5px;
+}
+
+.oyun-durum{
+    font-size:9px;
+    font-weight:bold;
+    margin-bottom:5px;
+}
+
+.oyuncu-skor{
     display:flex;
     flex-direction:column;
     gap:4px;
+    margin-bottom:4px;
 }
 
-.oyuncu{
-    background:white;
+.oyuncu-skor input{
+    width:100%;
+    min-width:0;
+    padding:6px 3px;
+    text-align:center;
+    border:1px solid #ddd;
     border-radius:6px;
-    padding:4px;
+    font-size:11px;
 }
 
-.oyuncu strong{
-    display:block;
+.skor-toplam{
     font-size:10px;
-}
-
-.oyuncu input{
-    width:100%;
-    border:1px solid #ddd;
-    border-radius:5px;
-    padding:4px;
-    font-size:12px;
-    text-align:center;
-}
-
-.el-kilit{
+    font-weight:bold;
+    color:#5d4037;
     margin-top:5px;
-    font-size:9px;
-    text-align:center;
+}
+
+.skor-kilit{
     color:#2e7d32;
+    font-size:9px;
     font-weight:bold;
 }
 
-.yazboz-kontrol{
-    margin-bottom:10px;
-    background:#f7f3f0;
-    padding:10px;
-    border-radius:10px;
-}
-
-.yazboz-kontrol label{
-    font-size:12px;
-    font-weight:bold;
-}
-
-.yazboz-kontrol select{
+.oyun-kilit-btn{
     width:100%;
-    padding:8px;
-    margin-top:4px;
-    border:1px solid #ddd;
-    border-radius:7px;
-}
-
-.btn-baslat{
-    width:100%;
-    margin-top:8px;
-    padding:10px;
     border:0;
-    border-radius:8px;
-    background:#5d4037;
-    color:white;
-    font-weight:bold;
-}
-
-.btn-kaydet{
-    width:100%;
-    margin-top:10px;
-    padding:11px;
-    border:0;
-    border-radius:8px;
     background:#2e7d32;
     color:white;
+    padding:5px;
+    border-radius:6px;
+    font-size:9px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:4px;
+}
+
+.yazboz-sonuc{
+    margin-top:10px;
+    background:#f5f5f5;
+    padding:9px;
+    border-radius:9px;
+}
+
+.yazboz-sonuc h3{
+    margin:0 0 6px;
+    font-size:12px;
+}
+
+.skor-satir{
+    display:flex;
+    justify-content:space-between;
+    padding:4px 0;
+    font-size:11px;
+}
+
+/* ================= BİLDİRİM ================= */
+
+.bildirim{
+    position:fixed;
+    left:50%;
+    bottom:20px;
+    transform:translateX(-50%);
+    background:#323232;
+    color:white;
+    padding:12px 18px;
+    border-radius:25px;
+    font-size:13px;
+    z-index:9999;
+    display:none;
+    box-shadow:0 4px 15px rgba(0,0,0,.25);
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:999;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-box{
+    width:100%;
+    max-width:390px;
+    background:white;
+    border-radius:16px;
+    padding:22px;
+}
+
+.modal-box h3{
+    margin-top:0;
+    color:#4e342e;
+}
+
+.modal-box input{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:9px;
+    margin:8px 0;
+}
+
+.modal-btnlar{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.modal-btnlar button{
+    flex:1;
+    border:0;
+    padding:11px;
+    border-radius:8px;
     font-weight:bold;
 }
 
-.yazboz-bilgi{
-    font-size:11px;
-    color:#777;
-    text-align:center;
-    margin:7px 0;
-}
+/* ================= MOBİL ================= */
 
 @media(max-width:600px){
 
-    .urun-grid{
+    .container{
+        padding:9px;
+    }
+
+    .header{
+        padding:15px 10px;
+    }
+
+    .header h1{
+        font-size:21px;
+    }
+
+    .ust-butonlar{
+        gap:7px;
+    }
+
+    .ust-btn{
+        padding:13px 6px;
+        font-size:12px;
+    }
+
+    .tabs{
+        gap:5px;
+    }
+
+    .tab{
+        padding:10px 3px;
+        font-size:11px;
+    }
+
+    .yazboz{
+        padding:10px;
+    }
+
+    .yazboz-kurulum{
         grid-template-columns:1fr 1fr;
     }
 
-    .eller{
-        grid-template-columns:repeat(4,1fr);
+    .yazboz-kurulum select:last-child{
+        grid-column:1/-1;
     }
 
-    .el{
-        min-height:135px;
-        padding:5px;
+    .yazboz-oyunlar{
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .el h4{
-        font-size:10px;
-    }
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="header">
+
     <h1>☕ DİJİTAL KAHVE</h1>
-    <p>Dijital Menü & Masa Yönetimi</p>
+
+    <p>QR Menü • Sipariş • Hesap • Yaz-Boz</p>
+
     <div class="masa-bilgi" id="masaBilgi">
         MASA BELİRLENİYOR...
     </div>
+
 </div>
+
 
 <div class="container">
 
-    <!-- ÜST BUTONLAR -->
-    <div class="ust-butonlar">
 
-        <button
-            class="ust-buton btn-garson"
-            onclick="garsonCagir()">
-            🔔 GARSON ÇAĞIR
-        </button>
+<!-- ================= ÜST BUTONLAR ================= -->
 
-        <button
-            class="ust-buton btn-siparis"
-            onclick="panelAc('menuPanel')">
-            🛒 SİPARİŞ VER
-        </button>
+<div class="ust-butonlar">
 
-    </div>
+    <button
+        class="ust-btn garson-btn"
+        onclick="garsonCagir()">
 
-    <!-- SEKME -->
-    <div class="sekmeler">
+        🔔 GARSON ÇAĞIR
 
-        <button
-            class="sekme active"
-            onclick="panelAc('menuPanel',this)">
-            ☕ MENÜ
-        </button>
+    </button>
 
-        <button
-            class="sekme"
-            onclick="panelAc('hesapPanel',this)">
-            🧾 HESABIM
-        </button>
+    <button
+        class="ust-btn siparis-btn"
+        onclick="siparisGonder()">
 
-    </div>
+        🛒 SİPARİŞ GÖNDER
 
-    <!-- MENÜ -->
-    <div id="menuPanel" class="panel active">
+    </button>
 
-        <div id="menuListesi">
-            Yükleniyor...
-        </div>
+</div>
 
-        <div class="sepet">
 
-            <h3>🛒 Siparişiniz</h3>
+<!-- ================= SEKME ================= -->
 
-            <div id="sepetListesi">
-                <div class="bos">
-                    Henüz ürün seçmediniz.
-                </div>
-            </div>
+<div class="tabs">
 
-            <div class="sepet-toplam">
-                Toplam:
-                <span id="sepetToplam">0.00</span> TL
-            </div>
+    <button
+        class="tab active"
+        onclick="sekmeAc('menu',this)">
 
-            <button
-                class="btn-siparis-gonder"
-                onclick="siparisGonder()">
-                ✓ SİPARİŞİ GÖNDER
-            </button>
+        ☕ MENÜ
 
-        </div>
+    </button>
 
-    </div>
+    <button
+        class="tab"
+        onclick="sekmeAc('hesap',this)">
 
-    <!-- HESAP -->
-    <div id="hesapPanel" class="panel">
+        🧾 HESAP
 
-        <div class="hesap-box">
+    </button>
 
-            <div class="hesap-baslik">
-                🧾 MASA HESABI
-            </div>
+    <button
+        class="tab"
+        onclick="sekmeAc('yazboz',this)">
 
-            <div id="hesapListesi">
-                <div class="bos">
-                    Hesap yükleniyor...
-                </div>
-            </div>
+        🎲 YAZ-BOZ
 
-            <div class="hesap-toplam">
-                Toplam:
-                <span id="hesapToplam">0.00</span> TL
-            </div>
+    </button>
 
+</div>
+
+
+<!-- =====================================================
+     MENÜ
+===================================================== -->
+
+<div
+    id="menu"
+    class="panel active">
+
+    <div id="menuListesi">
+
+        <div class="bos-sepet">
+            Menü yükleniyor...
         </div>
 
     </div>
 
-    <!-- GARSON -->
-    <div id="garsonPanel" class="panel">
 
-        <div class="garson-box">
+    <div class="sepet">
 
-            <div class="garson-icon">🔔</div>
+        <h3>🛒 Sipariş Özeti</h3>
 
-            <h2>Garson Çağır</h2>
+        <div id="sepetListesi">
 
-            <p>
-                Garson masanıza gelecektir.
-            </p>
-
-            <button
-                class="btn-cagir"
-                onclick="garsonCagir()">
-                🔔 GARSONU ÇAĞIR
-            </button>
-
-            <div
-                id="cagriDurum"
-                class="cagri-durum">
+            <div class="bos-sepet">
+                Henüz ürün seçilmedi.
             </div>
+
+        </div>
+
+        <div
+            class="sepet-toplam"
+            id="sepetToplam">
+
+            0.00 TL
 
         </div>
 
     </div>
 
-    <!-- YAZBOZ -->
-    <div id="yazbozPanel" class="panel">
+</div>
 
-        <div class="yazboz">
 
-            <div class="yazboz-kontrol">
+<!-- =====================================================
+     HESAP
+===================================================== -->
 
-                <label>
-                    Tekli oyunda kaç oyuncu?
-                </label>
+<div
+    id="hesap"
+    class="panel">
+
+    <div class="hesap-box">
+
+        <div class="hesap-baslik">
+
+            <h2>🧾 Masa Hesabı</h2>
+
+            <span
+                class="hesap-durum"
+                id="hesapDurum">
+
+                Güncel
+
+            </span>
+
+        </div>
+
+        <div id="hesapListesi">
+
+            <div class="bos-sepet">
+                Hesap yükleniyor...
+            </div>
+
+        </div>
+
+        <div
+            class="hesap-toplam"
+            id="hesapToplam">
+
+            0.00 TL
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     YAZ BOZ
+===================================================== -->
+
+<div
+    id="yazboz"
+    class="panel">
+
+    <div class="yazboz">
+
+        <div class="yazboz-baslik">
+
+            <h2>🎲 Yaz-Boz</h2>
+
+            <span
+                class="yazboz-badge">
+
+                SKOR
+
+            </span>
+
+        </div>
+
+
+        <!-- KURULUM -->
+
+        <div id="yazbozKurulum">
+
+            <div class="yazboz-kurulum">
+
+                <select id="oyunTipi">
+
+                    <option value="tekli">
+                        Tekli
+                    </option>
+
+                    <option value="esli">
+                        Eşli
+                    </option>
+
+                </select>
+
 
                 <select id="oyuncuSayisi">
 
-                    <option value="2">2 Oyuncu</option>
-                    <option value="3">3 Oyuncu</option>
-                    <option value="4">4 Oyuncu</option>
+                    <option value="2">
+                        2 Oyuncu
+                    </option>
+
+                    <option value="3">
+                        3 Oyuncu
+                    </option>
+
+                    <option value="4">
+                        4 Oyuncu
+                    </option>
+
+                    <option value="5">
+                        5 Oyuncu
+                    </option>
+
+                    <option value="6">
+                        6 Oyuncu
+                    </option>
 
                 </select>
 
-                <label style="display:block;margin-top:8px">
-                    Kaç oyun oynanacak?
-                </label>
 
                 <select id="oyunSayisi">
 
-                    <option value="4">4 Oyun</option>
-                    <option value="8">8 Oyun</option>
-                    <option value="12">12 Oyun</option>
-                    <option value="16">16 Oyun</option>
-                    <option value="20">20 Oyun</option>
+                    <option value="2">
+                        2 Oyun
+                    </option>
+
+                    <option value="3">
+                        3 Oyun
+                    </option>
+
+                    <option value="4">
+                        4 Oyun
+                    </option>
+
+                    <option value="5">
+                        5 Oyun
+                    </option>
+
+                    <option value="6">
+                        6 Oyun
+                    </option>
+
+                    <option value="8">
+                        8 Oyun
+                    </option>
+
+                    <option value="10">
+                        10 Oyun
+                    </option>
 
                 </select>
 
-                <button
-                    class="btn-baslat"
-                    onclick="yazbozBaslat()">
-                    🎮 OYUNU BAŞLAT
-                </button>
-
             </div>
 
-            <div class="yazboz-bilgi" id="yazbozBilgi">
-                Oyun başlamadı.
-            </div>
-
-            <div
-                id="eller"
-                class="eller">
-            </div>
 
             <button
-                id="skorKaydet"
-                class="btn-kaydet"
-                style="display:none"
-                onclick="skorlariKilitle()">
-                🔒 SKORLARI KAYDET VE KİLİTLE
+                class="yazboz-baslat"
+                onclick="yazbozBaslat()">
+
+                🎮 OYUNU BAŞLAT
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="yazbozOyunlar"
+            class="yazboz-oyunlar">
+
+        </div>
+
+
+        <div
+            id="yazbozSonuc"
+            class="yazboz-sonuc"
+            style="display:none;">
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<div
+    id="bildirim"
+    class="bildirim">
+
+</div>
+
+
+<!-- ================= SİPARİŞ MODALI ================= -->
+
+<div
+    id="siparisModal"
+    class="modal">
+
+    <div class="modal-box">
+
+        <h3>🛒 Sipariş Gönder</h3>
+
+        <p style="font-size:13px;color:#777;">
+
+            Siparişiniz garson paneline
+            gönderilecek.
+
+        </p>
+
+        <div
+            id="modalSiparisOzet">
+
+        </div>
+
+        <div class="modal-btnlar">
+
+            <button
+                style="background:#ddd;"
+                onclick="modalKapat()">
+
+                İPTAL
+
+            </button>
+
+            <button
+                style="background:#2e7d32;color:white;"
+                onclick="siparisiOnaylaVeGonder()">
+
+                GÖNDER
+
             </button>
 
         </div>
@@ -628,215 +909,325 @@ body{
 
 </div>
 
+
 <script>
 
-/* ================= FIREBASE ================= */
+/* =====================================================
+   FIREBASE
+===================================================== */
 
 const firebaseConfig={
+
     databaseURL:
     "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId:"dijitalkahve-67f0a",
-    storageBucket:"dijitalkahve-67f0a.appspot.com",
-    messagingSenderId:"326476599239"
+
+    projectId:
+    "dijitalkahve-67f0a",
+
+    storageBucket:
+    "dijitalkahve-67f0a.appspot.com",
+
+    messagingSenderId:
+    "326476599239"
+
 };
 
+
 if(!firebase.apps.length){
-    firebase.initializeApp(firebaseConfig);
+
+    firebase.initializeApp(
+        firebaseConfig
+    );
+
 }
+
 
 const db=firebase.app().database(
     "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
 );
 
 
-/* ================= MASA NUMARASI ================= */
+/* =====================================================
+   MASA
+   QR ÖRNEĞİ:
+   index.html?masa=15
+===================================================== */
 
-/*
-   QR bağlantısındaki:
-   ?masa=1
-   ?masa=2
-   ...
-   değerini otomatik alır.
-*/
-
-const params=new URLSearchParams(
-    window.location.search
-);
-
-let masaNo=params.get("masa");
-
-
-if(!masaNo){
-
-    masaNo=localStorage.getItem("masaNo");
-
-}
-
-if(masaNo){
-
-    localStorage.setItem(
-        "masaNo",
-        masaNo
+const urlParams=
+    new URLSearchParams(
+        window.location.search
     );
 
-    document.getElementById(
-        "masaBilgi"
-    ).innerText=
-        "MASA "+masaNo;
 
-}else{
+let masa=
+    parseInt(
+        urlParams.get("masa")
+    );
 
-    document.getElementById(
-        "masaBilgi"
-    ).innerText=
-        "MASA BELİRLENEMEDİ";
+
+if(!masa || masa<1 || masa>50){
+
+    masa=1;
 
 }
 
 
-/* ================= SEPET ================= */
+document.getElementById(
+    "masaBilgi"
+).innerText=
+    "MASA "+masa;
+
+
+/* =====================================================
+   SEPET
+===================================================== */
 
 let sepet={};
 
-function urunleriDinle(){
 
-    db.ref("urunler").on("value",snapshot=>{
+/* =====================================================
+   SEKME
+===================================================== */
 
-        const data=snapshot.val()||{};
+function sekmeAc(id,button){
 
-        const kategoriler={};
+    document
+        .querySelectorAll(".panel")
+        .forEach(x=>{
+            x.classList.remove("active");
+        });
 
-        Object.keys(data).forEach(key=>{
+    document
+        .querySelectorAll(".tab")
+        .forEach(x=>{
+            x.classList.remove("active");
+        });
 
-            const u=data[key];
+    document
+        .getElementById(id)
+        .classList.add("active");
 
-            const kategori=
-                u.kategori||"Diğer";
+    button.classList.add("active");
 
-            if(!kategoriler[kategori]){
-                kategoriler[kategori]=[];
-            }
+}
 
-            kategoriler[kategori].push({
-                id:key,
-                ...u
-            });
+
+/* =====================================================
+   MENÜ
+===================================================== */
+
+db.ref("urunler")
+.on("value",snapshot=>{
+
+    const data=
+        snapshot.val() || {};
+
+    const liste=
+        document.getElementById(
+            "menuListesi"
+        );
+
+    liste.innerHTML="";
+
+
+    if(Object.keys(data).length===0){
+
+        liste.innerHTML=`
+
+            <div class="bos-sepet">
+
+                Menüde henüz ürün bulunmuyor.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const kategoriler={};
+
+
+    Object.keys(data)
+    .forEach(id=>{
+
+        const urun=data[id];
+
+        const kategori=
+            urun.kategori || "Diğer";
+
+
+        if(!kategoriler[kategori]){
+
+            kategoriler[kategori]=[];
+
+        }
+
+
+        kategoriler[kategori].push({
+
+            id:id,
+
+            ad:urun.ad,
+
+            fiyat:
+            parseFloat(urun.fiyat)||0
 
         });
+
+    });
+
+
+    Object.keys(kategoriler)
+    .forEach(kategori=>{
 
         let html="";
 
-        Object.keys(kategoriler).forEach(kategori=>{
+
+        kategoriler[kategori]
+        .forEach(urun=>{
+
+            const adet=
+                sepet[urun.id]
+                ?
+                sepet[urun.id].adet
+                :
+                0;
+
 
             html+=`
-                <div class="kategori">
 
-                    <div class="kategori-baslik">
-                        ${kategori}
-                    </div>
+                <div class="urun">
 
-                    <div class="urun-grid">
-            `;
-
-            kategoriler[kategori].forEach(u=>{
-
-                const adet=
-                    sepet[u.id]
-                    ? sepet[u.id].adet
-                    : 0;
-
-                html+=`
-
-                    <div class="urun">
+                    <div class="urun-bilgi">
 
                         <div class="urun-ad">
-                            ${u.ad}
+
+                            ${escapeHtml(urun.ad)}
+
                         </div>
 
-                        <div class="urun-alt">
+                        <div class="urun-fiyat">
 
-                            <span class="fiyat">
-                                ${parseFloat(u.fiyat||0).toFixed(2)} TL
-                            </span>
-
-                            <div class="adet">
-
-                                <button
-                                    onclick="adetDegistir('${u.id}',-1)">
-                                    −
-                                </button>
-
-                                <span>
-                                    ${adet}
-                                </span>
-
-                                <button
-                                    onclick="adetDegistir('${u.id}',1)">
-                                    +
-                                </button>
-
-                            </div>
+                            ${urun.fiyat.toFixed(2)}
+                            TL
 
                         </div>
 
                     </div>
 
-                `;
 
-            });
+                    <div class="adet">
 
-            html+=`
+                        <button
+                            onclick="
+                            sepetDegistir(
+                            '${urun.id}',
+                            '${escapeHtml(urun.ad)}',
+                            ${urun.fiyat},
+                            -1
+                            )">
+
+                            −
+
+                        </button>
+
+                        <span
+                            id="adet-${urun.id}">
+
+                            ${adet}
+
+                        </span>
+
+                        <button
+                            onclick="
+                            sepetDegistir(
+                            '${urun.id}',
+                            '${escapeHtml(urun.ad)}',
+                            ${urun.fiyat},
+                            1
+                            )">
+
+                            +
+
+                        </button>
+
                     </div>
+
                 </div>
+
             `;
 
         });
 
-        document.getElementById(
-            "menuListesi"
-        ).innerHTML=
-            html ||
-            `<div class="bos">Menü boş.</div>`;
+
+        liste.innerHTML+=`
+
+            <div class="kategori">
+
+                <div class="kategori-baslik">
+
+                    ${kategori}
+
+                </div>
+
+                ${html}
+
+            </div>
+
+        `;
 
     });
+
+});
+
+
+/* =====================================================
+   SEPET DEĞİŞTİR
+===================================================== */
+
+function sepetDegistir(
+    id,
+    ad,
+    fiyat,
+    fark
+){
+
+    if(!sepet[id]){
+
+        sepet[id]={
+
+            ad:ad,
+
+            fiyat:fiyat,
+
+            adet:0
+
+        };
+
+    }
+
+
+    sepet[id].adet += fark;
+
+
+    if(sepet[id].adet<=0){
+
+        delete sepet[id];
+
+    }
+
+
+    sepetGoster();
 
 }
 
 
-function adetDegistir(id,fark){
-
-    db.ref("urunler/"+id)
-    .once("value")
-    .then(snapshot=>{
-
-        const u=snapshot.val();
-
-        if(!u)return;
-
-        if(!sepet[id]){
-
-            sepet[id]={
-                ad:u.ad,
-                fiyat:parseFloat(u.fiyat)||0,
-                adet:0
-            };
-
-        }
-
-        sepet[id].adet+=fark;
-
-        if(sepet[id].adet<=0){
-            delete sepet[id];
-        }
-
-        sepetGoster();
-
-        urunleriDinle();
-
-    });
-
-}
-
+/* =====================================================
+   SEPET GÖSTER
+===================================================== */
 
 function sepetGoster(){
 
@@ -845,38 +1236,114 @@ function sepetGoster(){
             "sepetListesi"
         );
 
+
+    liste.innerHTML="";
+
+
     let toplam=0;
 
-    if(Object.keys(sepet).length===0){
 
-        liste.innerHTML=`
-            <div class="bos">
-                Henüz ürün seçmediniz.
-            </div>
-        `;
+    Object.keys(sepet)
+    .forEach(id=>{
 
-        document.getElementById(
-            "sepetToplam"
-        ).innerText="0.00";
-
-        return;
-    }
-
-    let html="";
-
-    Object.values(sepet).forEach(u=>{
+        const u=sepet[id];
 
         const tutar=
             u.adet*u.fiyat;
 
         toplam+=tutar;
 
+
+        liste.innerHTML+=`
+
+            <div class="sepet-row">
+
+                <span>
+
+                    ${escapeHtml(u.ad)}
+                    ×${u.adet}
+
+                </span>
+
+                <strong>
+
+                    ${tutar.toFixed(2)}
+                    TL
+
+                </strong>
+
+            </div>
+
+        `;
+
+    });
+
+
+    if(Object.keys(sepet).length===0){
+
+        liste.innerHTML=`
+
+            <div class="bos-sepet">
+
+                Henüz ürün seçilmedi.
+
+            </div>
+
+        `;
+
+    }
+
+
+    document.getElementById(
+        "sepetToplam"
+    ).innerText=
+        toplam.toFixed(2)
+        +" TL";
+
+}
+
+
+/* =====================================================
+   SİPARİŞ GÖNDER
+===================================================== */
+
+function siparisGonder(){
+
+    if(
+        Object.keys(sepet).length===0
+    ){
+
+        bildirimGoster(
+            "Önce menüden ürün seçin."
+        );
+
+        return;
+
+    }
+
+
+    let html="";
+
+
+    let toplam=0;
+
+
+    Object.values(sepet)
+    .forEach(u=>{
+
+        const tutar=
+            u.adet*u.fiyat;
+
+        toplam+=tutar;
+
+
         html+=`
 
             <div class="sepet-row">
 
                 <span>
-                    ${u.ad} × ${u.adet}
+                    ${escapeHtml(u.ad)}
+                    ×${u.adet}
                 </span>
 
                 <strong>
@@ -889,57 +1356,65 @@ function sepetGoster(){
 
     });
 
-    liste.innerHTML=html;
+
+    html+=`
+
+        <div class="sepet-toplam">
+
+            ${toplam.toFixed(2)} TL
+
+        </div>
+
+    `;
+
 
     document.getElementById(
-        "sepetToplam"
-    ).innerText=
-        toplam.toFixed(2);
+        "modalSiparisOzet"
+    ).innerHTML=html;
+
+
+    document.getElementById(
+        "siparisModal"
+    ).style.display="flex";
 
 }
 
 
-/* ================= SİPARİŞ GÖNDER ================= */
+/* =====================================================
+   SİPARİŞİ GERÇEKTEN GÖNDER
+===================================================== */
 
-function siparisGonder(){
-
-    if(!masaNo){
-
-        alert(
-            "Masa numarası belirlenemedi."
-        );
-
-        return;
-    }
-
-    if(Object.keys(sepet).length===0){
-
-        alert(
-            "Lütfen ürün seçin."
-        );
-
-        return;
-    }
+function siparisiOnaylaVeGonder(){
 
     const urunler={};
 
     let toplam=0;
 
-    Object.keys(sepet).forEach(id=>{
+
+    Object.keys(sepet)
+    .forEach(id=>{
 
         const u=sepet[id];
 
+
         urunler[id]={
+
             ad:u.ad,
+
             fiyat:u.fiyat,
+
             adet:u.adet
+
         };
 
-        toplam+=u.adet*u.fiyat;
+
+        toplam+=
+            u.adet*u.fiyat;
 
     });
 
-    const saat=
+
+    const zaman=
         new Date().toLocaleTimeString(
             "tr-TR",
             {
@@ -948,38 +1423,39 @@ function siparisGonder(){
             }
         );
 
+
     db.ref("siparisler")
     .push({
 
-        masa:String(masaNo),
+        masa:masa,
 
         urunler:urunler,
 
         toplam:toplam,
 
-        durum:"bekliyor",
+        zaman:zaman,
 
-        zaman:saat
+        durum:"bekliyor"
 
     })
     .then(()=>{
-
-        alert(
-            "✅ Siparişiniz garsona gönderildi."
-        );
 
         sepet={};
 
         sepetGoster();
 
-        panelAc("hesapPanel");
+        modalKapat();
+
+        bildirimGoster(
+            "✅ Siparişiniz garsona gönderildi."
+        );
 
     })
     .catch(error=>{
 
         alert(
-            "Sipariş gönderilemedi:\n"+
-            error.message
+            "Sipariş gönderilemedi:\n"
+            +error.message
         );
 
     });
@@ -987,136 +1463,37 @@ function siparisGonder(){
 }
 
 
-/* ================= HESAP ================= */
+/* =====================================================
+   MODAL
+===================================================== */
 
-function hesapDinle(){
+function modalKapat(){
 
-    if(!masaNo)return;
-
-    db.ref("siparisler").on("value",snapshot=>{
-
-        const data=snapshot.val()||{};
-
-        const hesap={};
-
-        let toplam=0;
-
-        Object.values(data).forEach(siparis=>{
-
-            if(!siparis)return;
-
-            if(
-                String(siparis.masa)!==
-                String(masaNo)
-            )return;
-
-            /*
-              SADECE ONAYLANANLAR
-              HESABA EKLENİR
-            */
-
-            if(
-                siparis.durum!=="onaylandi"
-            )return;
-
-            Object.values(
-                siparis.urunler||{}
-            ).forEach(u=>{
-
-                const key=
-                    String(u.ad)
-                    .toLowerCase();
-
-                if(!hesap[key]){
-
-                    hesap[key]={
-                        ad:u.ad,
-                        adet:0,
-                        fiyat:
-                        parseFloat(u.fiyat)||0
-                    };
-
-                }
-
-                hesap[key].adet+=
-                    parseInt(u.adet)||0;
-
-                toplam+=
-                    (parseFloat(u.fiyat)||0)*
-                    (parseInt(u.adet)||0);
-
-            });
-
-        });
-
-        const liste=
-            document.getElementById(
-                "hesapListesi"
-            );
-
-        if(Object.keys(hesap).length===0){
-
-            liste.innerHTML=`
-                <div class="bos">
-                    Henüz onaylanmış siparişiniz yok.
-                </div>
-            `;
-
-        }else{
-
-            let html="";
-
-            Object.values(hesap)
-            .forEach(u=>{
-
-                html+=`
-
-                    <div class="hesap-row">
-
-                        <span>
-                            ${u.ad}
-                            × ${u.adet}
-                        </span>
-
-                        <strong>
-                            ${(u.adet*u.fiyat).toFixed(2)}
-                            TL
-                        </strong>
-
-                    </div>
-
-                `;
-
-            });
-
-            liste.innerHTML=html;
-
-        }
-
-        document.getElementById(
-            "hesapToplam"
-        ).innerText=
-            toplam.toFixed(2);
-
-    });
+    document.getElementById(
+        "siparisModal"
+    ).style.display="none";
 
 }
 
 
-/* ================= GARSON ================= */
+/* =====================================================
+   GARSON ÇAĞIR
+===================================================== */
 
 function garsonCagir(){
 
-    if(!masaNo){
-
-        alert(
-            "Masa numarası belirlenemedi."
-        );
+    if(
+        !confirm(
+            "Garson masanıza çağrılsın mı?"
+        )
+    ){
 
         return;
+
     }
 
-    const saat=
+
+    const zaman=
         new Date().toLocaleTimeString(
             "tr-TR",
             {
@@ -1125,128 +1502,371 @@ function garsonCagir(){
             }
         );
 
+
     db.ref("bildirimler")
     .push({
 
-        masa:String(masaNo),
+        masa:masa,
 
-        zaman:saat
+        zaman:zaman
 
     })
     .then(()=>{
 
-        alert(
+        bildirimGoster(
             "🔔 Garson çağrınız gönderildi."
         );
 
+    })
+    .catch(error=>{
+
+        alert(
+            "Garson çağrısı gönderilemedi:\n"
+            +error.message
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   HESAP
+   SADECE ONAYLANMIŞ SİPARİŞLER
+===================================================== */
+
+db.ref("siparisler")
+.on("value",snapshot=>{
+
+    const data=
+        snapshot.val() || {};
+
+    const liste=
         document.getElementById(
-            "cagriDurum"
-        ).innerText=
-            "✓ Garson çağrıldı.";
+            "hesapListesi"
+        );
+
+    const toplamEl=
+        document.getElementById(
+            "hesapToplam"
+        );
+
+
+    const urunler={};
+
+    let toplam=0;
+
+
+    Object.values(data)
+    .forEach(siparis=>{
+
+        if(!siparis)
+            return;
+
+
+        if(
+            parseInt(siparis.masa)!==
+            masa
+        )
+            return;
+
+
+        /*
+           BEKLEYEN SİPARİŞ
+           HESABA GİRMEZ
+        */
+
+        if(
+            siparis.durum!=="onaylandi"
+        )
+            return;
+
+
+        const listeUrun=
+            siparis.urunler || {};
+
+
+        Object.values(listeUrun)
+        .forEach(u=>{
+
+            const ad=
+                String(
+                    u.ad || "Ürün"
+                ).trim();
+
+            const key=
+                ad.toLowerCase();
+
+            const adet=
+                parseInt(u.adet)||0;
+
+            const fiyat=
+                parseFloat(u.fiyat)||0;
+
+
+            if(!urunler[key]){
+
+                urunler[key]={
+
+                    ad:ad,
+
+                    adet:0,
+
+                    fiyat:fiyat
+
+                };
+
+            }
+
+
+            urunler[key].adet+=adet;
+
+
+            toplam+=
+                adet*fiyat;
+
+        });
 
     });
 
-}
+
+    liste.innerHTML="";
 
 
-/* ================= PANEL ================= */
+    if(
+        Object.keys(urunler).length===0
+    ){
 
-function panelAc(id,button){
+        liste.innerHTML=`
 
-    document
-    .querySelectorAll(".panel")
-    .forEach(x=>{
-        x.classList.remove("active");
-    });
+            <div class="bos-sepet">
 
-    document
-    .getElementById(id)
-    .classList.add("active");
+                Henüz onaylanmış sipariş
+                bulunmuyor.
 
-    document
-    .querySelectorAll(".sekme")
-    .forEach(x=>{
-        x.classList.remove("active");
-    });
+                <br><br>
 
-    if(button){
-        button.classList.add("active");
+                Bekleyen siparişler burada
+                görünmez.
+
+            </div>
+
+        `;
+
+    }else{
+
+        Object.values(urunler)
+        .forEach(u=>{
+
+            const tutar=
+                u.adet*u.fiyat;
+
+
+            liste.innerHTML+=`
+
+                <div class="hesap-urun">
+
+                    <span>
+
+                        ${escapeHtml(u.ad)}
+                        ×${u.adet}
+
+                    </span>
+
+                    <strong>
+
+                        ${tutar.toFixed(2)}
+                        TL
+
+                    </strong>
+
+                </div>
+
+            `;
+
+        });
+
     }
 
-    if(id==="hesapPanel"){
-        hesapDinle();
-    }
 
-}
+    toplamEl.innerText=
+        toplam.toFixed(2)
+        +" TL";
+
+});
 
 
-/* ================= YAZBOZ ================= */
+/* =====================================================
+   YAZ BOZ
+===================================================== */
 
-let yazbozAktif=false;
-let toplamEl=0;
-let oyuncuSayisi=0;
+let yazboz={
+
+    basladi:false,
+
+    tip:"tekli",
+
+    oyuncuSayisi:2,
+
+    oyunSayisi:2,
+
+    oyunlar:[],
+
+    aktifOyun:1
+
+};
+
+
+/* =====================================================
+   OYUN BAŞLAT
+===================================================== */
 
 function yazbozBaslat(){
 
-    oyuncuSayisi=
+    const tip=
+        document.getElementById(
+            "oyunTipi"
+        ).value;
+
+
+    const oyuncuSayisi=
         parseInt(
             document.getElementById(
                 "oyuncuSayisi"
             ).value
         );
 
-    toplamEl=
+
+    const oyunSayisi=
         parseInt(
             document.getElementById(
                 "oyunSayisi"
             ).value
         );
 
-    yazbozAktif=true;
+
+    yazboz={
+
+        basladi:true,
+
+        tip:tip,
+
+        oyuncuSayisi:oyuncuSayisi,
+
+        oyunSayisi:oyunSayisi,
+
+        oyunlar:[],
+
+        aktifOyun:1
+
+    };
+
+
+    for(
+        let i=1;
+        i<=oyunSayisi;
+        i++
+    ){
+
+        yazboz.oyunlar.push({
+
+            no:i,
+
+            kilitli:false,
+
+            baslangic:
+            i===1
+            ?
+            Date.now()
+            :
+            null,
+
+            skorlar:
+            Array(
+                oyuncuSayisi
+            ).fill(null)
+
+        });
+
+    }
+
 
     document.getElementById(
-        "yazbozBilgi"
-    ).innerText=
-        "Oyun başladı • "+
-        toplamEl+
-        " el oynanacak.";
+        "yazbozKurulum"
+    ).style.display="none";
 
-    ellerOlustur();
+
+    yazbozGoster();
 
 }
 
 
-function ellerOlustur(){
+/* =====================================================
+   YAZ BOZ GÖSTER
+===================================================== */
+
+function yazbozGoster(){
 
     const alan=
         document.getElementById(
-            "eller"
+            "yazbozOyunlar"
         );
+
 
     alan.innerHTML="";
 
-    for(let el=1;el<=toplamEl;el++){
 
-        let oyuncular="";
+    yazboz.oyunlar
+    .forEach(oyun=>{
 
-        for(
-            let oyuncu=1;
-            oyuncu<=oyuncuSayisi;
-            oyuncu++
+        let aktif=false;
+
+
+        if(
+            oyun.no===
+            yazboz.aktifOyun
+            &&
+            !oyun.kilitli
         ){
 
-            oyuncular+=`
+            aktif=true;
 
-                <div class="oyuncu">
+        }
 
-                    <strong>
-                        Oyuncu ${oyuncu}
-                    </strong>
+
+        let skorHtml="";
+
+
+        for(
+            let i=0;
+            i<yazboz.oyuncuSayisi;
+            i++
+        ){
+
+            const deger=
+                oyun.skorlar[i]===null
+                ?
+                ""
+                :
+                oyun.skorlar[i];
+
+
+            skorHtml+=`
+
+                <div class="oyuncu-skor">
 
                     <input
                         type="number"
-                        id="el${el}oyuncu${oyuncu}"
-                        placeholder="Skor"
+                        min="0"
+                        value="${deger}"
+                        placeholder="O${i+1}"
+                        ${!aktif ? "disabled":""}
+                        onchange="
+                        skorDegistir(
+                            ${oyun.no},
+                            ${i},
+                            this.value
+                        )"
                     >
 
                 </div>
@@ -1255,322 +1875,446 @@ function ellerOlustur(){
 
         }
 
+
+        let durum="Kilitli";
+
+
+        if(aktif){
+
+            durum="Aktif";
+
+        }else if(
+            oyun.no>yazboz.aktifOyun
+        ){
+
+            durum="Bekliyor";
+
+        }
+
+
         alan.innerHTML+=`
 
-            <div class="el">
+            <div
+                class="oyun-kart
+                ${aktif ? "aktif":""}
+                ${oyun.kilitli ? "kilitli":""}">
 
-                <h4>
-                    ${el}. OYUN
-                </h4>
+                <div class="oyun-no">
 
-                <div class="oyuncular">
-                    ${oyuncular}
+                    OYUN ${oyun.no}
+
                 </div>
+
+                <div class="oyun-durum">
+
+                    ${
+                        oyun.kilitli
+                        ?
+                        "🔒 KİLİTLİ"
+                        :
+                        aktif
+                        ?
+                        "🟢 AKTİF"
+                        :
+                        "⏳ BEKLİYOR"
+                    }
+
+                </div>
+
+
+                ${skorHtml}
+
 
                 <div
-                    id="kilit${el}"
-                    class="el-kilit">
+                    class="skor-toplam"
+                    id="oyunToplam-${oyun.no}">
+
+                    ${oyunSkorToplam(oyun)}
+
                 </div>
+
+
+                ${
+                    aktif
+                    ?
+                    `
+
+                    <button
+                        class="oyun-kilit-btn"
+                        onclick="
+                        oyunuKilitle(
+                        ${oyun.no}
+                        )">
+
+                        🔒 KİLİTLE
+
+                    </button>
+
+                    `
+                    :
+                    ""
+                }
+
+
+                ${
+                    oyun.kilitli
+                    ?
+                    `<div class="skor-kilit">
+                        ✓ Skor kilitlendi
+                    </div>`
+                    :
+                    ""
+                }
 
             </div>
 
         `;
 
-    }
-
-    document.getElementById(
-        "skorKaydet"
-    ).style.display="block";
-
-}
+    });
 
 
-/*
-   İlk oyun kilitlenmeden
-   ikinci oyun aktif olmayacak.
-*/
+    yazbozSonuclariGoster();
 
-function skorlariKilitle(){
 
-    if(!yazbozAktif)return;
+    /* İlk aktif oyun için
+       otomatik 1 dakika kontrolü */
 
-    const ilkOyunSkorlari=[];
+    const aktif=
+        yazboz.oyunlar.find(
+            x=>
+            x.no===
+            yazboz.aktifOyun
+            &&
+            !x.kilitli
+        );
 
-    for(
-        let oyuncu=1;
-        oyuncu<=oyuncuSayisi;
-        oyuncu++
-    ){
 
-        const input=
-            document.getElementById(
-                "el1oyuncu"+oyuncu
-            );
+    if(aktif){
 
-        if(
-            !input ||
-            input.value.trim()===""
-        ){
-
-            alert(
-                "1. oyunun tüm skorlarını girin."
-            );
-
-            return;
-
-        }
-
-        ilkOyunSkorlari.push(
-            input.value
+        yazbozZamanlayici(
+            aktif.no
         );
 
     }
 
-    /*
-       İlk oyun skorları kilitleniyor.
-    */
+}
 
-    for(
-        let oyuncu=1;
-        oyuncu<=oyuncuSayisi;
-        oyuncu++
-    ){
 
-        const input=
-            document.getElementById(
-                "el1oyuncu"+oyuncu
-            );
+/* =====================================================
+   SKOR DEĞİŞTİR
+===================================================== */
 
-        input.disabled=true;
+function skorDegistir(
+    oyunNo,
+    oyuncu,
+    deger
+){
 
-    }
+    const oyun=
+        yazboz.oyunlar.find(
+            x=>x.no===oyunNo
+        );
 
-    document.getElementById(
-        "kilit1"
-    ).innerText=
-        "🔒 1. OYUN KİLİTLENDİ";
 
-    /*
-       2. oyun aktif.
-    */
+    if(!oyun)
+        return;
 
-    if(toplamEl>=2){
 
-        for(
-            let oyuncu=1;
-            oyuncu<=oyuncuSayisi;
-            oyuncu++
-        ){
+    if(oyun.kilitli)
+        return;
 
-            const input=
-                document.getElementById(
-                    "el2oyuncu"+oyuncu
-                );
 
-            if(input){
-                input.disabled=false;
-            }
+    if(
+        oyunNo!==yazboz.aktifOyun
+    )
+        return;
 
-        }
 
+    let skor=
+        parseInt(deger);
+
+
+    if(isNaN(skor))
+        skor=0;
+
+
+    if(skor<0)
+        skor=0;
+
+
+    oyun.skorlar[oyuncu]=skor;
+
+
+    const toplamEl=
         document.getElementById(
-            "yazbozBilgi"
-        ).innerText=
-            "✓ 1. oyun kilitlendi. "+
-            "Şimdi 2. oyunun skorlarını girin.";
+            "oyunToplam-"+oyunNo
+        );
+
+
+    if(toplamEl){
+
+        toplamEl.innerText=
+            oyunSkorToplam(oyun);
 
     }
 
-    /*
-       Sonraki eller başlangıçta pasif.
-    */
 
-    for(
-        let el=3;
-        el<=toplamEl;
-        el++
-    ){
-
-        for(
-            let oyuncu=1;
-            oyuncu<=oyuncuSayisi;
-            oyuncu++
-        ){
-
-            const input=
-                document.getElementById(
-                    "el"+el+
-                    "oyuncu"+oyuncu
-                );
-
-            if(input){
-                input.disabled=true;
-            }
-
-        }
-
-    }
-
-    document.getElementById(
-        "skorKaydet"
-    ).onclick=
-        sonrakiOyunuKilitle;
+    yazbozSonuclariGoster();
 
 }
 
 
-/*
-   Her oyun tamamlandığında
-   bir sonraki oyun açılır.
-*/
+/* =====================================================
+   OYUN SKOR TOPLAMI
+===================================================== */
 
-function sonrakiOyunuKilitle(){
+function oyunSkorToplam(oyun){
 
-    let aktifEl=0;
-
-    for(
-        let el=1;
-        el<=toplamEl;
-        el++
-    ){
-
-        const input=
-            document.getElementById(
-                "el"+el+
-                "oyuncu1"
-            );
-
-        if(!input)continue;
-
-        if(!input.disabled){
-
-            aktifEl=el;
-            break;
-
-        }
-
-    }
-
-    if(!aktifEl)return;
-
-    for(
-        let oyuncu=1;
-        oyuncu<=oyuncuSayisi;
-        oyuncu++
-    ){
-
-        const input=
-            document.getElementById(
-                "el"+
-                aktifEl+
-                "oyuncu"+
-                oyuncu
-            );
-
-        if(
-            !input ||
-            input.value.trim()===""
-        ){
-
-            alert(
-                aktifEl+
-                ". oyunun tüm skorlarını girin."
-            );
-
-            return;
-
-        }
-
-    }
-
-    /*
-       1 dakika içinde değiştirme
-       isteğine uygun olarak oyun
-       kilitlendiğinde input kapanıyor.
-    */
-
-    for(
-        let oyuncu=1;
-        oyuncu<=oyuncuSayisi;
-        oyuncu++
-    ){
-
-        const input=
-            document.getElementById(
-                "el"+
-                aktifEl+
-                "oyuncu"+
-                oyuncu
-            );
-
-        input.disabled=true;
-
-    }
-
-    document.getElementById(
-        "kilit"+aktifEl
-    ).innerText=
-        "🔒 "+
-        aktifEl+
-        ". OYUN KİLİTLENDİ";
-
-    const sonraki=
-        aktifEl+1;
-
-    if(sonraki<=toplamEl){
-
-        for(
-            let oyuncu=1;
-            oyuncu<=oyuncuSayisi;
-            oyuncu++
-        ){
-
-            const input=
-                document.getElementById(
-                    "el"+
-                    sonraki+
-                    "oyuncu"+
-                    oyuncu
-                );
-
-            if(input){
-                input.disabled=false;
-            }
-
-        }
-
-        document.getElementById(
-            "yazbozBilgi"
-        ).innerText=
-            "✓ "+
-            aktifEl+
-            ". oyun kilitlendi. "+
-            sonraki+
-            ". oyun aktif.";
-
-    }else{
-
-        document.getElementById(
-            "yazbozBilgi"
-        ).innerText=
-            "🏆 TÜM OYUNLAR TAMAMLANDI.";
-
-        document.getElementById(
-            "skorKaydet"
-        ).style.display="none";
-
-    }
+    return oyun.skorlar
+    .reduce(
+        (toplam,x)=>
+            toplam+
+            (parseInt(x)||0),
+        0
+    )
+    +" puan";
 
 }
 
 
-/* ================= BAŞLAT ================= */
+/* =====================================================
+   OYUNU KİLİTLE
+===================================================== */
 
-urunleriDinle();
-hesapDinle();
+function oyunuKilitle(oyunNo){
+
+    const oyun=
+        yazboz.oyunlar.find(
+            x=>x.no===oyunNo
+        );
+
+
+    if(!oyun)
+        return;
+
+
+    if(
+        oyunNo!==yazboz.aktifOyun
+    )
+        return;
+
+
+    if(oyun.kilitli)
+        return;
+
+
+    oyun.kilitli=true;
+
+
+    /*
+       Sonraki oyun aktif oluyor
+    */
+
+    if(
+        yazboz.aktifOyun<
+        yazboz.oyunSayisi
+    ){
+
+        yazboz.aktifOyun++;
+
+        const sonraki=
+            yazboz.oyunlar.find(
+                x=>
+                x.no===
+                yazboz.aktifOyun
+            );
+
+
+        if(sonraki){
+
+            sonraki.baslangic=
+                Date.now();
+
+        }
+
+    }
+
+
+    yazbozGoster();
+
+}
+
+
+/* =====================================================
+   1 DAKİKA ZAMANLAYICI
+===================================================== */
+
+function yazbozZamanlayici(oyunNo){
+
+    const oyun=
+        yazboz.oyunlar.find(
+            x=>x.no===oyunNo
+        );
+
+
+    if(!oyun || oyun.kilitli)
+        return;
+
+
+    const gecen=
+        Date.now()-
+        oyun.baslangic;
+
+
+    const kalan=
+        60000-gecen;
+
+
+    if(kalan<=0){
+
+        oyunuKilitle(
+            oyunNo
+        );
+
+        return;
+
+    }
+
+
+    setTimeout(()=>{
+
+        yazbozZamanlayici(
+            oyunNo
+        );
+
+    },1000);
+
+}
+
+
+/* =====================================================
+   YAZ BOZ SONUÇLARI
+===================================================== */
+
+function yazbozSonuclariGoster(){
+
+    const sonuc=
+        document.getElementById(
+            "yazbozSonuc"
+        );
+
+
+    if(!yazboz.basladi){
+
+        sonuc.style.display="none";
+
+        return;
+
+    }
+
+
+    sonuc.style.display="block";
+
+
+    const toplamlar=
+        Array(
+            yazboz.oyuncuSayisi
+        ).fill(0);
+
+
+    yazboz.oyunlar
+    .forEach(oyun=>{
+
+        oyun.skorlar
+        .forEach((skor,i)=>{
+
+            toplamlar[i]+=
+                parseInt(skor)||0;
+
+        });
+
+    });
+
+
+    let html="<h3>🏆 Toplam Skor</h3>";
+
+
+    toplamlar
+    .forEach((skor,i)=>{
+
+        html+=`
+
+            <div class="skor-satir">
+
+                <span>
+                    Oyuncu ${i+1}
+                </span>
+
+                <strong>
+                    ${skor}
+                </strong>
+
+            </div>
+
+        `;
+
+    });
+
+
+    sonuc.innerHTML=html;
+
+}
+
+
+/* =====================================================
+   BİLDİRİM
+===================================================== */
+
+function bildirimGoster(mesaj){
+
+    const el=
+        document.getElementById(
+            "bildirim"
+        );
+
+
+    el.innerText=mesaj;
+
+    el.style.display="block";
+
+
+    setTimeout(()=>{
+
+        el.style.display="none";
+
+    },2500);
+
+}
+
+
+/* =====================================================
+   HTML GÜVENLİK
+===================================================== */
+
+function escapeHtml(text){
+
+    return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =====================================================
+   BAŞLANGIÇ
+===================================================== */
+
+sepetGoster();
 
 </script>
 
 </body>
 </html>
-```
