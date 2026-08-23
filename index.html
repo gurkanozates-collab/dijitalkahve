@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Dijital Kahvem</title>
 
@@ -37,18 +37,18 @@ header{
 
 header h1{
     margin:0;
-    font-size:25px;
+    font-size:26px;
 }
 
 header p{
     margin:5px 0;
-    font-size:14px;
+    font-size:15px;
 }
 
 .masa{
     display:inline-block;
-    margin-top:5px;
-    padding:7px 18px;
+    margin-top:6px;
+    padding:7px 20px;
     background:white;
     color:#4e342e;
     border-radius:20px;
@@ -64,6 +64,7 @@ header p{
     display:grid;
     grid-template-columns:repeat(5,1fr);
     gap:8px;
+
     padding:10px;
 
     background:white;
@@ -77,15 +78,15 @@ header p{
 }
 
 .ust button{
-    min-height:50px;
+    min-height:58px;
 
     border:0;
     border-radius:10px;
 
     color:white;
 
-    font-size:14px;
-    font-weight:bold;
+    font-size:17px;
+    font-weight:700;
 
     cursor:pointer;
 
@@ -97,42 +98,29 @@ header p{
 }
 
 
-/* MENÜ */
+/* =====================================================
+   BUTON RENKLERİ
+===================================================== */
 
 #menuBtn{
     background:#5d4037;
 }
 
-
-/* GARSON */
-
 #garsonBtn{
     background:#ef6c00;
 }
-
-
-/* YAZ BOZ */
 
 #yazbozBtn{
     background:#7b1fa2;
 }
 
-
-/* HESAP */
-
 #hesapBtn{
     background:#2e7d32;
 }
 
-
-/* SİPARİŞ */
-
 #siparisBtn{
     background:#1565c0;
 }
-
-
-/* AKTİF */
 
 .ust button.aktif{
     filter:brightness(.82);
@@ -183,7 +171,7 @@ header p{
 .kategori{
     margin:15px 0 8px;
 
-    font-size:19px;
+    font-size:20px;
 
     font-weight:bold;
 }
@@ -194,7 +182,7 @@ header p{
     grid-template-columns:
         repeat(4,1fr);
 
-    gap:9px;
+    gap:10px;
 }
 
 .urun{
@@ -204,9 +192,9 @@ header p{
 
     border-radius:12px;
 
-    padding:11px;
+    padding:12px;
 
-    min-height:100px;
+    min-height:105px;
 
     box-shadow:0 2px 8px #0001;
 
@@ -220,7 +208,7 @@ header p{
 .urun h3{
     margin:0;
 
-    font-size:14px;
+    font-size:15px;
 }
 
 .fiyat{
@@ -242,8 +230,8 @@ header p{
 }
 
 .adet button{
-    width:32px;
-    height:32px;
+    width:34px;
+    height:34px;
 
     border:0;
 
@@ -251,7 +239,7 @@ header p{
 
     background:#e5e5e5;
 
-    font-size:20px;
+    font-size:21px;
 
     font-weight:bold;
 
@@ -259,7 +247,7 @@ header p{
 }
 
 .adet span{
-    font-size:15px;
+    font-size:16px;
 
     font-weight:bold;
 }
@@ -319,7 +307,7 @@ header p{
 
 
 /* =====================================================
-   YAZ BOZ AYARLAR
+   YAZ BOZ AYARLARI
 ===================================================== */
 
 .yz-ayar{
@@ -347,6 +335,8 @@ header p{
     background:#eee;
 
     font-weight:bold;
+
+    cursor:pointer;
 }
 
 .yz-secim button.aktif{
@@ -372,6 +362,8 @@ header p{
     border-radius:8px;
 
     font-weight:bold;
+
+    cursor:pointer;
 }
 
 .yz-oyuncular button.aktif{
@@ -381,17 +373,19 @@ header p{
 }
 
 #oyunSayisi{
-    width:90px;
+    width:100px;
 
     padding:10px;
 
     border:1px solid #ccc;
 
     border-radius:8px;
+
+    font-size:16px;
 }
 
 .yz-baslat{
-    padding:13px;
+    padding:14px;
 
     border:0;
 
@@ -402,20 +396,27 @@ header p{
     color:white;
 
     font-weight:bold;
+
+    font-size:15px;
+
+    cursor:pointer;
 }
 
 
 /* =====================================================
    YAZ BOZ OYUN ALANI
-   DAHA DAR X
-   DAHA UZUN Y
 ===================================================== */
 
 #yzOyun{
 
     width:100%;
 
-    max-width:500px;
+    max-width:600px;
+
+    /*
+       Sayfanın yaklaşık 4'te 1'i
+       kadar alan.
+    */
 
     height:40vh;
 
@@ -451,7 +452,17 @@ header p{
 
     display:grid;
 
-    min-width:275px;
+    /*
+       X EKSENİ = 75 PX
+
+       İlk sütun:
+       Oyun numarası = 75px
+
+       Oyuncular:
+       Her biri = 75px
+    */
+
+    min-width:225px;
 }
 
 
@@ -484,7 +495,7 @@ header p{
 
 
 /* =====================================================
-   BAŞLIK
+   TABLO BAŞLIĞI
 ===================================================== */
 
 .yz-baslik{
@@ -515,7 +526,7 @@ header p{
 
     justify-content:flex-start;
 
-    padding-left:6px;
+    padding-left:7px;
 
     background:#fafafa;
 
@@ -525,7 +536,9 @@ header p{
 }
 
 
-/* AKTİF */
+/* =====================================================
+   AKTİF OYUN
+===================================================== */
 
 .yz-aktif{
 
@@ -534,12 +547,12 @@ header p{
 
 
 /* =====================================================
-   SKOR
+   SKOR KUTUSU
 ===================================================== */
 
 .yz-skor{
 
-    width:36px;
+    width:56px;
 
     height:22px;
 
@@ -561,6 +574,8 @@ header p{
     background:#eee;
 
     color:#777;
+
+    cursor:not-allowed;
 }
 
 
@@ -570,7 +585,7 @@ header p{
 
 .yz-durum{
 
-    height:25px;
+    min-height:25px;
 
     margin-top:5px;
 
@@ -602,7 +617,7 @@ header p{
 
     background:#f5f5f5;
 
-    padding:4px;
+    padding:5px;
 
     text-align:center;
 
@@ -628,14 +643,18 @@ header p{
         padding:7px;
     }
 
+
     .ust button{
 
-        min-height:50px;
+        min-height:58px;
 
         padding:8px 2px;
 
-        font-size:11px;
+        font-size:15px;
+
+        font-weight:700;
     }
+
 
     .menu{
 
@@ -643,13 +662,37 @@ header p{
             repeat(2,1fr);
     }
 
+
     #yzOyun{
 
-        max-width:500px;
+        max-width:600px;
 
         height:40vh;
 
         min-height:300px;
+    }
+
+}
+
+
+/* =====================================================
+   ÇOK KÜÇÜK TELEFONLAR
+===================================================== */
+
+@media(max-width:400px){
+
+    .ust{
+
+        gap:3px;
+
+        padding:5px;
+    }
+
+    .ust button{
+
+        min-height:55px;
+
+        font-size:13px;
     }
 
 }
@@ -687,7 +730,7 @@ header p{
 
 
 <!-- =====================================================
-     ÜST MENÜ
+     ÜST BUTONLAR
 ===================================================== -->
 
 <div class="ust">
@@ -746,13 +789,15 @@ header p{
 
 
 <!-- =====================================================
-     MENÜ PANELİ
+     MENÜ
 ===================================================== -->
 
 <div
     id="menuPanel"
     class="panel aktif">
 
+
+    <!-- SICAK -->
 
     <div class="kategori">
 
@@ -906,6 +951,8 @@ header p{
     </div>
 
 
+    <!-- SOĞUK -->
+
     <div class="kategori">
 
         🧊 SOĞUK İÇECEKLER
@@ -988,6 +1035,8 @@ header p{
     </div>
 
 
+    <!-- ATIŞTIRMALIK -->
+
     <div class="kategori">
 
         🍪 ATIŞTIRMALIKLAR
@@ -1034,6 +1083,7 @@ header p{
 
     </div>
 
+
 </div>
 
 
@@ -1051,7 +1101,7 @@ header p{
     </h2>
 
 
-    <!-- AYARLAR -->
+    <!-- YAZ BOZ AYAR -->
 
     <div
         id="yzAyar"
@@ -1149,7 +1199,7 @@ header p{
     </div>
 
 
-    <!-- OYUN -->
+    <!-- YAZ BOZ OYUN -->
 
     <div
         id="yzOyun"
@@ -1236,11 +1286,13 @@ const params =
         window.location.search
     );
 
+
 let masa =
     params.get("masa") ||
     params.get("table") ||
     params.get("masaNo") ||
     "1";
+
 
 document
     .getElementById("masaNo")
@@ -1424,7 +1476,8 @@ function panelAc(panel){
 function garsonCagir(){
 
     alert(
-        "🔔 Garson çağrıldı!\n\nMasa: " +
+        "🔔 Garson çağrıldı!\n\n" +
+        "Masa: " +
         masa
     );
 
@@ -1453,11 +1506,14 @@ function siparisGonder(){
                     const adet =
                         sepet[urun];
 
+
                     const tutar =
                         adet *
                         urunler[urun];
 
+
                     toplam += tutar;
+
 
                     liste.push(
                         adet +
@@ -1514,6 +1570,7 @@ function hesapGoster(){
         document.getElementById(
             "hesapListe"
         );
+
 
     let toplam = 0;
 
@@ -1595,7 +1652,8 @@ function hesapGoster(){
 function hesapIstiyorum(){
 
     alert(
-        "💳 Hesap istendi!\n\nMasa: " +
+        "💳 Hesap istendi!\n\n" +
+        "Masa: " +
         masa
     );
 
@@ -1809,7 +1867,7 @@ function yzBaslat(){
 
 
 /* =====================================================
-   TABLO
+   YAZ BOZ TABLOSU
 ===================================================== */
 
 function yzTabloOlustur(){
@@ -1830,13 +1888,14 @@ function yzTabloOlustur(){
 
 
     /*
-       X EKSENİ DAR:
-       55px oyun
-       55px oyuncu
+       X EKSENİ 75PX
+
+       OYUN       = 75PX
+       OYUNCULAR  = 75PX
     */
 
     grid.style.gridTemplateColumns =
-        `55px repeat(${yzOyuncuSayisi},55px)`;
+        `75px repeat(${yzOyuncuSayisi},75px)`;
 
 
     grid.className =
@@ -2033,7 +2092,7 @@ function yzSkorDegisti(e){
 
 
 /* =====================================================
-   TÜM SKORLAR GİRİLDİ Mİ?
+   TÜM SKORLAR GİRİLDİ
 ===================================================== */
 
 function yzTumSkorlarGirildi(){
@@ -2102,7 +2161,7 @@ function yzTumSkorlarGirildi(){
 
 
 /* =====================================================
-   SÜRE
+   SÜRE KONTROL
 ===================================================== */
 
 function yzSureKontrol(){
@@ -2147,7 +2206,7 @@ function yzSureKontrol(){
 
 
 /* =====================================================
-   OYUNU KİLİTLE
+   OYUN KİLİTLE
 ===================================================== */
 
 function yzOyunKilitle(){
@@ -2164,6 +2223,7 @@ function yzOyunKilitle(){
 
     oyun.kilitli =
         true;
+
 
     oyun.basladi =
         false;
@@ -2222,7 +2282,7 @@ function yzOyunKilitle(){
 
 
 /* =====================================================
-   TOPLAM SKOR
+   TOPLAM SKORLAR
 ===================================================== */
 
 function yzToplamGoster(){
@@ -2242,7 +2302,7 @@ function yzToplamGoster(){
         p++
     ){
 
-        let toplam=0;
+        let toplam = 0;
 
 
         yzOyunlar.forEach(
