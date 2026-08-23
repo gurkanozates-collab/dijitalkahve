@@ -242,7 +242,7 @@ header p{
 }
 
 /* =========================
-   YAZ BOZ AYAR
+   YAZ BOZ
 ========================= */
 
 .yz-ayar{
@@ -315,12 +315,8 @@ header p{
 #yzOyun{
     width:100%;
     max-width:500px;
-
-    /* Sayfanın yaklaşık 1/4'ü */
     height:25vh;
-
     min-height:220px;
-
     margin:15px auto 0;
 }
 
@@ -438,10 +434,6 @@ header p{
 
 <body>
 
-<!-- =========================
-     BAŞLIK
-========================= -->
-
 <header>
 
     <h1>☕ DİJİTAL KAHVEM</h1>
@@ -509,11 +501,7 @@ header p{
         ☕ SICAK İÇECEKLER
     </div>
 
-
     <div class="menu">
-
-
-        <!-- ÇAY -->
 
         <div class="urun">
 
@@ -544,8 +532,6 @@ header p{
         </div>
 
 
-        <!-- NESCAFE -->
-
         <div class="urun">
 
             <h3>Nescafe</h3>
@@ -575,8 +561,6 @@ header p{
         </div>
 
 
-        <!-- TÜRK KAHVESİ -->
-
         <div class="urun">
 
             <h3>Türk Kahvesi</h3>
@@ -605,8 +589,6 @@ header p{
 
         </div>
 
-
-        <!-- SU -->
 
         <div class="urun">
 
@@ -643,11 +625,7 @@ header p{
         🧊 SOĞUK İÇECEKLER
     </div>
 
-
     <div class="menu">
-
-
-        <!-- KOLA -->
 
         <div class="urun">
 
@@ -677,8 +655,6 @@ header p{
 
         </div>
 
-
-        <!-- FANTA -->
 
         <div class="urun">
 
@@ -715,11 +691,7 @@ header p{
         🍪 ATIŞTIRMALIKLAR
     </div>
 
-
     <div class="menu">
-
-
-        <!-- TOST -->
 
         <div class="urun">
 
@@ -766,16 +738,13 @@ header p{
         📝 YAZ-BOZ
     </h2>
 
-
     <div
         id="yzAyar"
         class="yz-ayar">
 
-
         <b>
             Oyun Türü
         </b>
-
 
         <div class="yz-secim">
 
@@ -787,7 +756,6 @@ header p{
                 👥 Eşli Oyun
 
             </button>
-
 
             <button
                 id="yzTekli"
@@ -803,7 +771,6 @@ header p{
         <b>
             Oyuncu Sayısı
         </b>
-
 
         <div class="yz-oyuncular">
 
@@ -829,7 +796,6 @@ header p{
         <b>
             Kaç oyun oynanacak?
         </b>
-
 
         <input
             id="oyunSayisi"
@@ -859,12 +825,10 @@ header p{
             class="yz-tablo">
         </div>
 
-
         <div
             id="yzDurum"
             class="yz-durum">
         </div>
-
 
         <div
             id="yzToplam"
@@ -891,13 +855,11 @@ header p{
 
     <div class="bekleyen-bilgi">
 
-        🟡 Bekleyen siparişler
-        hesaba dahil edilmez.
+        🟡 Bekleyen siparişler hesaba dahil edilmez.
 
         <br>
 
-        🟢 Sipariş onaylandığında
-        hesaba eklenir.
+        🟢 Sipariş onaylandığında hesaba eklenir.
 
     </div>
 
@@ -925,16 +887,10 @@ header p{
 
 </div>
 
-
 </div>
 
 
-<!-- ==================================================
-     JAVASCRIPT
-================================================== -->
-
 <script type="module">
-
 
 /* ==================================================
    FIREBASE
@@ -944,7 +900,6 @@ import {
     initializeApp
 }
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
 
 import {
     getFirestore,
@@ -959,11 +914,9 @@ import {
 from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/*
-======================================================
-BURAYA KENDİ FIREBASE BİLGİLERİNİ YAZ
-======================================================
-*/
+/* ==================================================
+   FIREBASE CONFIG
+================================================== */
 
 const firebaseConfig = {
 
@@ -991,14 +944,12 @@ const firebaseConfig = {
 const app =
     initializeApp(firebaseConfig);
 
-
 const db =
     getFirestore(app);
 
 
-
 /* ==================================================
-   MASA NUMARASI
+   MASA
 ================================================== */
 
 const params =
@@ -1006,18 +957,15 @@ const params =
         window.location.search
     );
 
-
 const masa =
     params.get("masa") ||
     params.get("table") ||
     "1";
 
-
 document.getElementById(
     "masaNo"
 ).textContent =
     "MASA " + masa;
-
 
 
 /* ==================================================
@@ -1045,7 +993,6 @@ const urunler = {
 
 let sepet = {};
 
-
 Object.keys(urunler).forEach(
     urun => {
 
@@ -1055,50 +1002,63 @@ Object.keys(urunler).forEach(
 );
 
 
-
 /* ==================================================
-   ÜRÜN ARTIR
+   ADET ARTIR
 ================================================== */
 
 window.adetArtir =
 function(urun){
 
-    sepet[urun]++;
+    sepet[urun] =
+        Number(sepet[urun]) + 1;
 
-    document.getElementById(
-        "adet-" + urun
-    ).textContent =
-        sepet[urun];
+    const el =
+        document.getElementById(
+            "adet-" + urun
+        );
+
+    if(el){
+
+        el.textContent =
+            sepet[urun];
+
+    }
 
 };
 
 
-
 /* ==================================================
-   ÜRÜN AZALT
+   ADET AZALT
 ================================================== */
 
 window.adetAzalt =
 function(urun){
 
-    if(sepet[urun] > 0){
+    if(
+        Number(sepet[urun]) > 0
+    ){
 
         sepet[urun]--;
 
     }
 
+    const el =
+        document.getElementById(
+            "adet-" + urun
+        );
 
-    document.getElementById(
-        "adet-" + urun
-    ).textContent =
-        sepet[urun];
+    if(el){
+
+        el.textContent =
+            sepet[urun];
+
+    }
 
 };
 
 
-
 /* ==================================================
-   PANEL DEĞİŞTİR
+   PANEL AÇ
 ================================================== */
 
 window.panelAc =
@@ -1111,7 +1071,6 @@ function(panel){
             p.classList.remove("aktif")
         );
 
-
     document
         .getElementById(panel)
         .classList.add("aktif");
@@ -1119,9 +1078,8 @@ function(panel){
 };
 
 
-
 /* ==================================================
-   GARSON ÇAĞIR
+   GARSON
 ================================================== */
 
 window.garsonCagir =
@@ -1133,7 +1091,6 @@ function(){
     );
 
 };
-
 
 
 /* ==================================================
@@ -1151,10 +1108,10 @@ async function(){
     Object.keys(sepet).forEach(
         urun => {
 
-            if(sepet[urun] > 0){
+            const adet =
+                Number(sepet[urun]);
 
-                const adet =
-                    sepet[urun];
+            if(adet > 0){
 
                 const tutar =
                     adet *
@@ -1169,8 +1126,7 @@ async function(){
 
                     adet:adet,
 
-                    fiyat:
-                        urunler[urun],
+                    fiyat:urunler[urun],
 
                     tutar:tutar
 
@@ -1181,8 +1137,6 @@ async function(){
         }
     );
 
-
-    /* ÜRÜN SEÇİLMEDİ */
 
     if(
         urunListesi.length === 0
@@ -1199,8 +1153,9 @@ async function(){
 
     try{
 
-
-        /* FIREBASE'E GÖNDER */
+        /* =========================
+           FIREBASE'E GÖNDER
+        ========================= */
 
         await addDoc(
             collection(
@@ -1209,8 +1164,7 @@ async function(){
             ),
             {
 
-                masa:
-                    String(masa),
+                masa:String(masa),
 
                 urunler:
                     urunListesi,
@@ -1229,7 +1183,7 @@ async function(){
 
 
         /* =========================
-           SEPETİ SIFIRLA
+           SEPETİ TAMAMEN SIFIRLA
         ========================= */
 
         Object.keys(sepet)
@@ -1238,10 +1192,46 @@ async function(){
 
                 sepet[urun] = 0;
 
+            }
+        );
 
-                document.getElementById(
-                    "adet-" + urun
-                ).textContent = "0";
+
+        /* =========================
+           EKRANDAKİ TÜM SAYILARI
+           SIFIRLA
+        ========================= */
+
+        document
+            .querySelectorAll(
+                ".adet span"
+            )
+            .forEach(
+                span => {
+
+                    span.textContent = "0";
+
+                }
+            );
+
+
+        /* =========================
+           TEK TEK KONTROL
+        ========================= */
+
+        Object.keys(urunler)
+        .forEach(
+            urun => {
+
+                const el =
+                    document.getElementById(
+                        "adet-" + urun
+                    );
+
+                if(el){
+
+                    el.textContent = "0";
+
+                }
 
             }
         );
@@ -1254,7 +1244,9 @@ async function(){
         );
 
 
-        /* HESABA GİT */
+        /* =========================
+           HESABIM'A GİT
+        ========================= */
 
         panelAc("hesap");
 
@@ -1262,8 +1254,9 @@ async function(){
 
     catch(hata){
 
-        console.error(hata);
-
+        console.error(
+            hata
+        );
 
         alert(
             "❌ Sipariş gönderilemedi.\n\n" +
@@ -1275,9 +1268,8 @@ async function(){
 };
 
 
-
 /* ==================================================
-   GERÇEK ZAMANLI SİPARİŞLER
+   SİPARİŞLERİ GERÇEK ZAMANLI DİNLE
 ================================================== */
 
 const siparisQuery =
@@ -1308,7 +1300,6 @@ onSnapshot(
 
         const siparisler = [];
 
-
         snapshot.forEach(
             item => {
 
@@ -1323,14 +1314,21 @@ onSnapshot(
             }
         );
 
-
         hesapGoster(
             siparisler
         );
 
+    },
+
+    hata => {
+
+        console.error(
+            "Sipariş dinleme hatası:",
+            hata
+        );
+
     }
 );
-
 
 
 /* ==================================================
@@ -1346,16 +1344,12 @@ function hesapGoster(
             "siparisGecmisi"
         );
 
-
     alan.innerHTML = "";
-
 
     let genelToplam = 0;
 
     let bekleyenToplam = 0;
 
-
-    /* HİÇ SİPARİŞ YOK */
 
     if(
         siparisler.length === 0
@@ -1371,35 +1365,23 @@ function hesapGoster(
 
         `;
 
-
         document.getElementById(
             "genelToplam"
         ).textContent =
             "0 ₺";
-
 
         return;
 
     }
 
 
-    /* =========================
-       SİPARİŞLER
-    ========================= */
-
     siparisler.forEach(
         (siparis,index) => {
-
 
             const onaylandi =
                 siparis.durum ===
                 "Onaylandı";
 
-
-            /*
-            SADECE ONAYLANAN
-            GENEL TOPLAMA EKLENİR
-            */
 
             if(onaylandi){
 
@@ -1418,10 +1400,6 @@ function hesapGoster(
 
             }
 
-
-            /* =====================
-               SAAT
-            ===================== */
 
             let zaman =
                 "Saat bilgisi bekleniyor";
@@ -1460,10 +1438,6 @@ function hesapGoster(
             }
 
 
-            /* =====================
-               ÜRÜNLER
-            ===================== */
-
             let urunHTML = "";
 
 
@@ -1499,26 +1473,17 @@ function hesapGoster(
             );
 
 
-            /* =====================
-               SİPARİŞ KARTI
-            ===================== */
-
             alan.innerHTML += `
 
                 <div
                     class="siparis-kart">
 
-
                     <div
                         class="siparis-baslik">
 
-
                         <span>
-
                             Sipariş #${index + 1}
-
                         </span>
-
 
                         <span
                             class="${
@@ -1527,16 +1492,13 @@ function hesapGoster(
                                 : "bekleyen"
                             }">
 
-
                             ${
                                 onaylandi
                                 ? "🟢 Onaylandı"
                                 : "🟡 Bekleyen"
                             }
 
-
                         </span>
-
 
                     </div>
 
@@ -1560,7 +1522,6 @@ function hesapGoster(
 
                     </div>
 
-
                 </div>
 
             `;
@@ -1568,10 +1529,6 @@ function hesapGoster(
         }
     );
 
-
-    /* =========================
-       BEKLEYEN TOPLAM
-    ========================= */
 
     if(
         bekleyenToplam > 0
@@ -1600,10 +1557,6 @@ function hesapGoster(
     }
 
 
-    /* =========================
-       GENEL TOPLAM
-    ========================= */
-
     document.getElementById(
         "genelToplam"
     ).textContent =
@@ -1612,9 +1565,8 @@ function hesapGoster(
 }
 
 
-
 /* ==================================================
-   YAZ BOZ
+   YAZ-BOZ DEĞİŞKENLERİ
 ================================================== */
 
 let yzTurSec = "esli";
@@ -1632,9 +1584,8 @@ let yzTimer = null;
 let yzKilitZamani = null;
 
 
-
 /* ==================================================
-   OYUN TÜRÜ
+   YAZ-BOZ TÜR
 ================================================== */
 
 window.yzTur =
@@ -1647,7 +1598,6 @@ function(tur){
         .getElementById("yzEsli")
         .classList
         .remove("aktif");
-
 
     document
         .getElementById("yzTekli")
@@ -1664,9 +1614,7 @@ function(tur){
             .classList
             .add("aktif");
 
-
         yzOyuncuSayisi = 2;
-
 
         document
             .querySelectorAll(
@@ -1677,7 +1625,6 @@ function(tur){
                 b.classList
                 .remove("aktif")
             );
-
 
         document
             .querySelectorAll(
@@ -1698,7 +1645,6 @@ function(tur){
     }
 
 };
-
 
 
 /* ==================================================
@@ -1737,9 +1683,8 @@ function(sayi,btn){
 };
 
 
-
 /* ==================================================
-   YAZ BOZ BAŞLAT
+   YAZ-BOZ BAŞLAT
 ================================================== */
 
 window.yzBaslat =
@@ -1819,9 +1764,8 @@ function(){
 };
 
 
-
 /* ==================================================
-   YAZ BOZ TABLO
+   YAZ-BOZ TABLO
 ================================================== */
 
 function yzTabloOlustur(){
@@ -1845,10 +1789,6 @@ function yzTabloOlustur(){
         "yz-grid";
 
 
-    /*
-    X EKSENİ 75 PX
-    */
-
     grid.style.gridTemplateColumns =
         `75px repeat(
             ${yzOyuncuSayisi},
@@ -1866,13 +1806,11 @@ function yzTabloOlustur(){
                 "div"
             );
 
-
         d.className =
             "yz-hucre " + cls;
 
-
-        d.innerHTML = html;
-
+        d.innerHTML =
+            html;
 
         grid.appendChild(d);
 
@@ -1901,7 +1839,6 @@ function yzTabloOlustur(){
 
     yzOyunlar.forEach(
         (oyun,index) => {
-
 
             const aktif =
                 index ===
@@ -1939,30 +1876,24 @@ function yzTabloOlustur(){
                         "input"
                     );
 
-
-                input.type = "number";
-
+                input.type =
+                    "number";
 
                 input.className =
                     "yz-skor";
 
-
                 input.value =
                     oyun.skor[p];
-
 
                 input.disabled =
                     !aktif ||
                     oyun.kilitli;
 
-
                 input.dataset.oyun =
                     index;
 
-
                 input.dataset.oyuncu =
                     p;
-
 
                 input.addEventListener(
                     "input",
@@ -1975,19 +1906,14 @@ function yzTabloOlustur(){
                         "div"
                     );
 
-
                 d.className =
                     "yz-hucre";
-
 
                 d.appendChild(
                     input
                 );
 
-
-                grid.appendChild(
-                    d
-                );
+                grid.appendChild(d);
 
             }
 
@@ -2002,7 +1928,6 @@ function yzTabloOlustur(){
 }
 
 
-
 /* ==================================================
    SKOR DEĞİŞTİ
 ================================================== */
@@ -2013,7 +1938,6 @@ function yzSkorDegisti(e){
         parseInt(
             e.target.dataset.oyun
         );
-
 
     const oyuncu =
         parseInt(
@@ -2039,7 +1963,6 @@ function yzSkorDegisti(e){
     }
 
 }
-
 
 
 /* ==================================================
@@ -2082,10 +2005,6 @@ function yzTumSkorlarGirildi(){
     oyun.basladi = true;
 
 
-    /*
-    60 SANİYE
-    */
-
     yzKilitZamani =
         Date.now() + 60000;
 
@@ -2118,7 +2037,6 @@ function yzTumSkorlarGirildi(){
 }
 
 
-
 /* ==================================================
    SÜRE KONTROL
 ================================================== */
@@ -2147,7 +2065,6 @@ function yzSureKontrol(){
             yzTimer
         );
 
-
         yzOyunKilitle();
 
         return;
@@ -2165,7 +2082,6 @@ function yzSureKontrol(){
         " saniye sonra kilitlenecek.";
 
 }
-
 
 
 /* ==================================================
@@ -2239,9 +2155,8 @@ function yzOyunKilitle(){
 }
 
 
-
 /* ==================================================
-   TOPLAM VE FARK
+   TOPLAM + FARK
 ================================================== */
 
 function yzToplamGoster(){
@@ -2312,10 +2227,6 @@ function yzToplamGoster(){
     }
 
 
-    /*
-    FARK
-    */
-
     if(
         toplamlar.length > 1
     ){
@@ -2331,8 +2242,7 @@ function yzToplamGoster(){
 
         alan.innerHTML += `
 
-            <div
-                class="yz-fark">
+            <div class="yz-fark">
 
                 📊 FARK
 
