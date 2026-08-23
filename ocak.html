@@ -1,289 +1,945 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Garson Paneli</title>
 
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#f4f6f8;color:#263238}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:#f4f6f8;
+    font-family:Arial,Helvetica,sans-serif;
+    color:#263238;
+}
+
 .header{
- background:linear-gradient(135deg,#3e2723,#795548);
- color:white;padding:22px;text-align:center
+    background:linear-gradient(135deg,#3e2723,#795548);
+    color:white;
+    text-align:center;
+    padding:22px 15px;
 }
-.header h2{margin:0}
-.container{max-width:900px;margin:auto;padding:15px}
-.section{margin-bottom:25px}
+
+.header h2{
+    margin:0;
+}
+
+.header p{
+    margin:6px 0 0;
+    font-size:13px;
+    opacity:.85;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:15px;
+}
+
+.section{
+    margin-bottom:25px;
+}
+
 .section-title{
- display:flex;justify-content:space-between;align-items:center
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
+
 .badge{
- background:#795548;color:white;min-width:28px;height:28px;
- border-radius:50%;display:flex;align-items:center;
- justify-content:center;font-weight:bold
+    background:#795548;
+    color:white;
+    min-width:30px;
+    height:30px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
 }
+
 .empty{
- background:white;padding:22px;border-radius:12px;
- text-align:center;color:#999
+    background:white;
+    border-radius:12px;
+    padding:22px;
+    text-align:center;
+    color:#999;
 }
+
 .card{
- background:white;padding:16px;margin:10px 0;
- border-radius:14px;box-shadow:0 3px 12px #0001;
- border-left:6px solid #fb8c00
+    background:white;
+    border-radius:14px;
+    padding:16px;
+    margin:10px 0;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    border-left:6px solid #fb8c00;
 }
-.card.onayli{border-left-color:#43a047}
-.header-row{
- display:flex;justify-content:space-between;
- margin-bottom:10px
+
+.card.onayli{
+    border-left-color:#43a047;
 }
-.masa{font-size:20px;font-weight:bold;color:#5d4037}
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.masa{
+    font-size:20px;
+    font-weight:bold;
+    color:#5d4037;
+}
+
+.zaman{
+    color:#999;
+    font-size:12px;
+}
+
 .urun{
- display:flex;justify-content:space-between;
- padding:9px 0;border-bottom:1px dashed #ddd
+    display:flex;
+    justify-content:space-between;
+    padding:9px 0;
+    border-bottom:1px dashed #ddd;
 }
+
 .toplam{
- text-align:right;font-size:18px;font-weight:bold;
- margin-top:12px
+    text-align:right;
+    font-size:18px;
+    font-weight:bold;
+    color:#e65100;
+    margin-top:12px;
 }
-button{
- width:100%;border:0;padding:12px;
- border-radius:9px;font-weight:bold;cursor:pointer;
- margin-top:9px
+
+.btn{
+    width:100%;
+    border:0;
+    padding:12px;
+    border-radius:9px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:10px;
 }
-.onay{background:#2e7d32;color:white}
-.cagri{
- background:#ffb300;
- display:flex;justify-content:space-between;
- align-items:center;padding:14px;border-radius:12px;
- margin:8px 0
+
+.btn-onay{
+    background:#2e7d32;
+    color:white;
 }
-.cagri button{width:auto;background:#fff;margin:0}
+
+.btn-duzen{
+    background:#1565c0;
+    color:white;
+}
+
+.btn-garson{
+    background:#ffb300;
+    color:#222;
+}
+
+.bilgi{
+    background:#e8f5e9;
+    color:#2e7d32;
+    padding:9px;
+    border-radius:8px;
+    font-size:12px;
+    margin-bottom:10px;
+}
+
+.duzen-box{
+    background:#f5f5f5;
+    padding:12px;
+    margin-top:10px;
+    border-radius:10px;
+    display:none;
+}
+
+.duzen-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:9px 0;
+    border-bottom:1px solid #ddd;
+}
+
+.miktar{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.miktar button{
+    width:30px;
+    height:30px;
+    border:0;
+    border-radius:50%;
+    background:#ddd;
+    font-size:18px;
+    cursor:pointer;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<div class="header">
-<h2>☕ GARSON PANELİ</h2>
-<p>Dijital Kahve • Canlı Sipariş Yönetimi</p>
-</div>
+<header class="header">
+
+    <h2>☕ GARSON PANELİ</h2>
+
+    <p>
+        Canlı sipariş ve garson çağrı yönetimi
+    </p>
+
+</header>
+
 
 <div class="container">
 
-<div class="section">
-<div class="section-title">
-<h3>🔔 Garson Çağrıları</h3>
-<span class="badge" id="cagriSayisi">0</span>
-</div>
-<div id="bildirimListesi"></div>
+
+<!-- ================= GARSON ÇAĞRILARI ================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h3>
+            🔔 Garson Çağrıları
+        </h3>
+
+        <span
+            class="badge"
+            id="cagriSayisi">
+
+            0
+
+        </span>
+
+    </div>
+
+
+    <div id="cagriListesi">
+
+        <div class="empty">
+            Bekleyen garson çağrısı yok.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= BEKLEYEN ================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h3>
+            🕐 Bekleyen Siparişler
+        </h3>
+
+        <span
+            class="badge"
+            id="bekleyenSayisi">
+
+            0
+
+        </span>
+
+    </div>
+
+
+    <div id="bekleyenListesi">
+
+        <div class="empty">
+            Bekleyen sipariş yok.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ONAYLANAN ================= -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <h3>
+            ✅ Onaylanan Siparişler
+        </h3>
+
+    </div>
+
+
+    <div id="onaylananListesi">
+
+        <div class="empty">
+            Onaylanan sipariş yok.
+        </div>
+
+    </div>
+
+</section>
+
+
 </div>
 
-<div class="section">
-<div class="section-title">
-<h3>🕐 Bekleyen Siparişler</h3>
-<span class="badge" id="bekleyenSayisi">0</span>
-</div>
-<div id="bekleyenListesi"></div>
-</div>
-
-<div class="section">
-<h3>✅ Onaylanan Siparişler</h3>
-<div id="onaylananListesi"></div>
-</div>
-
-</div>
 
 <script>
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
 const firebaseConfig={
- databaseURL:"https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
- projectId:"dijitalkahve-67f0a",
- storageBucket:"dijitalkahve-67f0a.appspot.com",
- messagingSenderId:"326476599239"
+
+    databaseURL:
+    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+    projectId:
+    "dijitalkahve-67f0a",
+
+    storageBucket:
+    "dijitalkahve-67f0a.appspot.com",
+
+    messagingSenderId:
+    "326476599239"
+
 };
 
-if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
 
-const db=firebase.app().database(
- "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
-);
+if(!firebase.apps.length){
 
-db.ref("bildirimler").on("value",snap=>{
+    firebase.initializeApp(
+        firebaseConfig
+    );
 
- const data=snap.val()||{};
- const liste=document.getElementById("bildirimListesi");
-
- document.getElementById("cagriSayisi").innerText=
- Object.keys(data).length;
-
- liste.innerHTML="";
-
- if(Object.keys(data).length===0){
-  liste.innerHTML='<div class="empty">Bekleyen garson çağrısı yok.</div>';
-  return;
- }
-
- Object.keys(data).forEach(id=>{
-  const x=data[id];
-
-  liste.innerHTML+=`
-  <div class="cagri">
-   <div>
-    <b>🔔 MASA ${x.masa}</b><br>
-    <small>${x.zaman||"-"}</small>
-   </div>
-   <button onclick="cagriSil('${id}')">✓ GİDİLDİ</button>
-  </div>`;
- });
-});
-
-function cagriSil(id){
- db.ref("bildirimler/"+id).remove();
 }
 
-db.ref("siparisler").on("value",snap=>{
 
- const data=snap.val()||{};
+const db =
+    firebase.database();
 
- const bekleyen=document.getElementById("bekleyenListesi");
- const onaylanan=document.getElementById("onaylananListesi");
 
- bekleyen.innerHTML="";
- onaylanan.innerHTML="";
+/* =====================================================
+   GARSON ÇAĞRILARI
+===================================================== */
 
- let bekleyenSayisi=0;
+db.ref("bildirimler")
+.on("value",snapshot=>{
 
- Object.keys(data).forEach(id=>{
+    const data =
+        snapshot.val() || {};
 
-  const s=data[id];
-  if(!s)return;
+    const keys =
+        Object.keys(data);
 
-  let urunHtml="";
 
-  Object.values(s.urunler||{}).forEach(u=>{
-   const tutar=(parseFloat(u.fiyat)||0)*(parseInt(u.adet)||0);
+    document.getElementById(
+        "cagriSayisi"
+    ).innerText =
+        keys.length;
 
-   urunHtml+=`
-   <div class="urun">
-    <span>${u.ad} × ${u.adet}</span>
-    <b>${tutar.toFixed(2)} TL</b>
-   </div>`;
-  });
 
-  const toplam=parseFloat(s.toplam)||0;
+    const liste =
+        document.getElementById(
+            "cagriListesi"
+        );
 
-  if(s.durum!=="onaylandi"){
 
-   bekleyenSayisi++;
+    if(!keys.length){
 
-   bekleyen.innerHTML+=`
-   <div class="card">
-    <div class="header-row">
-     <span class="masa">MASA ${s.masa}</span>
-     <small>${s.zaman||"-"}</small>
-    </div>
+        liste.innerHTML=`
 
-    ${urunHtml}
+            <div class="empty">
+                Bekleyen garson çağrısı yok.
+            </div>
 
-    <div class="toplam">
-     Toplam: ${toplam.toFixed(2)} TL
-    </div>
+        `;
 
-    <button class="onay" onclick="onayla('${id}')">
-     ✓ SİPARİŞİ ONAYLA
-    </button>
-   </div>`;
-  }
- });
+        return;
 
- document.getElementById("bekleyenSayisi").innerText=
-  bekleyenSayisi;
+    }
 
- if(bekleyenSayisi===0)
-  bekleyen.innerHTML='<div class="empty">Bekleyen sipariş yok.</div>';
 
- /*
-   ONAYLANANLAR MASA BAZINDA
- */
- const masalar={};
+    liste.innerHTML="";
 
- Object.values(data).forEach(s=>{
 
-  if(!s || s.durum!=="onaylandi")return;
+    keys.forEach(key=>{
 
-  const masa=s.masa;
+        const item =
+            data[key];
 
-  if(!masalar[masa]){
-   masalar[masa]={
-    urunler:{},
-    toplam:0
-   };
-  }
 
-  Object.values(s.urunler||{}).forEach(u=>{
+        liste.innerHTML += `
 
-   const key=String(u.ad).toLowerCase();
+            <div class="card">
 
-   if(!masalar[masa].urunler[key]){
-    masalar[masa].urunler[key]={
-     ad:u.ad,
-     adet:0,
-     fiyat:parseFloat(u.fiyat)||0
-    };
-   }
+                <div class="card-header">
 
-   masalar[masa].urunler[key].adet+=
-    parseInt(u.adet)||0;
+                    <span class="masa">
+                        🔔 MASA ${item.masa}
+                    </span>
 
-   masalar[masa].toplam+=
-    (parseFloat(u.fiyat)||0)*(parseInt(u.adet)||0);
-  });
- });
+                    <span class="zaman">
+                        ${item.zaman || "-"}
+                    </span>
 
- if(Object.keys(masalar).length===0){
-  onaylanan.innerHTML=
-   '<div class="empty">Henüz onaylanan sipariş yok.</div>';
-  return;
- }
+                </div>
 
- Object.keys(masalar).forEach(masa=>{
 
-  const m=masalar[masa];
-  let html="";
+                <button
+                    class="btn btn-garson"
+                    onclick="garsonCagrisiTamamla(
+                        '${key}'
+                    )">
 
-  Object.values(m.urunler).forEach(u=>{
-   html+=`
-   <div class="urun">
-    <span>${u.ad} × ${u.adet}</span>
-    <b>${(u.adet*u.fiyat).toFixed(2)} TL</b>
-   </div>`;
-  });
+                    ✓ GİDİLDİ
 
-  onaylanan.innerHTML+=`
-  <div class="card onayli">
-   <div class="header-row">
-    <span class="masa">MASA ${masa}</span>
-    <span>✓ ONAYLANDI</span>
-   </div>
+                </button>
 
-   ${html}
+            </div>
 
-   <div class="toplam">
-    Masa Toplamı: ${m.toplam.toFixed(2)} TL
-   </div>
-  </div>`;
- });
+        `;
+
+    });
+
 });
 
-function onayla(id){
 
- db.ref("siparisler/"+id+"/durum")
- .set("onaylandi")
- .catch(e=>alert("Hata: "+e.message));
+/* =====================================================
+   SİPARİŞLER
+===================================================== */
+
+db.ref("siparisler")
+.on("value",snapshot=>{
+
+    const data =
+        snapshot.val() || {};
+
+
+    const bekleyen=[];
+
+    const onaylanan=[];
+
+
+    Object.entries(data)
+    .forEach(([key,siparis])=>{
+
+        if(!siparis) return;
+
+
+        if(
+            siparis.durum ===
+            "onaylandi"
+        ){
+
+            onaylanan.push(
+                [key,siparis]
+            );
+
+        }else{
+
+            bekleyen.push(
+                [key,siparis]
+            );
+
+        }
+
+    });
+
+
+    document.getElementById(
+        "bekleyenSayisi"
+    ).innerText =
+        bekleyen.length;
+
+
+    bekleyenGoster(
+        bekleyen
+    );
+
+
+    onaylananGoster(
+        onaylanan
+    );
+
+});
+
+
+/* =====================================================
+   BEKLEYENLER
+===================================================== */
+
+function bekleyenGoster(
+    siparisler
+){
+
+    const liste =
+        document.getElementById(
+            "bekleyenListesi"
+        );
+
+
+    if(!siparisler.length){
+
+        liste.innerHTML=`
+
+            <div class="empty">
+                Bekleyen sipariş yok.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    liste.innerHTML="";
+
+
+    siparisler.forEach(
+        ([id,siparis])=>{
+
+            liste.innerHTML +=
+                bekleyenKart(
+                    id,
+                    siparis
+                );
+
+        }
+    );
+
 }
+
+
+/* =====================================================
+   BEKLEYEN KART
+===================================================== */
+
+function bekleyenKart(
+    id,
+    siparis
+){
+
+    const urunler =
+        siparis.urunler || {};
+
+
+    let html="";
+
+    let toplam=0;
+
+
+    Object.entries(urunler)
+    .forEach(([key,u])=>{
+
+        const adet =
+            parseInt(u.adet)||0;
+
+        const fiyat =
+            parseFloat(u.fiyat)||0;
+
+        const tutar =
+            adet*fiyat;
+
+
+        toplam += tutar;
+
+
+        html += `
+
+            <div class="urun">
+
+                <span>
+
+                    ${u.ad}
+
+                    <b>
+                        × ${adet}
+                    </b>
+
+                </span>
+
+                <b>
+                    ${tutar.toFixed(2)}
+                    TL
+                </b>
+
+            </div>
+
+        `;
+
+    });
+
+
+    return `
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <span class="masa">
+                    MASA ${siparis.masa}
+                </span>
+
+                <span class="zaman">
+                    ${siparis.zaman || "-"}
+                </span>
+
+            </div>
+
+
+            ${html}
+
+
+            <div class="toplam">
+
+                ${toplam.toFixed(2)}
+                TL
+
+            </div>
+
+
+            <button
+                class="btn btn-duzen"
+                onclick="duzenleAc(
+                    '${id}'
+                )">
+
+                ✏️ SİPARİŞİ DÜZENLE
+
+            </button>
+
+
+            <button
+                class="btn btn-onay"
+                onclick="siparisOnayla(
+                    '${id}'
+                )">
+
+                ✓ SİPARİŞİ ONAYLA
+
+            </button>
+
+
+            <div
+                id="duzen-${id}"
+                class="duzen-box">
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   DÜZENLE
+===================================================== */
+
+function duzenleAc(id){
+
+    db.ref(
+        "siparisler/"+id
+    )
+    .once("value")
+    .then(snapshot=>{
+
+        const siparis =
+            snapshot.val();
+
+
+        if(!siparis) return;
+
+
+        const box =
+            document.getElementById(
+                "duzen-"+id
+            );
+
+
+        const urunler =
+            siparis.urunler || {};
+
+
+        let html="";
+
+
+        Object.entries(urunler)
+        .forEach(([key,u])=>{
+
+            html += `
+
+                <div class="duzen-row">
+
+                    <span>
+                        ${u.ad}
+                    </span>
+
+                    <div class="miktar">
+
+                        <button
+                            onclick="adetDegistir(
+                                '${id}',
+                                '${key}',
+                                -1
+                            )">
+
+                            −
+
+                        </button>
+
+
+                        <b>
+                            ${u.adet}
+                        </b>
+
+
+                        <button
+                            onclick="adetDegistir(
+                                '${id}',
+                                '${key}',
+                                1
+                            )">
+
+                            +
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+
+        html += `
+
+            <button
+                class="btn btn-onay"
+                onclick="duzenKapat('${id}')">
+
+                ✓ TAMAM
+
+            </button>
+
+        `;
+
+
+        box.innerHTML=html;
+
+        box.style.display="block";
+
+    });
+
+}
+
+
+/* =====================================================
+   ADET DEĞİŞTİR
+===================================================== */
+
+function adetDegistir(
+    siparisId,
+    urunId,
+    fark
+){
+
+    const ref =
+        db.ref(
+            "siparisler/"
+            +siparisId
+            +"/urunler/"
+            +urunId
+        );
+
+
+    ref.once("value")
+    .then(snapshot=>{
+
+        const urun =
+            snapshot.val();
+
+
+        if(!urun) return;
+
+
+        let yeniAdet =
+            (
+                parseInt(
+                    urun.adet
+                ) || 0
+            )
+            + fark;
+
+
+        if(yeniAdet <= 0){
+
+            ref.remove();
+
+        }else{
+
+            ref.update({
+
+                adet:yeniAdet
+
+            });
+
+        }
+
+
+        siparisToplamGuncelle(
+            siparisId
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   TOPLAM GÜNCELLE
+===================================================== */
+
+function siparisToplamGuncelle(
+    id
+){
+
+    db.ref(
+        "siparisler/"
+        +id
+        +"/urunler"
+    )
+    .once("value")
+    .then(snapshot=>{
+
+        const urunler =
+            snapshot.val() || {};
+
+        let toplam=0;
+
+
+        Object.values(urunler)
+        .forEach(u=>{
+
+            toplam +=
+                (
+                    parseFloat(
+                        u.fiyat
+                    ) || 0
+                )
+                *
+                (
+                    parseInt(
+                        u.adet
+                    ) || 0
+                );
+
+        });
+
+
+        db.ref(
+            "siparisler/"
+            +id
+            +"/toplam"
+        )
+        .set(toplam);
+
+    });
+
+}
+
+
+/* =====================================================
+   DÜZEN KAPAT
+===================================================== */
+
+function duzenKapat(id){
+
+    const box =
+        document.getElementById(
+            "duzen-"+id
+        );
+
+
+    if(box){
+
+        box.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =====================================================
+   ONAYLA
+===================================================== */
+
+function siparisOnayla(id){
+
+    if(
+        !confirm(
+            "Bu sipariş onaylansın mı?"
+        )
+    ){
+
+        return;
+
+    }
+
+
+    db.ref(
+        "siparisler/"
+        +id
+        +"/durum"
+    )
+    .set("onaylandi")
+    .catch(error=>{
+
+        alert(
+            "Sipariş onaylanamadı:\n"
+            +error.message
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   GARSON ÇAĞRISI TAMAMLA
+===================================================== */
+
+function garsonCagrisiTamamla(id){
+
+    db.ref(
+        "bildirimler/"+id
+    )
+    .remove();
+
+}
+
 </script>
 
 </body>
