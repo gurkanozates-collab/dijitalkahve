@@ -131,8 +131,6 @@ header p{
     color:#ef6c00;
 }
 
-/* GARSON SİPARİŞ BUTONU */
-
 .garson-btn{
     width:100%;
     border:0;
@@ -149,7 +147,9 @@ header p{
     background:#4e342e;
 }
 
-/* BEKLEYEN SİPARİŞ */
+/* =========================
+   SİPARİŞ
+========================= */
 
 .siparis{
     margin-top:12px;
@@ -158,6 +158,18 @@ header p{
     border:1px solid #ddd;
     border-left:5px solid #ef6c00;
     border-radius:9px;
+}
+
+/* GARSON SİPARİŞİ */
+.siparis.garson-siparis{
+    border-left-color:#ef6c00;
+    background:#fff8ef;
+}
+
+/* MÜŞTERİ SİPARİŞİ */
+.siparis.musteri-siparis{
+    border-left-color:#1565c0;
+    background:#f4f9ff;
 }
 
 .siparis-baslik{
@@ -177,15 +189,30 @@ header p{
     font-weight:bold;
 }
 
+/* KAYNAK ETİKETLERİ */
+
 .kaynak{
-    display:inline-block;
-    padding:4px 7px;
-    border-radius:12px;
+    display:block;
+    padding:8px 9px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:8px;
+    text-align:center;
+}
+
+/* GARSON */
+.kaynak.garson{
+    background:#fff3e0;
+    color:#e65100;
+    border:1px solid #ffcc80;
+}
+
+/* MÜŞTERİ */
+.kaynak.musteri{
     background:#e3f2fd;
     color:#1565c0;
-    font-size:11px;
-    font-weight:bold;
-    margin-bottom:6px;
+    border:1px solid #90caf9;
 }
 
 .zaman{
@@ -281,8 +308,6 @@ header p{
 .menu{
     padding:15px;
 }
-
-/* MÜŞTERİ MENÜSÜ TARZI */
 
 .menu-urun{
     display:flex;
@@ -432,6 +457,7 @@ header p{
 </header>
 
 <div class="topbar">
+
     <div id="baglanti" class="connection">
         🟡 Firebase bağlanıyor...
     </div>
@@ -439,13 +465,19 @@ header p{
     <button class="refresh" onclick="location.reload()">
         🔄 Yenile
     </button>
+
 </div>
 
 <div class="container">
 
     <div class="title">
+
         <h2>🪑 Masalar</h2>
-        <p id="bilgi">Siparişler yükleniyor...</p>
+
+        <p id="bilgi">
+            Siparişler yükleniyor...
+        </p>
+
     </div>
 
     <div id="masaGrid" class="masa-grid"></div>
@@ -453,7 +485,9 @@ header p{
 </div>
 
 
-<!-- GARSON MENÜ MODALI -->
+<!-- =========================
+     GARSON MENÜ MODALI
+========================= -->
 
 <div id="menuModal" class="modal">
 
@@ -468,7 +502,9 @@ header p{
             <button
                 class="kapat"
                 onclick="menuKapat()">
+
                 ×
+
             </button>
 
         </div>
@@ -479,7 +515,9 @@ header p{
 
             <div class="menu-toplam">
 
-                <span>Toplam</span>
+                <span>
+                    Toplam
+                </span>
 
                 <span id="menuToplam">
                     0 ₺
@@ -491,7 +529,7 @@ header p{
                 class="gonder"
                 onclick="garsonSiparisGonder()">
 
-                🛎️ Garson Siparişini Gönder
+                👨‍🍳 Garson Siparişini Gönder
 
             </button>
 
@@ -553,12 +591,15 @@ const firebaseConfig = {
 
     measurementId:
     "G-WM65PC4648"
+
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app =
+initializeApp(firebaseConfig);
 
-const db = getFirestore(app);
+const db =
+getFirestore(app);
 
 
 /* =========================
@@ -605,17 +646,6 @@ const urunler = [
 ];
 
 
-/*
-   BURASI ÖNEMLİ:
-
-   Müşteri panelindeki ürünleri
-   daha sonra buraya ekleyebiliriz.
-
-   Garson menüsü aynı mantıkla
-   çalışır.
-*/
-
-
 let seciliMasa = null;
 
 let sepet = {};
@@ -643,7 +673,7 @@ function sepetSifirla(){
 
 
 /* =========================
-   MENÜYÜ AÇ
+   GARSON MENÜSÜ
 ========================= */
 
 window.garsonMenusuAc =
@@ -723,7 +753,9 @@ function menuOlustur(){
                                 -1
                             )
                         ">
+
                             −
+
                         </button>
 
                         <span
@@ -738,7 +770,9 @@ function menuOlustur(){
                                 1
                             )
                         ">
+
                             +
+
                         </button>
 
                     </div>
@@ -836,7 +870,9 @@ async function(){
 
     }
 
+
     const secilenUrunler = [];
+
 
     urunler.forEach(
         urun => {
@@ -899,8 +935,14 @@ async function(){
 
             {
 
+                /* =====================
+                   ÖNEMLİ:
+                   BU SİPARİŞ GARSONDAN
+                   GELDİĞİNİ BELİRTİR
+                ===================== */
+
                 masa:
-                Number(seciliMasa),
+                String(seciliMasa),
 
                 urunler:
                 secilenUrunler,
@@ -926,9 +968,13 @@ async function(){
 
 
         alert(
-            "✅ Masa " +
+            "✅ GARSON SİPARİŞİ GÖNDERİLDİ!\n\n"+
+            "Masa: " +
             seciliMasa +
-            " siparişi gönderildi."
+            "\n"+
+            "Toplam: " +
+            toplam +
+            " ₺"
         );
 
 
@@ -950,7 +996,7 @@ async function(){
 
 
 /* =========================
-   SAAT
+   ZAMAN
 ========================= */
 
 function zaman(s){
@@ -1005,6 +1051,7 @@ function siparisHTML(s,index){
 
     let html = "";
 
+
     (s.urunler || []).forEach(
         u => {
 
@@ -1039,17 +1086,61 @@ function siparisHTML(s,index){
     );
 
 
-    const kaynak =
-    s.kaynak === "garson"
-    ?
-    "👨‍🍳 Garson Siparişi"
-    :
-    "👤 Müşteri Siparişi";
+    /*
+       SİPARİŞ KAYNAĞINI BELİRLE
+    */
+
+    const garsonSiparisi =
+        s.kaynak === "garson" ||
+        s.garsonSiparisi === true;
+
+
+    const kaynakClass =
+        garsonSiparisi
+        ? "garson"
+        : "musteri";
+
+
+    const kaynakHTML =
+        garsonSiparisi
+
+        ?
+
+        `
+        <div class="kaynak garson">
+            👨‍🍳 GARSON SİPARİŞİ
+            <br>
+            <small>
+                Bu sipariş garson tarafından girildi.
+            </small>
+        </div>
+        `
+
+        :
+
+        `
+        <div class="kaynak musteri">
+            👤 MÜŞTERİ SİPARİŞİ
+            <br>
+            <small>
+                Bu sipariş müşteri tarafından gönderildi.
+            </small>
+        </div>
+        `;
 
 
     return `
 
-        <div class="siparis">
+        <div class="
+            siparis
+            ${
+                garsonSiparisi
+                ?
+                "garson-siparis"
+                :
+                "musteri-siparis"
+            }
+        ">
 
             <div class="siparis-baslik">
 
@@ -1063,19 +1154,24 @@ function siparisHTML(s,index){
 
             </div>
 
-            <div class="kaynak">
-                ${kaynak}
-            </div>
+
+            ${kaynakHTML}
+
 
             <div class="zaman">
                 🕐 ${saat(s)}
             </div>
 
+
             ${html}
 
+
             <div class="toplam">
-                Toplam: ${Number(s.toplam || 0)} ₺
+                Toplam:
+                ${Number(s.toplam || 0)}
+                ₺
             </div>
+
 
             <div class="butons">
 
@@ -1091,6 +1187,7 @@ function siparisHTML(s,index){
 
                 </button>
 
+
                 <button
                 class="btn onayla"
                 onclick="
@@ -1104,6 +1201,7 @@ function siparisHTML(s,index){
                 </button>
 
             </div>
+
 
             <div
             id="duzen-${s.id}"
@@ -1121,12 +1219,13 @@ function siparisHTML(s,index){
 
 
 /* =========================
-   DÜZENLE
+   DÜZENLE HTML
 ========================= */
 
 function duzenHTML(s){
 
     let html = "";
+
 
     (s.urunler || []).forEach(
         (u,i) => {
@@ -1149,13 +1248,13 @@ function duzenHTML(s){
                                 -1
                             )
                         ">
+
                             −
+
                         </button>
 
                         <span
-                        id="
-                        duzen-${s.id}-${i}
-                        ">
+                        id="duzen-${s.id}-${i}">
                             ${u.adet}
                         </span>
 
@@ -1167,7 +1266,9 @@ function duzenHTML(s){
                                 1
                             )
                         ">
+
                             +
+
                         </button>
 
                     </div>
@@ -1202,6 +1303,10 @@ function duzenHTML(s){
 let duzenSepet = {};
 
 
+/* =========================
+   DÜZENLE
+========================= */
+
 window.duzenle =
 function(id){
 
@@ -1218,10 +1323,12 @@ function(id){
 
     }
 
+
     const s =
     siparisler.find(
         x => x.id === id
     );
+
 
     if(s){
 
@@ -1237,17 +1344,24 @@ function(id){
 };
 
 
+/* =========================
+   DÜZENLE ADET
+========================= */
+
 window.duzenAdet =
 function(id,index,miktar){
 
     if(!duzenSepet[id])
     return;
 
+
     const u =
     duzenSepet[id][index];
 
+
     if(!u)
     return;
+
 
     u.adet =
     Math.max(
@@ -1256,10 +1370,12 @@ function(id,index,miktar){
         miktar
     );
 
+
     const el =
     document.getElementById(
         `duzen-${id}-${index}`
     );
+
 
     if(el){
 
@@ -1270,6 +1386,10 @@ function(id,index,miktar){
 
 };
 
+
+/* =========================
+   DÜZENLE KAYDET
+========================= */
 
 window.duzenKaydet =
 async function(id){
@@ -1283,6 +1403,7 @@ async function(id){
 
 
     let toplam = 0;
+
 
     liste.forEach(
         u => {
@@ -1322,6 +1443,7 @@ async function(id){
 
         );
 
+
         alert(
             "✅ Sipariş düzenlendi."
         );
@@ -1351,12 +1473,28 @@ async function(id){
         x => x.id === id
     );
 
+
     if(!s)
     return;
 
 
+    const garson =
+        s.kaynak === "garson" ||
+        s.garsonSiparisi === true;
+
+
+    const kaynak =
+        garson
+        ?
+        "👨‍🍳 GARSON SİPARİŞİ"
+        :
+        "👤 MÜŞTERİ SİPARİŞİ";
+
+
     if(
         !confirm(
+            kaynak +
+            "\n\n"+
             "Masa " +
             s.masa +
             " siparişi onaylansın mı?"
@@ -1443,6 +1581,7 @@ function masalariGoster(){
             const z =
             zaman(s);
 
+
             if(
                 !masaSonSiparis[masa] ||
                 z > masaSonSiparis[masa]
@@ -1476,11 +1615,14 @@ function masalariGoster(){
             if(aZ === 0 && bZ === 0)
                 return a-b;
 
+
             if(aZ === 0)
                 return 1;
 
+
             if(bZ === 0)
                 return -1;
+
 
             return bZ-aZ;
 
@@ -1565,6 +1707,7 @@ function masalariGoster(){
 
                 </div>
 
+
                 <button
                 class="garson-btn"
                 onclick="
@@ -1621,7 +1764,9 @@ query(
 
 
 onSnapshot(
+
     q,
+
     snapshot => {
 
         siparisler = [];
@@ -1670,9 +1815,11 @@ onSnapshot(
 
     },
 
+
     error => {
 
         console.error(error);
+
 
         document.getElementById(
             "baglanti"
@@ -1680,6 +1827,7 @@ onSnapshot(
         "🔴 Firebase bağlantı hatası";
 
     }
+
 );
 
 
