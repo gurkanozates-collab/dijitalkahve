@@ -10,37 +10,45 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
-    background:#f4f6f8;
-    color:#263238;
+    background:#f4f1ee;
+    color:#3e2723;
 }
+
+/* ================= HEADER ================= */
 
 .header{
     background:linear-gradient(135deg,#3e2723,#795548);
     color:white;
-    padding:24px 18px;
+    padding:20px 15px;
     text-align:center;
     box-shadow:0 4px 18px rgba(0,0,0,.18);
 }
 
 .header h1{
     margin:0;
-    font-size:26px;
+    font-size:25px;
 }
 
 .header p{
-    margin:7px 0 0;
+    margin:6px 0 0;
     color:#eee;
     font-size:13px;
 }
 
+
+/* ================= LOGIN ================= */
+
 .login-wrapper{
     max-width:420px;
-    margin:70px auto;
+    margin:65px auto;
     padding:20px;
 }
 
@@ -79,25 +87,33 @@ body{
     font-size:15px;
 }
 
-#adminContent{display:none}
+
+/* ================= PANEL ================= */
+
+#adminContent{
+    display:none;
+}
 
 .container{
-    max-width:1200px;
+    max-width:1400px;
     margin:auto;
-    padding:20px;
+    padding:15px;
 }
+
+
+/* ================= NAV ================= */
 
 .nav{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:10px;
-    margin-bottom:20px;
+    gap:8px;
+    margin-bottom:15px;
 }
 
 .nav button{
     border:0;
-    padding:14px;
-    border-radius:12px;
+    padding:13px;
+    border-radius:11px;
     background:white;
     color:#5d4037;
     font-weight:bold;
@@ -110,318 +126,696 @@ body{
     color:white;
 }
 
-.panel-section{display:none}
-.panel-section.active{display:block}
+
+/* ================= SECTIONS ================= */
+
+.panel-section{
+    display:none;
+}
+
+.panel-section.active{
+    display:block;
+}
 
 .section-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
-}
-
-.section-title h2{
-    margin:0;
-    color:#4e342e;
-}
-
-.masa-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-}
-
-.masa-card{
-    background:white;
-    border-radius:16px;
-    padding:17px;
-    box-shadow:0 4px 14px rgba(0,0,0,.08);
-    border-top:5px solid #9e9e9e;
-}
-
-.masa-card.dolu{border-top-color:#e53935}
-.masa-card.bos{border-top-color:#43a047}
-
-.masa-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
     margin-bottom:12px;
 }
 
-.masa-no{
-    font-size:21px;
-    font-weight:bold;
+.section-title h2{
+    margin:0;
     color:#4e342e;
+    font-size:20px;
+}
+
+
+/* ==================================================
+   MASALAR
+================================================== */
+
+.masa-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(10,minmax(0,1fr));
+
+    gap:7px;
+
+}
+
+
+/* MASA CARD */
+
+.masa-card{
+
+    background:white;
+
+    border-radius:10px;
+
+    padding:9px;
+
+    box-shadow:
+        0 2px 7px rgba(0,0,0,.08);
+
+    border-top:4px solid #43a047;
+
+    min-width:0;
+
+}
+
+.masa-card.dolu{
+    border-top-color:#e53935;
+}
+
+.masa-card.bekleyen{
+    border-top-color:#ff9800;
+    background:#fffaf2;
+}
+
+
+/* MASA HEADER */
+
+.masa-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:4px;
+
+    margin-bottom:6px;
+
+}
+
+.masa-no{
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    color:#4e342e;
+
 }
 
 .durum{
-    padding:6px 10px;
-    border-radius:20px;
-    font-size:11px;
+
+    padding:3px 5px;
+
+    border-radius:10px;
+
+    font-size:8px;
+
     font-weight:bold;
+
+    white-space:nowrap;
+
 }
 
 .durum.bos{
+
     background:#e8f5e9;
+
     color:#2e7d32;
+
 }
 
 .durum.dolu{
+
     background:#ffebee;
+
     color:#c62828;
+
 }
+
+.durum.bekleyen{
+
+    background:#fff3e0;
+
+    color:#e65100;
+
+}
+
+
+/* ÜRÜNLER */
 
 .masa-urun{
+
     display:flex;
+
     justify-content:space-between;
-    padding:8px 0;
+
+    gap:4px;
+
+    padding:4px 0;
+
     border-bottom:1px dashed #ddd;
+
+    font-size:10px;
+
 }
 
-.masa-urun:last-child{border-bottom:0}
+.masa-urun:last-child{
+    border-bottom:0;
+}
 
-.masa-urun-ad{font-size:14px}
-.masa-urun-ad strong{color:#795548}
-.masa-urun-fiyat{font-weight:bold}
+.masa-urun-ad{
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+}
+
+.masa-urun-ad strong{
+    color:#795548;
+}
+
+.masa-urun-fiyat{
+
+    font-weight:bold;
+
+    white-space:nowrap;
+
+}
+
+
+/* BEKLEYEN */
+
+.bekleyen-etiket{
+
+    display:block;
+
+    background:#fff3e0;
+
+    color:#e65100;
+
+    border-radius:5px;
+
+    padding:4px;
+
+    margin-bottom:5px;
+
+    font-size:8px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+}
+
+.bekleyen-urun{
+
+    font-size:9px;
+
+    color:#e65100;
+
+    padding:2px 0;
+
+}
+
+
+/* TOTAL */
 
 .masa-total{
-    margin-top:13px;
-    padding-top:12px;
+
+    margin-top:7px;
+
+    padding-top:6px;
+
     border-top:1px solid #eee;
+
     text-align:right;
-    font-size:20px;
+
+    font-size:13px;
+
     font-weight:bold;
+
     color:#e65100;
+
 }
+
+
+/* ÖDENDİ */
 
 .btn-odendi{
+
     width:100%;
-    margin-top:13px;
+
+    margin-top:7px;
+
     border:0;
-    padding:13px;
-    border-radius:9px;
+
+    padding:7px 4px;
+
+    border-radius:6px;
+
     background:#2e7d32;
+
     color:white;
+
+    font-size:9px;
+
     font-weight:bold;
+
     cursor:pointer;
+
 }
+
+
+/* EMPTY */
 
 .empty{
+
     background:#fafafa;
-    border-radius:10px;
-    padding:18px;
+
+    border-radius:7px;
+
+    padding:8px;
+
     text-align:center;
+
     color:#999;
-    font-size:13px;
+
+    font-size:9px;
+
 }
 
+
+/* ================= PRODUCTS ================= */
+
 .box{
+
     background:white;
-    padding:20px;
+
+    padding:18px;
+
     border-radius:16px;
+
     box-shadow:0 4px 14px rgba(0,0,0,.07);
-    margin-bottom:18px;
+
+    margin-bottom:15px;
+
 }
 
 .form-grid{
+
     display:grid;
+
     grid-template-columns:2fr 1fr 1fr auto;
-    gap:10px;
+
+    gap:9px;
+
 }
 
 .form-grid input,
 .form-grid select{
+
     width:100%;
-    padding:12px;
+
+    padding:11px;
+
     border:1px solid #ddd;
+
     border-radius:9px;
-    outline:none;
+
 }
 
 .btn-ekle{
+
     border:0;
+
     background:#2e7d32;
+
     color:white;
+
     border-radius:9px;
-    padding:12px 18px;
+
+    padding:11px 18px;
+
     font-weight:bold;
+
     cursor:pointer;
+
 }
 
 .urun-card{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     padding:12px;
+
     background:#fafafa;
+
     border:1px solid #eee;
+
     border-radius:10px;
+
     margin-bottom:8px;
+
 }
 
-.urun-bilgi strong{color:#4e342e}
-.urun-bilgi small{color:#999}
+.urun-bilgi strong{
+    color:#4e342e;
+}
+
+.urun-bilgi small{
+    color:#999;
+}
 
 .urun-actions{
+
     display:flex;
+
     gap:7px;
+
 }
 
 .btn-duzen{
+
     border:0;
+
     background:#1565c0;
+
     color:white;
+
     padding:7px 11px;
+
     border-radius:7px;
+
     cursor:pointer;
+
 }
 
 .btn-sil{
+
     border:0;
+
     background:#d32f2f;
+
     color:white;
+
     padding:7px 11px;
+
     border-radius:7px;
+
     cursor:pointer;
+
 }
 
+
+/* ================= STATS ================= */
+
 .stats-grid{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:14px;
+
     margin-bottom:18px;
+
 }
 
 .stat-card{
+
     background:white;
-    padding:20px;
+
+    padding:18px;
+
     border-radius:15px;
+
     box-shadow:0 4px 14px rgba(0,0,0,.07);
+
 }
 
-.stat-icon{font-size:27px}
+.stat-icon{
+    font-size:27px;
+}
 
 .stat-title{
+
     color:#888;
+
     font-size:13px;
+
     margin-top:8px;
+
 }
 
 .stat-value{
-    font-size:25px;
+
+    font-size:24px;
+
     font-weight:bold;
+
     color:#4e342e;
+
     margin-top:5px;
+
 }
 
 .satis-listesi{
+
     background:white;
+
     border-radius:16px;
+
     padding:18px;
+
     box-shadow:0 4px 14px rgba(0,0,0,.07);
+
 }
 
 .satis-row{
+
     display:flex;
+
     justify-content:space-between;
-    padding:11px 0;
+
+    padding:10px 0;
+
     border-bottom:1px solid #eee;
+
 }
 
-.satis-row:last-child{border-bottom:0}
+.satis-row:last-child{
+    border-bottom:0;
+}
 
-.satis-ad{font-weight:bold}
+.satis-ad{
+    font-weight:bold;
+}
+
 .satis-adet{
     color:#795548;
     font-weight:bold;
 }
 
+
+/* ================= RESET ================= */
+
 .reset-box{
+
     margin-top:18px;
+
     background:#fff5f5;
+
     border:1px solid #ffcdd2;
+
     padding:18px;
+
     border-radius:15px;
+
 }
 
 .reset-box h3{
+
     margin-top:0;
+
     color:#c62828;
+
 }
 
 .reset-box p{
+
     font-size:13px;
+
     color:#777;
+
 }
 
 .btn-reset{
+
     background:#c62828;
+
     color:white;
+
     border:0;
+
     padding:12px 18px;
+
     border-radius:9px;
+
     font-weight:bold;
+
     cursor:pointer;
+
 }
 
+
+/* ================= MODAL ================= */
+
 .modal{
+
     display:none;
+
     position:fixed;
+
     inset:0;
+
     background:rgba(0,0,0,.55);
+
     align-items:center;
+
     justify-content:center;
+
     padding:20px;
+
     z-index:999;
+
 }
 
 .modal-box{
+
     background:white;
+
     width:100%;
+
     max-width:400px;
+
     padding:25px;
+
     border-radius:16px;
+
 }
 
 .modal-box h3{
+
     margin-top:0;
+
     color:#4e342e;
+
 }
 
 .modal-box input{
+
     width:100%;
+
     padding:13px;
+
     border:1px solid #ddd;
+
     border-radius:9px;
+
     margin:10px 0;
+
 }
 
 .modal-buttons{
+
     display:flex;
+
     gap:8px;
+
 }
 
 .modal-buttons button{
+
     flex:1;
+
     padding:11px;
+
     border:0;
+
     border-radius:8px;
+
     font-weight:bold;
+
     cursor:pointer;
+
 }
 
 .modal-ok{
+
     background:#c62828;
+
     color:white;
+
 }
 
-.modal-cancel{background:#ddd}
+.modal-cancel{
+    background:#ddd;
+}
 
-@media(max-width:800px){
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+/* TABLET */
+
+@media(max-width:1100px){
 
     .masa-grid{
-        grid-template-columns:1fr;
+
+        grid-template-columns:
+            repeat(8,minmax(0,1fr));
+
+    }
+
+}
+
+
+/* TELEFON */
+
+@media(max-width:750px){
+
+    .masa-grid{
+
+        grid-template-columns:
+            repeat(5,minmax(0,1fr));
+
+        gap:5px;
+
+    }
+
+    .masa-card{
+        padding:7px;
+    }
+
+    .masa-no{
+        font-size:11px;
+    }
+
+    .masa-urun{
+        font-size:8px;
+    }
+
+    .masa-total{
+        font-size:11px;
     }
 
     .stats-grid{
@@ -432,90 +826,176 @@ body{
         grid-template-columns:1fr;
     }
 
-    .nav{
-        grid-template-columns:1fr;
-    }
 }
+
+
+/* ÇOK KÜÇÜK TELEFON */
+
+@media(max-width:420px){
+
+    .masa-grid{
+
+        grid-template-columns:
+            repeat(4,minmax(0,1fr));
+
+    }
+
+}
+
 </style>
 </head>
 
+
 <body>
 
+
+<!-- ================= HEADER ================= -->
+
 <div class="header">
+
     <h1>☕ DİJİTAL KAHVE</h1>
-    <p>Yönetici Kontrol Paneli</p>
+
+    <p>
+        Yönetici Kontrol Paneli
+    </p>
+
 </div>
 
-<div id="loginWrapper" class="login-wrapper">
+
+<!-- ================= LOGIN ================= -->
+
+<div
+    id="loginWrapper"
+    class="login-wrapper">
 
     <div class="login-box">
 
-        <div style="font-size:45px;">🔐</div>
+        <div style="font-size:45px;">
+            🔐
+        </div>
 
-        <h2>Yönetici Girişi</h2>
+        <h2>
+            Yönetici Girişi
+        </h2>
 
         <p style="color:#888;font-size:13px;">
-            Yönetim paneline devam etmek için şifrenizi girin.
+
+            Yönetim paneline devam etmek için
+            şifrenizi girin.
+
         </p>
 
         <input
             type="password"
             id="adminPassword"
             placeholder="Yönetici şifresi"
-            onkeydown="if(event.key==='Enter') girisYap()"
+            onkeydown="
+                if(event.key==='Enter')
+                girisYap()
+            "
         >
 
-        <button class="login-btn" onclick="girisYap()">
+        <button
+            class="login-btn"
+            onclick="girisYap()">
+
             GİRİŞ YAP
+
         </button>
 
     </div>
 
 </div>
 
+
+<!-- ================= ADMIN ================= -->
+
 <div id="adminContent">
 
 <div class="container">
 
+
+<!-- NAV -->
+
 <div class="nav">
 
-    <button class="active" onclick="sekmeAc('masalar',this)">
+    <button
+        class="active"
+        onclick="
+            sekmeAc('masalar',this)
+        ">
+
         🪑 MASALAR
+
     </button>
 
-    <button onclick="sekmeAc('urunler',this)">
+    <button
+        onclick="
+            sekmeAc('urunler',this)
+        ">
+
         ☕ ÜRÜN & FİYATLAR
+
     </button>
 
-    <button onclick="sekmeAc('istatistik',this)">
+    <button
+        onclick="
+            sekmeAc('istatistik',this)
+        ">
+
         📊 İSTATİSTİKLER
+
     </button>
 
 </div>
 
-<div id="masalar" class="panel-section active">
+
+<!-- ================= MASALAR ================= -->
+
+<div
+    id="masalar"
+    class="panel-section active">
 
     <div class="section-title">
 
-        <h2>🪑 Masa Durumları</h2>
+        <h2>
+            🪑 Masa Durumları
+        </h2>
 
         <span
             id="masaDurumText"
-            style="color:#777;font-size:13px;">
+            style="
+                color:#777;
+                font-size:12px;
+            ">
+
             50 Masa
+
         </span>
 
     </div>
 
-    <div id="masaGrid" class="masa-grid"></div>
+
+    <div
+        id="masaGrid"
+        class="masa-grid">
+
+    </div>
 
 </div>
 
-<div id="urunler" class="panel-section">
+
+<!-- ================= ÜRÜNLER ================= -->
+
+<div
+    id="urunler"
+    class="panel-section">
 
     <div class="box">
 
-        <h2>➕ Yeni Ürün</h2>
+        <h2>
+            ➕ Yeni Ürün
+        </h2>
 
         <div class="form-grid">
 
@@ -553,146 +1033,218 @@ body{
 
             </select>
 
-            <button class="btn-ekle" onclick="urunEkle()">
+            <button
+                class="btn-ekle"
+                onclick="urunEkle()">
+
                 + EKLE
+
             </button>
 
         </div>
 
     </div>
 
+
     <div class="box">
 
-        <h2>📋 Menü & Fiyatlar</h2>
+        <h2>
+            📋 Menü & Fiyatlar
+        </h2>
 
         <div id="urunListesi">
+
             Yükleniyor...
+
         </div>
 
     </div>
 
 </div>
 
-<div id="istatistik" class="panel-section">
+
+<!-- ================= İSTATİSTİK ================= -->
+
+<div
+    id="istatistik"
+    class="panel-section">
 
     <div class="section-title">
 
-        <h2>📊 Günlük İstatistikler</h2>
+        <h2>
+            📊 Günlük İstatistikler
+        </h2>
 
         <span
-            style="font-size:12px;color:#888;"
+            style="font-size:12px;color:#888"
             id="istatistikTarih">
+
         </span>
 
     </div>
+
 
     <div class="stats-grid">
 
         <div class="stat-card">
 
-            <div class="stat-icon">💰</div>
+            <div class="stat-icon">
+                💰
+            </div>
 
             <div class="stat-title">
                 Günlük Hasılat
             </div>
 
-            <div class="stat-value" id="gunlukHasılat">
+            <div
+                class="stat-value"
+                id="gunlukHasılat">
+
                 0 TL
+
             </div>
 
         </div>
 
+
         <div class="stat-card">
 
-            <div class="stat-icon">🧾</div>
+            <div class="stat-icon">
+                🧾
+            </div>
 
             <div class="stat-title">
                 Ödenen Masa
             </div>
 
-            <div class="stat-value" id="odenenMasa">
+            <div
+                class="stat-value"
+                id="odenenMasa">
+
                 0
+
             </div>
 
         </div>
 
+
         <div class="stat-card">
 
-            <div class="stat-icon">☕</div>
+            <div class="stat-icon">
+                ☕
+            </div>
 
             <div class="stat-title">
                 Toplam Ürün
             </div>
 
-            <div class="stat-value" id="toplamUrun">
+            <div
+                class="stat-value"
+                id="toplamUrun">
+
                 0
+
             </div>
 
         </div>
 
     </div>
 
+
     <div class="satis-listesi">
 
-        <h3>📦 Ürün Satışları</h3>
+        <h3>
+            📦 Ürün Satışları
+        </h3>
 
         <div id="urunIstatistikleri">
+
             Henüz satış yok.
+
         </div>
 
     </div>
 
+
     <div class="reset-box">
 
-        <h3>⚠️ İstatistikleri Sıfırla</h3>
+        <h3>
+            ⚠️ İstatistikleri Sıfırla
+        </h3>
 
         <p>
-            Günlük hasılat ve ürün satış istatistikleri
-            sıfırlanır. Masalardaki mevcut hesaplar
+
+            Günlük hasılat ve ürün satış
+            istatistikleri sıfırlanır.
+            Masalardaki mevcut hesaplar
             bundan etkilenmez.
+
         </p>
 
-        <button class="btn-reset" onclick="istatistikSifirlamaAc()">
+        <button
+            class="btn-reset"
+            onclick="
+                istatistikSifirlamaAc()
+            ">
+
             🔄 İSTATİSTİKLERİ SIFIRLA
+
         </button>
 
     </div>
 
 </div>
 
-</div>
+
 </div>
 
-<div id="resetModal" class="modal">
+</div>
+
+
+<!-- ================= RESET MODAL ================= -->
+
+<div
+    id="resetModal"
+    class="modal">
 
     <div class="modal-box">
 
-        <h3>🔐 Yönetici Şifresi</h3>
+        <h3>
+            🔐 Yönetici Şifresi
+        </h3>
 
-        <p style="color:#777;font-size:13px;">
+        <p style="color:#777;font-size:13px">
+
             İstatistikleri sıfırlamak için
             yönetici şifrenizi girin.
+
         </p>
 
         <input
             type="password"
             id="resetPassword"
-            placeholder="Şifre"
-            onkeydown="if(event.key==='Enter') istatistikSifirla()"
-        >
+            placeholder="Şifre">
 
         <div class="modal-buttons">
 
             <button
                 class="modal-cancel"
-                onclick="modalKapat()">
+                onclick="
+                    modalKapat()
+                ">
+
                 İPTAL
+
             </button>
 
             <button
                 class="modal-ok"
-                onclick="istatistikSifirla()">
+                onclick="
+                    istatistikSifirla()
+                ">
+
                 SIFIRLA
+
             </button>
 
         </div>
@@ -701,22 +1253,14 @@ body{
 
 </div>
 
+
 <script>
-
-/* =====================================================
-   AYARLAR
-===================================================== */
-
-const MASA_SAYISI = 50;
-
-const YONETICI_SIFRE = "1234";
-
 
 /* =====================================================
    FIREBASE
 ===================================================== */
 
-const firebaseConfig = {
+const firebaseConfig={
 
     databaseURL:
     "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -733,12 +1277,26 @@ const firebaseConfig = {
 };
 
 if(!firebase.apps.length){
-    firebase.initializeApp(firebaseConfig);
+
+    firebase.initializeApp(
+        firebaseConfig
+    );
+
 }
 
-const db = firebase.app().database(
-    "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
-);
+const db=
+    firebase.app().database(
+        "https://dijitalkahve-67f0a-default-rtdb.asia-southeast1.firebasedatabase.app"
+    );
+
+
+/* =====================================================
+   AYARLAR
+===================================================== */
+
+const YONETICI_SIFRE="1234";
+
+const TOPLAM_MASA=50;
 
 
 /* =====================================================
@@ -747,22 +1305,31 @@ const db = firebase.app().database(
 
 function girisYap(){
 
-    const sifre =
-        document.getElementById("adminPassword").value;
+    const sifre=
+        document.getElementById(
+            "adminPassword"
+        ).value;
 
-    if(sifre === YONETICI_SIFRE){
+    if(sifre===YONETICI_SIFRE){
 
-        document.getElementById("loginWrapper").style.display="none";
+        document.getElementById(
+            "loginWrapper"
+        ).style.display="none";
 
-        document.getElementById("adminContent").style.display="block";
+        document.getElementById(
+            "adminContent"
+        ).style.display="block";
 
         baslat();
 
     }else{
 
-        alert("❌ Hatalı yönetici şifresi!");
+        alert(
+            "❌ Hatalı yönetici şifresi!"
+        );
 
     }
+
 }
 
 
@@ -772,17 +1339,24 @@ function girisYap(){
 
 function baslat(){
 
-    document.getElementById("istatistikTarih").innerText =
-        new Date().toLocaleDateString("tr-TR");
+    document.getElementById(
+        "istatistikTarih"
+    ).innerText=
+        new Date().toLocaleDateString(
+            "tr-TR"
+        );
 
-    document.getElementById("masaDurumText").innerText =
-        MASA_SAYISI + " Masa";
+    document.getElementById(
+        "masaDurumText"
+    ).innerText=
+        TOPLAM_MASA+" Masa";
 
     masalariDinle();
 
     urunleriDinle();
 
     istatistikleriDinle();
+
 }
 
 
@@ -793,100 +1367,218 @@ function baslat(){
 function sekmeAc(id,button){
 
     document
-        .querySelectorAll(".panel-section")
-        .forEach(x=>x.classList.remove("active"));
+        .querySelectorAll(
+            ".panel-section"
+        )
+        .forEach(x=>{
+
+            x.classList.remove(
+                "active"
+            );
+
+        });
 
     document
-        .querySelectorAll(".nav button")
-        .forEach(x=>x.classList.remove("active"));
+        .querySelectorAll(
+            ".nav button"
+        )
+        .forEach(x=>{
+
+            x.classList.remove(
+                "active"
+            );
+
+        });
 
     document
         .getElementById(id)
-        .classList.add("active");
+        .classList.add(
+            "active"
+        );
 
-    button.classList.add("active");
+    button.classList.add(
+        "active"
+    );
+
 }
 
 
 /* =====================================================
-   MASALAR
+   MASALARI DİNLE
 ===================================================== */
 
 function masalariDinle(){
 
-    db.ref("siparisler").on("value",snapshot=>{
+    db.ref("siparisler")
+    .on("value",snapshot=>{
 
-        const data = snapshot.val() || {};
+        const data=
+            snapshot.val() || {};
 
-        const masalar = {};
+        const masalar={};
 
-        for(let i=1;i<=MASA_SAYISI;i++){
 
-            masalar[i] = {
-                urunler:{},
+        /* 50 MASAYI OLUŞTUR */
+
+        for(
+            let i=1;
+            i<=TOPLAM_MASA;
+            i++
+        ){
+
+            masalar[i]={
+
+                bekleyenler:[],
+
+                onayliUrunler:{},
+
                 toplam:0,
+
+                bekleyen:false,
+
                 dolu:false
+
             };
 
         }
 
-        Object.values(data).forEach(siparis=>{
 
-            if(!siparis) return;
+        /*
+          TÜM SİPARİŞLERİ OKU.
+          BEKLEYEN VE ONAYLANAN
+          AYRI AYRI İŞLENİR.
+        */
 
-            if(siparis.durum !== "onaylandi")
+        Object.keys(data)
+        .forEach(key=>{
+
+            const siparis=
+                data[key];
+
+            if(!siparis)
                 return;
 
-            const masa = parseInt(siparis.masa);
+
+            const masa=
+                parseInt(
+                    siparis.masa
+                );
+
 
             if(
-                isNaN(masa) ||
-                masa < 1 ||
-                masa > MASA_SAYISI
-            )
+                !masa ||
+                masa<1 ||
+                masa>TOPLAM_MASA
+            ){
+
                 return;
 
-            masalar[masa].dolu = true;
+            }
 
-            const urunler = siparis.urunler || {};
 
-            Object.values(urunler).forEach(u=>{
+            /* =====================
+               BEKLEYEN
+            ===================== */
 
-                const ad =
-                    String(u.ad || "Ürün").trim();
+            if(
+                siparis.durum!=="onaylandi"
+            ){
 
-                const key =
+                masalar[masa]
+                    .bekleyen=true;
+
+
+                masalar[masa]
+                    .bekleyenler
+                    .push({
+
+                        id:key,
+
+                        siparis:siparis
+
+                    });
+
+                return;
+
+            }
+
+
+            /* =====================
+               ONAYLI
+            ===================== */
+
+            masalar[masa].dolu=true;
+
+
+            const urunler=
+                siparis.urunler || {};
+
+
+            Object.values(urunler)
+            .forEach(u=>{
+
+                const ad=
+                    String(
+                        u.ad ||
+                        "Ürün"
+                    ).trim();
+
+                const key2=
                     ad.toLowerCase();
 
-                if(!masalar[masa].urunler[key]){
 
-                    masalar[masa].urunler[key] = {
+                if(
+                    !masalar[masa]
+                    .onayliUrunler[key2]
+                ){
 
-                        ad:ad,
+                    masalar[masa]
+                        .onayliUrunler[key2]={
 
-                        adet:0,
+                            ad:ad,
 
-                        fiyat:
-                        parseFloat(u.fiyat) || 0
+                            adet:0,
 
-                    };
+                            fiyat:
+                            parseFloat(
+                                u.fiyat
+                            )||0
+
+                        };
 
                 }
 
+
                 masalar[masa]
-                    .urunler[key]
+                    .onayliUrunler[key2]
                     .adet +=
-                    parseInt(u.adet) || 0;
+                    parseInt(
+                        u.adet
+                    )||0;
+
 
                 masalar[masa].toplam +=
-                    (parseFloat(u.fiyat) || 0) *
-                    (parseInt(u.adet) || 0);
+
+                    (
+                        parseFloat(
+                            u.fiyat
+                        )||0
+                    )
+                    *
+                    (
+                        parseInt(
+                            u.adet
+                        )||0
+                    );
 
             });
 
         });
 
-        masaKartlariniGoster(masalar);
+
+        masaKartlariniGoster(
+            masalar
+        );
 
     });
 
@@ -894,45 +1586,148 @@ function masalariDinle(){
 
 
 /* =====================================================
-   MASA KARTLARI
+   MASA KARTLARINI GÖSTER
 ===================================================== */
 
-function masaKartlariniGoster(masalar){
+function masaKartlariniGoster(
+    masalar
+){
 
-    const grid =
-        document.getElementById("masaGrid");
+    const grid=
+        document.getElementById(
+            "masaGrid"
+        );
 
-    grid.innerHTML = "";
+    grid.innerHTML="";
 
-    for(let i=1;i<=MASA_SAYISI;i++){
 
-        const masa = masalar[i];
+    for(
+        let i=1;
+        i<=TOPLAM_MASA;
+        i++
+    ){
 
-        let urunHtml = "";
+        const masa=
+            masalar[i];
 
-        Object.values(masa.urunler).forEach(u=>{
 
-            const tutar =
-                u.adet * u.fiyat;
+        let sinif="";
 
-            urunHtml += `
+        let durumText="🟢 BOŞ";
 
-                <div class="masa-urun">
+        let durumClass="bos";
 
-                    <span class="masa-urun-ad">
+
+        if(masa.bekleyen){
+
+            sinif="bekleyen";
+
+            durumText="🟠 BEKLİYOR";
+
+            durumClass="bekleyen";
+
+        }
+        else if(masa.dolu){
+
+            sinif="dolu";
+
+            durumText="🔴 DOLU";
+
+            durumClass="dolu";
+
+        }
+
+
+        /* =========================
+           BEKLEYENLER
+        ========================= */
+
+        let bekleyenHtml="";
+
+
+        masa.bekleyenler
+        .forEach(item=>{
+
+            const siparis=
+                item.siparis;
+
+            const urunler=
+                siparis.urunler || {};
+
+
+            let urunSatirlari="";
+
+
+            Object.values(urunler)
+            .forEach(u=>{
+
+                urunSatirlari+=`
+
+                    <div
+                        class="bekleyen-urun">
 
                         ${u.ad}
+                        ×${u.adet}
 
+                    </div>
+
+                `;
+
+            });
+
+
+            bekleyenHtml+=`
+
+                <div
+                    class="bekleyen-etiket">
+
+                    🕐 BEKLEYEN SİPARİŞ
+
+                </div>
+
+                ${urunSatirlari}
+
+            `;
+
+        });
+
+
+        /* =========================
+           ONAYLI ÜRÜNLER
+        ========================= */
+
+        let urunHtml="";
+
+
+        Object.values(
+            masa.onayliUrunler
+        )
+        .forEach(u=>{
+
+            const tutar=
+                u.adet*u.fiyat;
+
+
+            urunHtml+=`
+
+                <div
+                    class="masa-urun">
+
+                    <span
+                        class="masa-urun-ad">
+
+                        ${u.ad}
                         <strong>
                             ×${u.adet}
                         </strong>
 
                     </span>
 
-                    <span class="masa-urun-fiyat">
+                    <span
+                        class="masa-urun-fiyat">
 
-                        ${tutar.toFixed(2)}
-                        TL
+                        ${tutar.toFixed(0)}
+                        ₺
 
                     </span>
 
@@ -942,68 +1737,95 @@ function masaKartlariniGoster(masalar){
 
         });
 
-        if(!masa.dolu){
 
-            urunHtml = `
+        if(
+            !masa.bekleyen &&
+            !masa.dolu
+        ){
+
+            urunHtml=`
 
                 <div class="empty">
-                    Bu masa şu anda boş.
+
+                    Boş
+
                 </div>
 
             `;
 
         }
 
-        grid.innerHTML += `
 
-            <div class="masa-card
-                ${masa.dolu ? "dolu" : "bos"}">
+        /* =========================
+           TOPLAM
+        ========================= */
 
-                <div class="masa-header">
+        let totalHtml="";
 
-                    <span class="masa-no">
-                        MASA ${i}
+
+        if(masa.dolu){
+
+            totalHtml=`
+
+                <div
+                    class="masa-total">
+
+                    ${masa.toplam.toFixed(2)}
+                    ₺
+
+                </div>
+
+                <button
+                    class="btn-odendi"
+                    onclick="
+                        hesapOdendi(${i})
+                    ">
+
+                    💳 ÖDENDİ
+
+                </button>
+
+            `;
+
+        }
+
+
+        /* =========================
+           KART
+        ========================= */
+
+        grid.innerHTML+=`
+
+            <div
+                class="masa-card ${sinif}">
+
+                <div
+                    class="masa-header">
+
+                    <span
+                        class="masa-no">
+
+                        M${i}
+
                     </span>
 
-                    <span class="durum
-                        ${masa.dolu ? "dolu" : "bos"}">
+                    <span
+                        class="durum ${durumClass}">
 
-                        ${
-                            masa.dolu
-                            ? "🔴 DOLU"
-                            : "🟢 BOŞ"
-                        }
+                        ${durumText}
 
                     </span>
 
                 </div>
 
+
+                ${bekleyenHtml}
+
+
                 ${urunHtml}
 
-                ${
-                    masa.dolu
-                    ?
-                    `
 
-                    <div class="masa-total">
-
-                        ${masa.toplam.toFixed(2)}
-                        TL
-
-                    </div>
-
-                    <button
-                        class="btn-odendi"
-                        onclick="hesapOdendi(${i})">
-
-                        💳 HESAP ÖDENDİ
-
-                    </button>
-
-                    `
-                    :
-                    ""
-                }
+                ${totalHtml}
 
             </div>
 
@@ -1021,72 +1843,96 @@ function masaKartlariniGoster(masalar){
 function hesapOdendi(masa){
 
     if(!confirm(
+
         "Masa "+masa+
         " hesabı ödendi mi?\n\n"+
-        "Ödeme onaylandığında masa sıfırlanacaktır."
+        "Onaylı siparişler silinecek."
+
     )){
+
         return;
+
     }
+
 
     db.ref("siparisler")
     .once("value")
     .then(snapshot=>{
 
-        const data = snapshot.val() || {};
+        const data=
+            snapshot.val() || {};
 
-        const updates = {};
+        const updates={};
 
-        Object.keys(data).forEach(key=>{
 
-            const siparis = data[key];
+        Object.keys(data)
+        .forEach(key=>{
 
-            if(!siparis) return;
+            const siparis=
+                data[key];
+
+
+            if(!siparis)
+                return;
+
 
             if(
-                parseInt(siparis.masa) === masa &&
-                siparis.durum === "onaylandi"
+
+                parseInt(
+                    siparis.masa
+                )===masa
+
+                &&
+
+                siparis.durum===
+                "onaylandi"
+
             ){
 
-                updates[key] = null;
+                updates[key]=null;
 
             }
 
         });
 
-        if(Object.keys(updates).length === 0){
+
+        if(
+            Object.keys(updates)
+            .length===0
+        ){
 
             alert(
-                "Bu masada ödenebilir onaylı hesap bulunamadı."
+                "Onaylanmış hesap bulunamadı."
             );
 
             return;
 
         }
 
-        return istatistikKaydet(
+
+        istatistikKaydet(
             data,
             masa,
             updates
         )
         .then(()=>{
 
-            return db.ref("siparisler")
-                .update(updates);
+            return db.ref(
+                "siparisler"
+            ).update(updates);
 
         })
         .then(()=>{
 
             alert(
-                "✅ Masa "+masa+
-                " hesabı ödendi ve masa sıfırlandı."
+
+                "✅ Masa "+
+                masa+
+                " hesabı ödendi."
+
             );
 
         });
-
-    })
-    .catch(error=>{
-
-        alert("Hata: " + error.message);
 
     });
 
@@ -1103,24 +1949,35 @@ async function istatistikKaydet(
     silinecekler
 ){
 
-    const statsRef =
-        db.ref("istatistikler");
+    const statsRef=
+        db.ref(
+            "istatistikler"
+        );
 
-    const snapshot =
-        await statsRef.once("value");
 
-    let stats =
+    const snapshot=
+        await statsRef.once(
+            "value"
+        );
+
+
+    let stats=
         snapshot.val();
 
-    const bugun =
-        new Date().toLocaleDateString("tr-TR");
+
+    const bugun=
+        new Date()
+        .toLocaleDateString(
+            "tr-TR"
+        );
+
 
     if(
         !stats ||
-        stats.tarih !== bugun
+        stats.tarih!==bugun
     ){
 
-        stats = {
+        stats={
 
             tarih:bugun,
 
@@ -1136,42 +1993,72 @@ async function istatistikKaydet(
 
     }
 
-    Object.keys(silinecekler).forEach(key=>{
 
-        const siparis = data[key];
+    Object.keys(
+        silinecekler
+    )
+    .forEach(key=>{
 
-        if(!siparis) return;
+        const siparis=
+            data[key];
 
-        const urunler =
+        if(!siparis)
+            return;
+
+
+        const urunler=
             siparis.urunler || {};
 
-        Object.values(urunler).forEach(u=>{
 
-            const adet =
-                parseInt(u.adet) || 0;
+        Object.values(urunler)
+        .forEach(u=>{
 
-            const fiyat =
-                parseFloat(u.fiyat) || 0;
+            const adet=
+                parseInt(
+                    u.adet
+                )||0;
 
-            const kazanc =
-                adet * fiyat;
+            const fiyat=
+                parseFloat(
+                    u.fiyat
+                )||0;
 
-            stats.hasılat += kazanc;
+            const ad=
+                String(
+                    u.ad ||
+                    "Ürün"
+                ).trim();
 
-            stats.toplamUrun += adet;
-
-            const ad =
-                String(u.ad || "Ürün").trim();
-
-            const urunKey =
+            const urunKey=
                 ad.toLowerCase();
 
-            if(!stats.urunler)
-                stats.urunler = {};
 
-            if(!stats.urunler[urunKey]){
+            stats.hasılat +=
+                adet*fiyat;
 
-                stats.urunler[urunKey] = {
+
+            stats.toplamUrun +=
+                adet;
+
+
+            if(
+                !stats.urunler
+            ){
+
+                stats.urunler={};
+
+            }
+
+
+            if(
+                !stats.urunler[
+                    urunKey
+                ]
+            ){
+
+                stats.urunler[
+                    urunKey
+                ]={
 
                     ad:ad,
 
@@ -1183,18 +2070,34 @@ async function istatistikKaydet(
 
             }
 
-            stats.urunler[urunKey].adet += adet;
 
-            stats.urunler[urunKey].hasılat += kazanc;
+            stats.urunler[
+                urunKey
+            ].adet += adet;
+
+
+            stats.urunler[
+                urunKey
+            ].hasılat +=
+                adet*fiyat;
 
         });
 
     });
 
-    stats.odenenMasa =
-        (parseInt(stats.odenenMasa) || 0) + 1;
 
-    await statsRef.set(stats);
+    stats.odenenMasa=
+        (
+            parseInt(
+                stats.odenenMasa
+            )||0
+        )+1;
+
+
+    await statsRef.set(
+        stats
+    );
+
 }
 
 
@@ -1204,40 +2107,54 @@ async function istatistikKaydet(
 
 function urunleriDinle(){
 
-    db.ref("urunler").on("value",snapshot=>{
+    db.ref("urunler")
+    .on("value",snapshot=>{
 
-        const data =
+        const data=
             snapshot.val() || {};
 
-        const liste =
-            document.getElementById("urunListesi");
+        const liste=
+            document.getElementById(
+                "urunListesi"
+            );
 
-        liste.innerHTML = "";
+        liste.innerHTML="";
 
-        if(Object.keys(data).length === 0){
 
-            liste.innerHTML = `
+        if(
+            Object.keys(data)
+            .length===0
+        ){
+
+            liste.innerHTML=`
+
                 <div class="empty">
+
                     Henüz ürün eklenmemiş.
+
                 </div>
+
             `;
 
             return;
+
         }
 
-        Object.keys(data).forEach(key=>{
 
-            const item = data[key];
+        Object.keys(data)
+        .forEach(key=>{
 
-            const ad =
-                String(item.ad || "")
-                .replace(/'/g,"\\'");
+            const item=
+                data[key];
 
-            liste.innerHTML += `
 
-                <div class="urun-card">
+            liste.innerHTML+=`
 
-                    <div class="urun-bilgi">
+                <div
+                    class="urun-card">
+
+                    <div
+                        class="urun-bilgi">
 
                         <strong>
                             ${item.ad}
@@ -1246,28 +2163,36 @@ function urunleriDinle(){
                         <br>
 
                         <small>
-                            ${item.kategori || "Diğer"}
+
+                            ${item.kategori ||
+                            "Diğer"}
+
                             •
+
                             ${item.fiyat} TL
+
                         </small>
 
                     </div>
 
-                    <div class="urun-actions">
+
+                    <div
+                        class="urun-actions">
 
                         <button
                             class="btn-duzen"
                             onclick="
-                                urunDuzenle(
-                                    '${key}',
-                                    '${ad}',
-                                    '${item.fiyat}'
-                                )
-                            ">
+                            urunDuzenle(
+                                '${key}',
+                                '${String(item.ad)
+                                .replace(/'/g,"\\'")}',
+                                '${item.fiyat}'
+                            )">
 
                             ✏️
 
                         </button>
+
 
                         <button
                             class="btn-sil"
@@ -1298,25 +2223,32 @@ function urunleriDinle(){
 
 function urunEkle(){
 
-    const ad =
-        document.getElementById("yeniAd")
-        .value.trim();
+    const ad=
+        document.getElementById(
+            "yeniAd"
+        ).value.trim();
 
-    const fiyat =
-        document.getElementById("yeniFiyat")
-        .value;
+    const fiyat=
+        document.getElementById(
+            "yeniFiyat"
+        ).value;
 
-    const kategori =
-        document.getElementById("yeniKategori")
-        .value;
+    const kategori=
+        document.getElementById(
+            "yeniKategori"
+        ).value;
+
 
     if(!ad || !fiyat){
 
-        alert("Ürün adı ve fiyat girin.");
+        alert(
+            "Ürün adı ve fiyat girin."
+        );
 
         return;
 
     }
+
 
     db.ref("urunler")
     .push({
@@ -1330,14 +2262,13 @@ function urunEkle(){
     })
     .then(()=>{
 
-        document.getElementById("yeniAd").value="";
+        document.getElementById(
+            "yeniAd"
+        ).value="";
 
-        document.getElementById("yeniFiyat").value="";
-
-    })
-    .catch(error=>{
-
-        alert("Ürün eklenemedi: " + error.message);
+        document.getElementById(
+            "yeniFiyat"
+        ).value="";
 
     });
 
@@ -1354,30 +2285,49 @@ function urunDuzenle(
     eskiFiyat
 ){
 
-    const yeniAd =
-        prompt("Ürün adı:",eskiAd);
+    const yeniAd=
+        prompt(
+            "Ürün adı:",
+            eskiAd
+        );
 
-    if(yeniAd === null)
+
+    if(
+        yeniAd===null
+    )
         return;
 
-    const yeniFiyat =
-        prompt("Fiyat:",eskiFiyat);
 
-    if(yeniFiyat === null)
+    const yeniFiyat=
+        prompt(
+            "Fiyat:",
+            eskiFiyat
+        );
+
+
+    if(
+        yeniFiyat===null
+    )
         return;
+
 
     if(
         !yeniAd.trim() ||
         !yeniFiyat
     ){
 
-        alert("Bilgileri eksiksiz girin.");
+        alert(
+            "Bilgileri eksiksiz girin."
+        );
 
         return;
 
     }
 
-    db.ref("urunler/"+id)
+
+    db.ref(
+        "urunler/"+id
+    )
     .update({
 
         ad:yeniAd.trim(),
@@ -1396,26 +2346,37 @@ function urunDuzenle(
 function urunSil(id){
 
     if(!confirm(
+
         "Bu ürünü menüden silmek istediğinize emin misiniz?"
+
     )){
+
         return;
+
     }
 
-    db.ref("urunler/"+id).remove();
+
+    db.ref(
+        "urunler/"+id
+    ).remove();
 
 }
 
 
 /* =====================================================
-   İSTATİSTİKLERİ DİNLE
+   İSTATİSTİKLER
 ===================================================== */
 
 function istatistikleriDinle(){
 
-    db.ref("istatistikler").on("value",snapshot=>{
+    db.ref(
+        "istatistikler"
+    )
+    .on("value",snapshot=>{
 
-        const stats =
+        const stats=
             snapshot.val();
+
 
         if(!stats){
 
@@ -1432,12 +2393,20 @@ function istatistikleriDinle(){
             });
 
             return;
+
         }
 
-        const bugun =
-            new Date().toLocaleDateString("tr-TR");
 
-        if(stats.tarih !== bugun){
+        const bugun=
+            new Date()
+            .toLocaleDateString(
+                "tr-TR"
+            );
+
+
+        if(
+            stats.tarih!==bugun
+        ){
 
             istatistikGoster({
 
@@ -1453,7 +2422,9 @@ function istatistikleriDinle(){
 
         }else{
 
-            istatistikGoster(stats);
+            istatistikGoster(
+                stats
+            );
 
         }
 
@@ -1466,59 +2437,102 @@ function istatistikleriDinle(){
    İSTATİSTİK GÖSTER
 ===================================================== */
 
-function istatistikGoster(stats){
+function istatistikGoster(
+    stats
+){
 
-    document.getElementById("gunlukHasılat").innerText =
-        (parseFloat(stats.hasılat) || 0)
-        .toFixed(2) + " TL";
+    document.getElementById(
+        "gunlukHasılat"
+    ).innerText=
 
-    document.getElementById("odenenMasa").innerText =
-        parseInt(stats.odenenMasa) || 0;
+        (
+            parseFloat(
+                stats.hasılat
+            )||0
+        )
+        .toFixed(2)
+        +" TL";
 
-    document.getElementById("toplamUrun").innerText =
-        parseInt(stats.toplamUrun) || 0;
 
-    const liste =
+    document.getElementById(
+        "odenenMasa"
+    ).innerText=
+
+        parseInt(
+            stats.odenenMasa
+        )||0;
+
+
+    document.getElementById(
+        "toplamUrun"
+    ).innerText=
+
+        parseInt(
+            stats.toplamUrun
+        )||0;
+
+
+    const liste=
         document.getElementById(
             "urunIstatistikleri"
         );
 
-    liste.innerHTML = "";
 
-    const urunler =
+    liste.innerHTML="";
+
+
+    const urunler=
         stats.urunler || {};
 
-    if(Object.keys(urunler).length === 0){
 
-        liste.innerHTML = `
+    if(
+        Object.keys(urunler)
+        .length===0
+    ){
+
+        liste.innerHTML=`
+
             <div class="empty">
+
                 Bugün henüz satış yapılmadı.
+
             </div>
+
         `;
 
         return;
+
     }
 
+
     Object.values(urunler)
-    .sort((a,b)=>
-        (parseInt(b.adet)||0) -
-        (parseInt(a.adet)||0)
+    .sort(
+        (a,b)=>
+        b.adet-a.adet
     )
     .forEach(u=>{
 
-        liste.innerHTML += `
+        liste.innerHTML+=`
 
             <div class="satis-row">
 
                 <span class="satis-ad">
+
                     ${u.ad}
+
                 </span>
 
                 <span class="satis-adet">
 
                     ${u.adet} adet
                     •
-                    ${(parseFloat(u.hasılat)||0).toFixed(2)}
+                    ${
+                        (
+                            parseFloat(
+                                u.hasılat
+                            )||0
+                        ).toFixed(2)
+                    }
                     TL
 
                 </span>
@@ -1533,18 +2547,20 @@ function istatistikGoster(stats){
 
 
 /* =====================================================
-   RESET MODAL
+   RESET
 ===================================================== */
 
 function istatistikSifirlamaAc(){
 
     document.getElementById(
         "resetPassword"
-    ).value = "";
+    ).value="";
+
 
     document.getElementById(
         "resetModal"
-    ).style.display = "flex";
+    ).style.display="flex";
+
 
     setTimeout(()=>{
 
@@ -1561,7 +2577,7 @@ function modalKapat(){
 
     document.getElementById(
         "resetModal"
-    ).style.display = "none";
+    ).style.display="none";
 
 }
 
@@ -1572,31 +2588,48 @@ function modalKapat(){
 
 function istatistikSifirla(){
 
-    const sifre =
+    const sifre=
         document.getElementById(
             "resetPassword"
         ).value;
 
-    if(sifre !== YONETICI_SIFRE){
 
-        alert("❌ Hatalı yönetici şifresi!");
+    if(
+        sifre!==YONETICI_SIFRE
+    ){
+
+        alert(
+            "❌ Hatalı yönetici şifresi!"
+        );
 
         return;
 
     }
 
+
     if(!confirm(
+
         "Bugünkü tüm satış istatistikleri sıfırlanacak.\n\n"+
         "Masaların hesapları bundan etkilenmeyecek.\n\n"+
         "Devam edilsin mi?"
+
     )){
+
         return;
+
     }
 
-    const bugun =
-        new Date().toLocaleDateString("tr-TR");
 
-    db.ref("istatistikler")
+    const bugun=
+        new Date()
+        .toLocaleDateString(
+            "tr-TR"
+        );
+
+
+    db.ref(
+        "istatistikler"
+    )
     .set({
 
         tarih:bugun,
@@ -1622,7 +2655,8 @@ function istatistikSifirla(){
     .catch(error=>{
 
         alert(
-            "Hata: " + error.message
+            "Hata: "+
+            error.message
         );
 
     });
