@@ -2,415 +2,468 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Yaz-Boz</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dijital Kahvem</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
-
+*{box-sizing:border-box}
 body{
-    margin:0;
-    font-family:Arial,Helvetica,sans-serif;
-    background:#f4f1ed;
-    color:#3e2723;
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f5f1ed;
+ color:#35251f;
+}
+header{
+ background:#4e342e;
+ color:#fff;
+ padding:18px 15px;
+ text-align:center;
+}
+header h1{margin:0;font-size:25px}
+header p{margin:5px 0 0;font-size:14px}
+.masa{
+ display:inline-block;
+ margin-top:8px;
+ background:#fff;
+ color:#4e342e;
+ padding:6px 14px;
+ border-radius:20px;
+ font-weight:bold;
+}
+.ust{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:7px;
+ padding:10px;
+ background:#fff;
+ position:sticky;
+ top:0;
+ z-index:10;
+ box-shadow:0 2px 8px #0002;
+}
+.ust button{
+ border:0;
+ border-radius:9px;
+ padding:11px 4px;
+ background:#eee;
+ font-weight:bold;
+ cursor:pointer;
+}
+.ust button.aktif{
+ background:#5d4037;
+ color:#fff;
+}
+.container{
+ max-width:1000px;
+ margin:auto;
+ padding:12px;
+}
+.kategori{
+ margin:18px 0 8px;
+ font-size:19px;
+ font-weight:bold;
+}
+.menu{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:9px;
+}
+.urun{
+ background:#fff;
+ border-radius:12px;
+ padding:11px;
+ min-height:90px;
+ box-shadow:0 2px 8px #0001;
+ display:flex;
+ flex-direction:column;
+ justify-content:space-between;
+}
+.urun h3{
+ margin:0;
+ font-size:14px;
+}
+.fiyat{
+ font-size:13px;
+ color:#795548;
+ margin-top:4px;
+}
+.ekle{
+ align-self:flex-end;
+ width:34px;
+ height:34px;
+ border:0;
+ border-radius:50%;
+ background:#5d4037;
+ color:#fff;
+ font-size:22px;
+ cursor:pointer;
+}
+.adet{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ margin-top:7px;
+}
+.adet button{
+ width:28px;
+ height:28px;
+ border:0;
+ border-radius:7px;
+ background:#ddd;
+ font-weight:bold;
+}
+.adet span{font-weight:bold}
+
+/* PANELLER */
+.panel{
+ display:none;
+ background:#fff;
+ border-radius:14px;
+ padding:15px;
+ margin-top:12px;
+ box-shadow:0 2px 10px #0001;
+}
+.panel.aktif{display:block}
+.panel h2{
+ margin-top:0;
+ text-align:center;
 }
 
-.yazboz{
-    width:100%;
-    max-width:1000px;
-    margin:auto;
-    padding:18px;
+/* YAZ BOZ */
+.yz-ayar{
+ display:grid;
+ gap:12px;
+}
+.yz-secim{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+}
+.yz-secim button,
+.yz-baslat{
+ border:0;
+ border-radius:9px;
+ padding:12px;
+ font-weight:bold;
+ cursor:pointer;
+}
+.yz-secim button.aktif{
+ background:#5d4037;
+ color:white;
+}
+.yz-oyuncular{
+ display:flex;
+ gap:7px;
+}
+.yz-oyuncular button{
+ width:45px;
+ height:40px;
+ border:2px solid #ddd;
+ background:#fff;
+ border-radius:8px;
+ font-weight:bold;
+}
+.yz-oyuncular button.aktif{
+ background:#5d4037;
+ color:#fff;
+}
+#oyunSayisi{
+ width:90px;
+ padding:10px;
+ border:1px solid #ccc;
+ border-radius:8px;
+}
+.yz-baslat{
+ background:#2e7d32;
+ color:white;
+}
+.yz-tablo{
+ overflow-x:auto;
+ margin-top:15px;
+}
+.yz-grid{
+ display:grid;
+ min-width:430px;
+}
+.yz-hucre{
+ min-height:36px;
+ border-right:1px solid #ddd;
+ border-bottom:1px solid #ddd;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:3px;
+ font-size:12px;
+}
+.yz-baslik{
+ background:#5d4037;
+ color:white;
+ font-weight:bold;
+}
+.yz-oyun{
+ justify-content:flex-start;
+ padding-left:7px;
+ background:#fafafa;
+ font-weight:bold;
+}
+.yz-aktif{
+ background:#fff3cd;
+}
+.yz-skor{
+ width:65px;
+ height:28px;
+ text-align:center;
+ border:1px solid #bbb;
+ border-radius:6px;
+}
+.yz-skor:disabled{
+ background:#eee;
+}
+.yz-durum{
+ text-align:center;
+ margin-top:10px;
+ font-weight:bold;
+ font-size:13px;
+}
+.yz-toplam{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:5px;
+ margin-top:10px;
+}
+.yz-toplam div{
+ background:#f5f5f5;
+ padding:7px;
+ text-align:center;
+ border-radius:7px;
+ font-size:12px;
 }
 
-/* ================= BAŞLIK ================= */
-
-.baslik{
-    text-align:center;
-    font-size:30px;
-    font-weight:bold;
-    margin:10px 0 25px;
+/* HESAP */
+.hesap-satir{
+ display:flex;
+ justify-content:space-between;
+ padding:11px 5px;
+ border-bottom:1px solid #eee;
+}
+.hesap-toplam{
+ display:flex;
+ justify-content:space-between;
+ font-size:20px;
+ font-weight:bold;
+ margin-top:15px;
 }
 
-/* ================= AYARLAR ================= */
+/* BUTONLAR */
+.islem{
+ width:100%;
+ padding:13px;
+ border:0;
+ border-radius:9px;
+ margin-top:10px;
+ color:white;
+ font-weight:bold;
+ cursor:pointer;
+}
+.garson{background:#ef6c00}
+.siparis{background:#1565c0}
+.hesap-btn{background:#2e7d32}
 
-.ayarlar{
-    background:white;
-    border-radius:16px;
-    padding:20px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-    margin-bottom:20px;
+.bos{
+ text-align:center;
+ color:#777;
+ padding:20px;
 }
 
-.ayar-baslik{
-    font-size:18px;
-    font-weight:bold;
-    margin-bottom:15px;
-}
-
-.secim{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-}
-
-.secim button{
-    border:2px solid #ddd;
-    background:white;
-    padding:14px;
-    border-radius:10px;
-    font-size:15px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.secim button.aktif{
-    background:#5d4037;
-    color:white;
-    border-color:#5d4037;
-}
-
-.oyuncu-secim{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.oyuncu-secim button{
-    width:55px;
-    height:45px;
-    border:2px solid #ddd;
-    background:white;
-    border-radius:9px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.oyuncu-secim button.aktif{
-    background:#5d4037;
-    color:white;
-    border-color:#5d4037;
-}
-
-.oyun-sayisi{
-    display:flex;
-    align-items:center;
-    gap:10px;
-}
-
-.oyun-sayisi input{
-    width:100px;
-    padding:12px;
-    border:2px solid #ddd;
-    border-radius:9px;
-    font-size:17px;
-    text-align:center;
-}
-
-.baslat{
-    width:100%;
-    margin-top:18px;
-    padding:14px;
-    border:0;
-    border-radius:10px;
-    background:#2e7d32;
-    color:white;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-/* ================= SKOR TABLOSU ================= */
-
-.tablo{
-    background:white;
-    border-radius:16px;
-    padding:15px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-    overflow-x:auto;
-}
-
-.tablo-grid{
-    display:grid;
-    gap:0;
-    min-width:600px;
-}
-
-.hucre{
-    min-height:55px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border-right:1px solid #ddd;
-    border-bottom:1px solid #ddd;
-    padding:7px;
-}
-
-.baslik-hucre{
-    background:#5d4037;
-    color:white;
-    font-weight:bold;
-    min-height:55px;
-}
-
-.oyun-adi{
-    justify-content:flex-start;
-    padding-left:12px;
-    font-weight:bold;
-    background:#fafafa;
-}
-
-.skors{
-    width:100%;
-    height:40px;
-    border:1px solid #ccc;
-    border-radius:7px;
-    text-align:center;
-    font-size:16px;
-}
-
-.skors:disabled{
-    background:#eee;
-    color:#777;
-}
-
-.aktif-satir .oyun-adi{
-    background:#fff8e1;
-    color:#e65100;
-}
-
-.kilitli{
-    background:#eeeeee !important;
-}
-
-.kilit-icon{
-    margin-left:5px;
-}
-
-/* ================= KONTROLLER ================= */
-
-.kontrol{
-    margin-top:15px;
-    text-align:center;
-}
-
-.kaydet{
-    background:#1565c0;
-    color:white;
-    border:0;
-    padding:13px 25px;
-    border-radius:9px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.sure{
-    margin-top:10px;
-    font-size:14px;
-    color:#e65100;
-    font-weight:bold;
-}
-
-/* ================= TOPLAM ================= */
-
-.toplam{
-    margin-top:20px;
-    background:white;
-    border-radius:16px;
-    padding:18px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
-
-.toplam h3{
-    margin-top:0;
-}
-
-.toplam-grid{
-    display:grid;
-    gap:8px;
-}
-
-.toplam-satir{
-    display:flex;
-    justify-content:space-between;
-    padding:10px;
-    background:#fafafa;
-    border-radius:8px;
-    font-weight:bold;
-}
-
-/* ================= MOBİL ================= */
-
-@media(max-width:600px){
-
-    .yazboz{
-        padding:10px;
-    }
-
-    .baslik{
-        font-size:25px;
-    }
-
-    .tablo{
-        padding:8px;
-    }
-
+@media(max-width:650px){
+ .menu{grid-template-columns:repeat(2,1fr)}
+ .ust button{font-size:11px;padding:10px 2px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="yazboz">
+<header>
+ <h1>☕ DİJİTAL KAHVEM</h1>
+ <p>Hoş Geldiniz</p>
+ <div class="masa" id="masaNo">MASA -</div>
+</header>
 
-    <div class="baslik">
-        📝 YAZ-BOZ
+<!-- ÜST BUTONLAR -->
+<div class="ust">
+ <button id="garsonBtn" onclick="garsonCagir()">🔔 Garson</button>
+ <button id="yazbozBtn" onclick="panelAc('yazboz')">📝 Yaz-Boz</button>
+ <button id="hesapBtn" onclick="panelAc('hesap')">💳 Hesap</button>
+ <button id="siparisBtn" onclick="siparisGonder()">🛎 Sipariş Gönder</button>
+</div>
+
+<div class="container">
+
+ <!-- MENÜ -->
+ <div id="menuPanel" class="panel aktif">
+
+  <div class="kategori">☕ SICAK İÇECEKLER</div>
+
+  <div class="menu">
+
+   <div class="urun">
+    <h3>Çay</h3>
+    <div class="fiyat">25 ₺</div>
+    <div class="adet">
+     <button onclick="adetAzalt('Çay')">−</button>
+     <span id="adet-Çay">0</span>
+     <button onclick="adetArtir('Çay')">+</button>
     </div>
+   </div>
 
-
-    <!-- ================= AYARLAR ================= -->
-
-    <div id="ayarlar" class="ayarlar">
-
-        <div class="ayar-baslik">
-            Oyun Türü
-        </div>
-
-        <div class="secim">
-
-            <button
-                id="esliBtn"
-                class="aktif"
-                onclick="oyunTuruSec('esli')">
-
-                👥 EŞLİ OYUN
-
-            </button>
-
-            <button
-                id="tekliBtn"
-                onclick="oyunTuruSec('tekli')">
-
-                👤 TEKLİ OYUN
-
-            </button>
-
-        </div>
-
-
-        <div
-            id="oyuncuSecimAlani"
-            style="margin-top:20px;">
-
-            <div class="ayar-baslik">
-                Oyuncu Sayısı
-            </div>
-
-            <div class="oyuncu-secim">
-
-                <button
-                    class="aktif"
-                    onclick="oyuncuSayisiSec(2,this)">
-
-                    2
-
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <div style="margin-top:20px;">
-
-            <div class="ayar-baslik">
-                Kaç Oyun Oynanacak?
-            </div>
-
-            <div class="oyun-sayisi">
-
-                <input
-                    type="number"
-                    id="oyunSayisi"
-                    value="7"
-                    min="1"
-                    max="100"
-                >
-
-                <span>
-                    oyun
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <button
-            class="baslat"
-            onclick="oyunuBaslat()">
-
-            ▶ OYUNU BAŞLAT
-
-        </button>
-
+   <div class="urun">
+    <h3>Nescafe</h3>
+    <div class="fiyat">60 ₺</div>
+    <div class="adet">
+     <button onclick="adetAzalt('Nescafe')">−</button>
+     <span id="adet-Nescafe">0</span>
+     <button onclick="adetArtir('Nescafe')">+</button>
     </div>
+   </div>
 
-
-    <!-- ================= TABLO ================= -->
-
-    <div
-        id="oyunAlani"
-        style="display:none;">
-
-        <div class="tablo">
-
-            <div
-                id="skorTablosu"
-                class="tablo-grid">
-
-            </div>
-
-        </div>
-
-
-        <div class="kontrol">
-
-            <button
-                id="kaydetBtn"
-                class="kaydet"
-                onclick="skorlariKaydet()">
-
-                ✓ SKORLARI KAYDET
-
-            </button>
-
-            <div
-                id="sure"
-                class="sure">
-
-            </div>
-
-        </div>
-
-
-        <div class="toplam">
-
-            <h3>
-                🏆 TOPLAM SKOR
-            </h3>
-
-            <div
-                id="toplamSkor"
-                class="toplam-grid">
-
-            </div>
-
-        </div>
-
+   <div class="urun">
+    <h3>Türk Kahvesi</h3>
+    <div class="fiyat">70 ₺</div>
+    <div class="adet">
+     <button onclick="adetAzalt('Türk Kahvesi')">−</button>
+     <span id="adet-Türk Kahvesi">0</span>
+     <button onclick="adetArtir('Türk Kahvesi')">+</button>
     </div>
+   </div>
+
+   <div class="urun">
+    <h3>Su</h3>
+    <div class="fiyat">15 ₺</div>
+    <div class="adet">
+     <button onclick="adetAzalt('Su')">−</button>
+     <span id="adet-Su">0</span>
+     <button onclick="adetArtir('Su')">+</button>
+    </div>
+   </div>
+
+  </div>
+
+  <div class="kategori">🧊 SOĞUK İÇECEKLER</div>
+
+  <div class="menu">
+
+   <div class="urun">
+    <h3>Kola</h3>
+    <div class="fiyat">50 ₺</div>
+    <div class="adet">
+     <button onclick="adetAzalt('Kola')">−</button>
+     <span id="adet-Kola">0</span>
+     <button onclick="adetArtir('Kola')">+</button>
+    </div>
+   </div>
+
+   <div class="urun">
+    <h3>Fanta</h3>
+    <div class="fiyat">50 ₺</div>
+    <div class="adet">
+     <button onclick="adetAzalt('Fanta')">−</button>
+     <span id="adet-Fanta">0</span>
+     <button onclick="adetArtir('Fanta')">+</button>
+    </div>
+   </div>
+
+  </div>
+
+  <div class="kategori">🍪 ATIŞTIRMALIKLAR</div>
+
+  <div class="menu">
+
+   <div class="urun">
+    <h3>Tost</h3>
+    <div class="fiyat">100 ₺</div>
+    <div class="adet">
+     <button onclick="adetAzalt('Tost')">−</button>
+     <span id="adet-Tost">0</span>
+     <button onclick="adetArtir('Tost')">+</button>
+    </div>
+   </div>
+
+  </div>
+
+ </div>
+
+
+ <!-- YAZ BOZ -->
+ <div id="yazboz" class="panel">
+
+  <h2>📝 YAZ-BOZ</h2>
+
+  <div id="yzAyar">
+
+   <b>Oyun Türü</b>
+
+   <div class="yz-secim">
+    <button class="aktif" id="yzEsli"
+      onclick="yzTur('esli')">
+      👥 Eşli Oyun
+    </button>
+
+    <button id="yzTekli"
+      onclick="yzTur('tekli')">
+      👤 Tekli Oyun
+    </button>
+   </div>
+
+   <b>Oyuncu Sayısı</b>
+
+   <div class="yz-oyuncular">
+    <button class="aktif" onclick="yzOyuncu(2,this)">2</button>
+    <button onclick="yzOyuncu(3,this)">3</button>
+    <button onclick="yzOyuncu(4,this)">4</button>
+   </div>
+
+   <b>Kaç oyun oynanacak?</b>
+
+   <input id="oyunSayisi" type="number" value="7" min="1" max="100">
+
+   <button class="yz-baslat" onclick="yzBaslat()">
+    ▶ YAZ-BOZU BAŞLAT
+   </button>
+
+  </div>
+
+  <div id="yzOyun" style="display:none">
+
+   <div id="yzTablo" class="yz-tablo"></div>
+
+   <div id="yzDurum" class="yz-durum"></div>
+
+   <div id="yzToplam" class="yz-toplam"></div>
+
+  </div>
+
+ </div>
+
+
+ <!-- HESAP -->
+ <div id="hesap" class="panel">
+
+  <h2>💳 Hesabım</h2>
+
+  <div id="hesapListe"></div>
+
+  <div class="hesap-toplam">
+   <span>Toplam</span>
+   <span id="hesapToplam">0 ₺</span>
+  </div>
+
+  <button class="islem hesap-btn"
+    onclick="hesapIstiyorum()">
+    💳 HESAP İSTİYORUM
+  </button>
+
+ </div>
 
 </div>
 
@@ -418,608 +471,657 @@ body{
 <script>
 
 /* =====================================================
-   DEĞİŞKENLER
+   MASA NUMARASI
 ===================================================== */
 
-let oyunTuru="esli";
+const params=new URLSearchParams(
+ location.search
+);
 
-let oyuncuSayisi=2;
+let masa=
+ params.get("masa") ||
+ params.get("table") ||
+ params.get("masaNo");
 
-let oyunSayisi=7;
+if(!masa){
+ masa="1";
+}
 
-let aktifOyun=1;
-
-let oyunlar=[];
-
-let kilitZamani=null;
-
-let zamanlayici=null;
+document.getElementById("masaNo")
+ .textContent="MASA "+masa;
 
 
 /* =====================================================
-   OYUN TÜRÜ
+   MENÜ
 ===================================================== */
 
-function oyunTuruSec(tur){
+const urunler={
+ "Çay":25,
+ "Nescafe":60,
+ "Türk Kahvesi":70,
+ "Su":15,
+ "Kola":50,
+ "Fanta":50,
+ "Tost":100
+};
 
-    oyunTuru=tur;
+let sepet={};
 
-    document
-        .getElementById("esliBtn")
-        .classList.remove("aktif");
-
-    document
-        .getElementById("tekliBtn")
-        .classList.remove("aktif");
-
-
-    if(tur==="esli"){
-
-        document
-            .getElementById("esliBtn")
-            .classList.add("aktif");
-
-        oyuncuSayisi=2;
-
-        document
-            .getElementById("oyuncuSecimAlani")
-            .innerHTML=`
-
-                <div class="ayar-baslik">
-                    Oyuncu Sayısı
-                </div>
-
-                <div class="oyuncu-secim">
-
-                    <button class="aktif">
-                        2
-                    </button>
-
-                </div>
-
-            `;
-
-    }else{
-
-        document
-            .getElementById("tekliBtn")
-            .classList.add("aktif");
+Object.keys(urunler).forEach(
+ urun=>sepet[urun]=0
+);
 
 
-        document
-            .getElementById("oyuncuSecimAlani")
-            .innerHTML=`
+function adetArtir(urun){
 
-                <div class="ayar-baslik">
-                    Oyuncu Sayısı
-                </div>
+ sepet[urun]++;
 
-                <div class="oyuncu-secim">
+ document.getElementById(
+  "adet-"+urun
+ ).textContent=sepet[urun];
 
-                    <button
-                        class="aktif"
-                        onclick="oyuncuSayisiSec(2,this)">
-                        2
-                    </button>
+}
 
-                    <button
-                        onclick="oyuncuSayisiSec(3,this)">
-                        3
-                    </button>
 
-                    <button
-                        onclick="oyuncuSayisiSec(4,this)">
-                        4
-                    </button>
+function adetAzalt(urun){
 
-                </div>
+ if(sepet[urun]>0)
+  sepet[urun]--;
 
-            `;
-
-    }
+ document.getElementById(
+  "adet-"+urun
+ ).textContent=sepet[urun];
 
 }
 
 
 /* =====================================================
-   OYUNCU SAYISI
+   PANELLER
 ===================================================== */
 
-function oyuncuSayisiSec(sayi,button){
+function panelAc(panel){
 
-    oyuncuSayisi=sayi;
+ document.querySelectorAll(
+  ".panel"
+ ).forEach(p=>{
+  p.classList.remove("aktif");
+ });
 
-    document
-        .querySelectorAll(
-            ".oyuncu-secim button"
-        )
-        .forEach(btn=>{
-            btn.classList.remove("aktif");
-        });
 
-    button.classList.add("aktif");
+ document.getElementById(panel)
+  .classList.add("aktif");
+
+
+ document.querySelectorAll(
+  ".ust button"
+ ).forEach(b=>{
+  b.classList.remove("aktif");
+ });
+
+
+ if(panel==="yazboz")
+  document.getElementById("yazbozBtn")
+   .classList.add("aktif");
+
+ if(panel==="hesap"){
+  document.getElementById("hesapBtn")
+   .classList.add("aktif");
+  hesapGoster();
+ }
 
 }
 
 
 /* =====================================================
-   OYUNU BAŞLAT
+   GARSON
 ===================================================== */
 
-function oyunuBaslat(){
+function garsonCagir(){
 
-    oyunSayisi=
-        parseInt(
-            document.getElementById(
-                "oyunSayisi"
-            ).value
-        );
-
-
-    if(!oyunSayisi || oyunSayisi<1){
-
-        alert(
-            "En az 1 oyun seçmelisiniz."
-        );
-
-        return;
-
-    }
-
-
-    if(oyunSayisi>100){
-
-        alert(
-            "En fazla 100 oyun seçebilirsiniz."
-        );
-
-        return;
-
-    }
-
-
-    aktifOyun=1;
-
-    oyunlar=[];
-
-    for(let i=1;i<=oyunSayisi;i++){
-
-        oyunlar.push({
-
-            skor:Array(
-                oyuncuSayisi
-            ).fill(""),
-
-            kilitli:false,
-
-            kayitZamani:null
-
-        });
-
-    }
-
-
-    document
-        .getElementById("ayarlar")
-        .style.display="none";
-
-
-    document
-        .getElementById("oyunAlani")
-        .style.display="block";
-
-
-    tabloyuOlustur();
-
-    toplamSkoruGoster();
+ alert(
+  "🔔 Garson çağrıldı.\nMasa "+masa
+ );
 
 }
 
 
 /* =====================================================
-   TABLOYU OLUŞTUR
+   SİPARİŞ
 ===================================================== */
 
-function tabloyuOlustur(){
+function siparisGonder(){
 
-    const tablo=
-        document.getElementById(
-            "skorTablosu"
-        );
+ let toplam=0;
+ let liste=[];
 
+ Object.keys(sepet).forEach(urun=>{
 
-    tablo.innerHTML="";
+  if(sepet[urun]>0){
 
+   let tutar=
+    sepet[urun]*urunler[urun];
 
-    /*
-       Oyun sütunu + oyuncular
-    */
+   toplam+=tutar;
 
-    tablo.style.gridTemplateColumns=
-        `130px repeat(${oyuncuSayisi},1fr)`;
+   liste.push(
+    sepet[urun]+" x "+urun
+   );
 
+  }
 
-    /* BAŞLIK */
-
-    tablo.innerHTML+=`
-
-        <div class="hucre baslik-hucre">
-
-            OYUN
-
-        </div>
-
-    `;
+ });
 
 
-    for(let p=1;p<=oyuncuSayisi;p++){
+ if(!liste.length){
 
-        tablo.innerHTML+=`
+  alert("Henüz ürün seçmediniz.");
+  return;
 
-            <div class="hucre baslik-hucre">
-
-                ${p}. OYUNCU
-
-            </div>
-
-        `;
-
-    }
+ }
 
 
-    /* OYUNLAR */
-
-    oyunlar.forEach((oyun,index)=>{
-
-        const no=index+1;
-
-        const aktif=
-            no===aktifOyun;
-
-
-        const kilit=
-            oyun.kilitli;
-
-
-        tablo.innerHTML+=`
-
-            <div
-                class="hucre oyun-adi
-                ${aktif ? "aktif-satir":""}
-                ${kilit ? "kilitli":""}">
-
-                ${no}. OYUN
-
-                ${kilit
-                    ? '<span class="kilit-icon">🔒</span>'
-                    : ''}
-
-            </div>
-
-        `;
-
-
-        for(let p=0;p<oyuncuSayisi;p++){
-
-            tablo.innerHTML+=`
-
-                <div
-                    class="hucre
-                    ${kilit ? "kilitli":""}">
-
-                    <input
-                        class="skors"
-                        type="number"
-                        data-oyun="${index}"
-                        data-oyuncu="${p}"
-                        value="${oyun.skor[p]}"
-                        ${!aktif || kilit
-                            ? "disabled"
-                            : ""}
-                    >
-
-                </div>
-
-            `;
-
-        }
-
-    });
-
-
-    tablo
-        .querySelectorAll(".skors")
-        .forEach(input=>{
-
-            input.addEventListener(
-                "input",
-                function(){
-
-                    const oyun=
-                        parseInt(
-                            this.dataset.oyun
-                        );
-
-                    const oyuncu=
-                        parseInt(
-                            this.dataset.oyuncu
-                        );
-
-                    oyunlar[oyun]
-                        .skor[oyuncu]=
-                        this.value;
-
-                }
-            );
-
-        });
-
-
-    butonDurumunuGuncelle();
+ alert(
+  "🛎 Sipariş gönderildi!\n\n"+
+  "Masa: "+masa+"\n"+
+  liste.join("\n")+
+  "\n\nToplam: "+toplam+" ₺"
+ );
 
 }
 
 
 /* =====================================================
-   SKORLARI KAYDET
+   HESAP
 ===================================================== */
 
-function skorlariKaydet(){
+function hesapGoster(){
 
-    const oyun=
-        oyunlar[aktifOyun-1];
+ let alan=
+  document.getElementById(
+   "hesapListe"
+  );
 
+ let toplam=0;
 
-    if(!oyun || oyun.kilitli)
-        return;
+ alan.innerHTML="";
 
+ let varMi=false;
 
-    for(let i=0;i<oyuncuSayisi;i++){
+ Object.keys(sepet).forEach(urun=>{
 
-        if(
-            oyun.skor[i]==="" ||
-            oyun.skor[i]===null
-        ){
+  if(sepet[urun]>0){
 
-            alert(
-                "Tüm oyuncuların skorlarını girin."
-            );
+   varMi=true;
 
-            return;
+   let tutar=
+    sepet[urun]*urunler[urun];
 
-        }
+   toplam+=tutar;
 
-    }
+   alan.innerHTML+=`
+    <div class="hesap-satir">
+     <span>
+      ${urun} × ${sepet[urun]}
+     </span>
+     <b>${tutar} ₺</b>
+    </div>
+   `;
 
+  }
 
-    oyun.kayitZamani=
-        Date.now();
-
-
-    oyun.kilitli=false;
-
-    kilitZamani=
-        Date.now()+60000;
-
-
-    document
-        .getElementById("kaydetBtn")
-        .disabled=true;
+ });
 
 
-    tabloyuOlustur();
+ if(!varMi){
+
+  alan.innerHTML=
+   `<div class="bos">
+     Henüz sipariş yok.
+   </div>`;
+
+ }
 
 
-    sureGuncelle();
+ document.getElementById(
+  "hesapToplam"
+ ).textContent=
+  toplam+" ₺";
+
+}
 
 
-    if(zamanlayici)
-        clearInterval(zamanlayici);
+function hesapIstiyorum(){
 
-
-    zamanlayici=
-        setInterval(
-            sureGuncelle,
-            1000
-        );
+ alert(
+  "💳 Hesap isteğiniz garsona iletildi.\n"+
+  "Masa "+masa
+ );
 
 }
 
 
 /* =====================================================
-   SÜRE
+   YAZ BOZ
 ===================================================== */
 
-function sureGuncelle(){
-
-    if(!kilitZamani)
-        return;
-
-
-    const kalan=
-        kilitZamani-Date.now();
-
-
-    if(kalan<=0){
-
-        clearInterval(
-            zamanlayici
-        );
-
-        oyunKilitle();
-
-        return;
-
-    }
+let yzTurSec="esli";
+let yzOyuncuSayisi=2;
+let yzOyunSayisi=7;
+let yzAktifOyun=1;
+let yzOyunlar=[];
+let yzTimer=null;
+let yzKilitZamani=null;
 
 
-    const saniye=
-        Math.ceil(kalan/1000);
+function yzTur(tur){
 
+ yzTurSec=tur;
 
-    document
-        .getElementById("sure")
-        .innerText=
-        "🔓 Skorlar kilitleniyor: "
-        +saniye+
-        " saniye";
+ document.getElementById("yzEsli")
+  .classList.remove("aktif");
 
+ document.getElementById("yzTekli")
+  .classList.remove("aktif");
+
+ if(tur==="esli"){
+
+  document.getElementById("yzEsli")
+   .classList.add("aktif");
+
+  yzOyuncuSayisi=2;
+
+  document.querySelectorAll(
+   ".yz-oyuncular button"
+  ).forEach(b=>{
+   b.classList.remove("aktif");
+  });
+
+  document.querySelectorAll(
+   ".yz-oyuncular button"
+  )[0].classList.add("aktif");
+
+ }else{
+
+  document.getElementById("yzTekli")
+   .classList.add("aktif");
+
+ }
 
 }
 
 
-/* =====================================================
-   OYUNU KİLİTLE
-===================================================== */
+function yzOyuncu(sayi,btn){
 
-function oyunKilitle(){
+ if(yzTurSec==="esli" && sayi!==2)
+  return;
 
-    const oyun=
-        oyunlar[aktifOyun-1];
+ yzOyuncuSayisi=sayi;
 
+ document.querySelectorAll(
+  ".yz-oyuncular button"
+ ).forEach(b=>{
+  b.classList.remove("aktif");
+ });
 
-    oyun.kilitli=true;
-
-    oyun.kayitZamani=
-        Date.now();
-
-
-    document
-        .getElementById("sure")
-        .innerText=
-        "🔒 Bu oyunun skorları kilitlendi.";
-
-
-    if(aktifOyun<oyunSayisi){
-
-        aktifOyun++;
-
-        setTimeout(()=>{
-
-            tabloyuOlustur();
-
-            toplamSkoruGoster();
-
-        },800);
-
-    }else{
-
-        tabloyuOlustur();
-
-        toplamSkoruGoster();
-
-        document
-            .getElementById("kaydetBtn")
-            .style.display="none";
-
-        document
-            .getElementById("sure")
-            .innerText=
-            "🏆 Tüm oyunlar tamamlandı.";
-
-    }
+ btn.classList.add("aktif");
 
 }
 
 
-/* =====================================================
-   BUTON DURUMU
-===================================================== */
+function yzBaslat(){
 
-function butonDurumunuGuncelle(){
+ yzOyunSayisi=
+  parseInt(
+   document.getElementById(
+    "oyunSayisi"
+   ).value
+  );
 
-    const buton=
-        document.getElementById(
-            "kaydetBtn"
-        );
+ if(!yzOyunSayisi ||
+    yzOyunSayisi<1){
 
+  alert("En az 1 oyun seçin.");
+  return;
 
-    if(!buton)
-        return;
+ }
 
+ yzAktifOyun=1;
+ yzOyunlar=[];
 
-    if(aktifOyun>oyunSayisi){
+ for(
+  let i=0;
+  i<yzOyunSayisi;
+  i++
+ ){
 
-        buton.style.display="none";
+  yzOyunlar.push({
+   skor:Array(
+    yzOyuncuSayisi
+   ).fill(""),
+   kilitli:false,
+   basladi:false
+  });
 
-        return;
+ }
 
-    }
+ document.getElementById(
+  "yzAyar"
+ ).style.display="none";
 
+ document.getElementById(
+  "yzOyun"
+ ).style.display="block";
 
-    const oyun=
-        oyunlar[aktifOyun-1];
+ yzTabloOlustur();
 
-
-    if(
-        oyun &&
-        !oyun.kilitli
-    ){
-
-        buton.style.display=
-            "inline-block";
-
-        buton.disabled=false;
-
-    }
+ yzToplamGoster();
 
 }
 
 
-/* =====================================================
-   TOPLAM SKOR
-===================================================== */
+function yzTabloOlustur(){
 
-function toplamSkoruGoster(){
+ let alan=
+  document.getElementById(
+   "yzTablo"
+  );
 
-    const alan=
-        document.getElementById(
-            "toplamSkor"
-        );
+ alan.innerHTML="";
 
+ let grid=
+  document.createElement("div");
 
-    alan.innerHTML="";
+ grid.className="yz-grid";
 
+ grid.style.gridTemplateColumns=
+  `70px repeat(${yzOyuncuSayisi},1fr)`;
 
-    for(let p=0;p<oyuncuSayisi;p++){
+ function hucre(html,cls=""){
 
-        let toplam=0;
+  let d=
+   document.createElement("div");
 
+  d.className=
+   "yz-hucre "+cls;
 
-        oyunlar.forEach(oyun=>{
+  d.innerHTML=html;
 
-            const skor=
-                parseFloat(
-                    oyun.skor[p]
-                );
+  grid.appendChild(d);
 
-
-            if(!isNaN(skor)){
-
-                toplam+=skor;
-
-            }
-
-        });
+ }
 
 
-        alan.innerHTML+=`
+ hucre("OYUN","yz-baslik");
 
-            <div class="toplam-satir">
+ for(
+  let p=1;
+  p<=yzOyuncuSayisi;
+  p++
+ ){
 
-                <span>
-                    ${p+1}. OYUNCU
-                </span>
+  hucre(
+   p+". OYUNCU",
+   "yz-baslik"
+  );
 
-                <span>
-                    ${toplam}
-                </span>
+ }
 
-            </div>
 
-        `;
+ yzOyunlar.forEach(
+  (oyun,index)=>{
 
-    }
+   let aktif=
+    index===yzAktifOyun-1;
+
+   hucre(
+    (index+1)+". OYUN "+
+    (oyun.kilitli?"🔒":""),
+    "yz-oyun "+
+    (aktif?"yz-aktif":"")
+   );
+
+
+   for(
+    let p=0;
+    p<yzOyuncuSayisi;
+    p++
+   ){
+
+    let input=
+     document.createElement("input");
+
+    input.type="number";
+
+    input.className="yz-skor";
+
+    input.value=
+     oyun.skor[p];
+
+    input.disabled=
+     !aktif || oyun.kilitli;
+
+    input.dataset.oyun=index;
+    input.dataset.oyuncu=p;
+
+    input.addEventListener(
+     "input",
+     yzSkorDegisti
+    );
+
+    let d=
+     document.createElement("div");
+
+    d.className=
+     "yz-hucre "+
+     (oyun.kilitli?"kilitli":"");
+
+    d.appendChild(input);
+
+    grid.appendChild(d);
+
+   }
+
+  }
+ );
+
+
+ alan.appendChild(grid);
+
+}
+
+
+function yzSkorDegisti(e){
+
+ let oyun=
+  parseInt(
+   e.target.dataset.oyun
+  );
+
+ let oyuncu=
+  parseInt(
+   e.target.dataset.oyuncu
+  );
+
+ yzOyunlar[oyun].skor[oyuncu]=
+  e.target.value;
+
+ yzToplamGoster();
+
+ if(
+  oyun===
+  yzAktifOyun-1
+ ){
+
+  yzTumSkorlarGirildi();
+
+ }
+
+}
+
+
+function yzTumSkorlarGirildi(){
+
+ let oyun=
+  yzOyunlar[
+   yzAktifOyun-1
+  ];
+
+ if(oyun.basladi)
+  return;
+
+ let tamam=
+  oyun.skor.every(
+   s=>
+    s!=="" &&
+    s!==null &&
+    s!==undefined
+  );
+
+ if(!tamam)
+  return;
+
+ oyun.basladi=true;
+
+ yzKilitZamani=
+  Date.now()+60000;
+
+ document.getElementById(
+  "yzDurum"
+ ).textContent=
+  "⏱️ Tüm skorlar girildi. 60 saniye sonra kilitlenecek.";
+
+ if(yzTimer)
+  clearInterval(yzTimer);
+
+ yzTimer=
+  setInterval(
+   yzSureKontrol,
+   1000
+  );
+
+ yzSureKontrol();
+
+}
+
+
+function yzSureKontrol(){
+
+ let kalan=
+  yzKilitZamani-Date.now();
+
+ if(kalan<=0){
+
+  clearInterval(yzTimer);
+
+  yzOyunKilitle();
+
+  return;
+
+ }
+
+ document.getElementById(
+  "yzDurum"
+ ).textContent=
+  "⏱️ Skorlar "+
+  Math.ceil(kalan/1000)+
+  " saniye sonra kilitlenecek.";
+
+}
+
+
+function yzOyunKilitle(){
+
+ let oyun=
+  yzOyunlar[
+   yzAktifOyun-1
+  ];
+
+ oyun.kilitli=true;
+ oyun.basladi=false;
+
+ yzKilitZamani=null;
+
+ if(
+  yzAktifOyun<
+  yzOyunSayisi
+ ){
+
+  document.getElementById(
+   "yzDurum"
+  ).textContent=
+   "🔒 Oyun kilitlendi.";
+
+  yzAktifOyun++;
+
+  setTimeout(()=>{
+
+   yzTabloOlustur();
+
+   yzToplamGoster();
+
+   document.getElementById(
+    "yzDurum"
+   ).textContent=
+    "▶ "+yzAktifOyun+
+    ". oyun aktif.";
+
+  },700);
+
+ }else{
+
+  yzTabloOlustur();
+
+  yzToplamGoster();
+
+  document.getElementById(
+   "yzDurum"
+  ).textContent=
+   "🏆 Tüm oyunlar tamamlandı.";
+
+ }
+
+}
+
+
+function yzToplamGoster(){
+
+ let alan=
+  document.getElementById(
+   "yzToplam"
+  );
+
+ alan.innerHTML="";
+
+ for(
+  let p=0;
+  p<yzOyuncuSayisi;
+  p++
+ ){
+
+  let toplam=0;
+
+  yzOyunlar.forEach(
+   oyun=>{
+
+    let s=
+     parseFloat(
+      oyun.skor[p]
+     );
+
+    if(!isNaN(s))
+     toplam+=s;
+
+   }
+  );
+
+  alan.innerHTML+=`
+   <div>
+    ${p+1}. Oyuncu<br>
+    <b>${toplam}</b>
+   </div>
+  `;
+
+ }
 
 }
 
