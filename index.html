@@ -192,6 +192,45 @@ header p{
     margin-bottom:12px;
 }
 
+/* GARSON SİPARİŞİ */
+.siparis-kart.garson-siparis{
+    border-left:6px solid #ef6c00;
+    background:#fff8ef;
+}
+
+/* MÜŞTERİ SİPARİŞİ */
+.siparis-kart.musteri-siparis{
+    border-left:6px solid #1565c0;
+    background:#f4f9ff;
+}
+
+
+/* =========================
+   SİPARİŞ KAYNAĞI
+========================= */
+
+.siparis-kaynak{
+    display:block;
+    text-align:center;
+    padding:9px;
+    border-radius:8px;
+    margin-bottom:9px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.siparis-kaynak.garson{
+    background:#fff3e0;
+    color:#e65100;
+    border:1px solid #ffcc80;
+}
+
+.siparis-kaynak.musteri{
+    background:#e3f2fd;
+    color:#1565c0;
+    border:1px solid #90caf9;
+}
+
 .siparis-baslik{
     display:flex;
     justify-content:space-between;
@@ -347,16 +386,12 @@ header p{
     height:60px;
     min-width:95px;
     min-height:60px;
-
     padding:4px;
-
     display:flex;
     justify-content:center;
     align-items:center;
-
     border-right:1px solid #ddd;
     border-bottom:1px solid #ddd;
-
     font-size:16px;
     text-align:center;
     overflow:hidden;
@@ -387,12 +422,9 @@ header p{
     height:44px;
     min-width:44px;
     min-height:44px;
-
     border:1px solid #aaa;
     border-radius:4px;
-
     text-align:center;
-
     font-size:18px;
     font-weight:bold;
 }
@@ -405,7 +437,6 @@ header p{
     text-align:center;
     min-height:30px;
     margin-top:8px;
-
     font-size:18px;
     font-weight:bold;
 }
@@ -422,7 +453,6 @@ header p{
     padding:8px;
     text-align:center;
     border-radius:6px;
-
     font-size:18px;
 }
 
@@ -863,6 +893,11 @@ class="yz-toplam">
 
 🟢 Sipariş onaylandığında hesaba eklenir.
 
+<br><br>
+
+👨‍🍳 Garson tarafından girilen siparişler de
+aynı masa hesabında görünür.
+
 </div>
 
 
@@ -1101,7 +1136,7 @@ document
 
 
 /* =========================
-   GARSON
+   GARSON ÇAĞIR
 ========================= */
 
 window.garsonCagir=function(){
@@ -1115,7 +1150,7 @@ alert(
 
 
 /* =========================
-   SİPARİŞ GÖNDER
+   MÜŞTERİ SİPARİŞİ GÖNDER
 ========================= */
 
 window.siparisGonder=
@@ -1142,8 +1177,11 @@ toplam+=tutar;
 liste.push({
 
 urun:urun,
+
 adet:adet,
+
 fiyat:urunler[urun],
+
 tutar:tutar
 
 });
@@ -1189,6 +1227,12 @@ db,
 ),
 {
 
+/*
+=========================
+MÜŞTERİDEN GELEN SİPARİŞ
+=========================
+*/
+
 masa:String(masa),
 
 urunler:liste,
@@ -1196,6 +1240,10 @@ urunler:liste,
 toplam:toplam,
 
 durum:"Bekleyen",
+
+kaynak:"müşteri",
+
+garsonSiparisi:false,
 
 olusturmaZamani:
 serverTimestamp()
@@ -1380,6 +1428,96 @@ return;
 siparisler.forEach(
 (siparis,index)=>{
 
+/*
+=========================
+SİPARİŞ KAYNAĞINI BELİRLE
+=========================
+*/
+
+/*
+Yeni siparişlerde:
+
+kaynak:"garson"
+
+veya
+
+garsonSiparisi:true
+
+ise garson siparişidir.
+
+Eski siparişlerde kaynak bilgisi
+olmasa bile müşteri olarak
+gösterilir.
+*/
+
+const garsonSiparisi=
+siparis.kaynak==="garson" ||
+siparis.garsonSiparisi===true;
+
+
+const kaynakClass=
+garsonSiparisi
+?
+"garson"
+:
+"musteri";
+
+
+const kartClass=
+garsonSiparisi
+?
+"garson-siparis"
+:
+"musteri-siparis";
+
+
+let kaynakHTML="";
+
+
+if(garsonSiparisi){
+
+kaynakHTML=`
+
+<div class="siparis-kaynak garson">
+
+👨‍🍳 GARSON SİPARİŞİ
+
+<br>
+
+<small>
+Bu sipariş garson tarafından girildi.
+</small>
+
+</div>
+
+`;
+
+}
+else{
+
+kaynakHTML=`
+
+<div class="siparis-kaynak musteri">
+
+👤 MÜŞTERİ SİPARİŞİ
+
+<br>
+
+<small>
+Bu sipariş müşteri tarafından gönderildi.
+</small>
+
+</div>
+
+`;
+
+}
+
+
+/* =========================
+   DURUM
+========================= */
+
 const onaylandi=
 siparis.durum===
 "Onaylandı";
@@ -1402,6 +1540,10 @@ siparis.toplam||0
 
 }
 
+
+/* =========================
+   ZAMAN
+========================= */
 
 let zaman=
 "Saat bilgisi bekleniyor";
@@ -1433,6 +1575,10 @@ second:"2-digit"
 }
 
 
+/* =========================
+   ÜRÜNLER
+========================= */
+
 let urunHTML="";
 
 
@@ -1460,9 +1606,20 @@ ${u.tutar} ₺
 });
 
 
+/* =========================
+   KART
+========================= */
+
 alan.innerHTML+=`
 
-<div class="siparis-kart">
+<div class="
+siparis-kart
+${kartClass}
+">
+
+
+${kaynakHTML}
+
 
 <div class="siparis-baslik">
 
@@ -1500,9 +1657,10 @@ ${urunHTML}
 <div class="siparis-toplam">
 
 Toplam:
-${siparis.toplam} ₺
+${Number(siparis.toplam||0)} ₺
 
 </div>
+
 
 </div>
 
@@ -1510,6 +1668,10 @@ ${siparis.toplam} ₺
 
 });
 
+
+/* =========================
+   BEKLEYEN TOPLAM
+========================= */
 
 if(
 bekleyenToplam>0
@@ -1535,6 +1697,10 @@ Onaylanana kadar genel hesaba eklenmez.
 
 }
 
+
+/* =========================
+   GENEL TOPLAM
+========================= */
 
 document.getElementById(
 "genelToplam"
@@ -1805,11 +1971,6 @@ document.createElement(
 grid.className=
 "yz-grid";
 
-
-/*
- X EKSENİ GENİŞ:
- HER SÜTUN 95PX
-*/
 
 grid.style.gridTemplateColumns=
 `95px repeat(
@@ -2208,10 +2369,6 @@ ${toplam}
 }
 
 
-/*
- FARKI GÖSTER
-*/
-
 if(
 toplamlar.length>1
 ){
@@ -2247,8 +2404,7 @@ ${fark}
 
 
 /* =========================
-   İLK AÇILIŞ:
-   EŞLİ = SADECE 2
+   İLK AÇILIŞ
 ========================= */
 
 window.addEventListener(
