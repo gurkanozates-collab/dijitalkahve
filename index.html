@@ -111,6 +111,11 @@ header p{
     margin-top:0;
 }
 
+
+/* =========================
+   MENÜ
+========================= */
+
 .kategori{
     margin:18px 0 10px;
     font-size:21px;
@@ -240,12 +245,16 @@ header p{
 
 
 /* =========================
-   YAZ BOZ
+   YAZ BOZ AYARLARI
 ========================= */
 
 .yz-ayar{
     display:grid;
     gap:12px;
+}
+
+.yz-ayar b{
+    font-size:22px;
 }
 
 .yz-secim{
@@ -310,50 +319,63 @@ header p{
 }
 
 
-/* OYUN BAŞLADIKTAN SONRA */
+/* =========================
+   YAZ BOZ OYUN
+========================= */
 
 #yzOyun{
     width:100%;
-    max-width:700px;
-    height:40vh;
-    min-height:250px;
+    max-width:900px;
     margin:15px auto 0;
 }
 
 .yz-tablo{
     width:100%;
-    height:100%;
-    overflow:auto;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:8px;
 }
 
 .yz-grid{
     display:grid;
+    width:max-content;
 }
 
 .yz-hucre{
-    width:75px;
-    height:50px;
-    min-height:50px;
+    width:95px;
+    height:60px;
+    min-width:95px;
+    min-height:60px;
+
     padding:4px;
+
     display:flex;
     justify-content:center;
     align-items:center;
+
     border-right:1px solid #ddd;
     border-bottom:1px solid #ddd;
-    font-size:22px;
+
+    font-size:16px;
+    text-align:center;
+    overflow:hidden;
 }
 
 .yz-baslik{
     background:#7b1fa2;
     color:#fff;
+    font-size:15px;
     font-weight:bold;
+    white-space:normal;
+    line-height:1.15;
 }
 
 .yz-oyun{
-    justify-content:flex-start;
-    padding-left:7px;
     background:#fafafa;
+    font-size:15px;
     font-weight:bold;
+    white-space:nowrap;
 }
 
 .yz-aktif{
@@ -363,10 +385,15 @@ header p{
 .yz-skor{
     width:44px;
     height:44px;
+    min-width:44px;
+    min-height:44px;
+
     border:1px solid #aaa;
     border-radius:4px;
+
     text-align:center;
-    font-size:22px;
+
+    font-size:18px;
     font-weight:bold;
 }
 
@@ -377,8 +404,9 @@ header p{
 .yz-durum{
     text-align:center;
     min-height:30px;
-    margin-top:5px;
-    font-size:22px;
+    margin-top:8px;
+
+    font-size:18px;
     font-weight:bold;
 }
 
@@ -386,15 +414,16 @@ header p{
     display:grid;
     grid-template-columns:repeat(4,1fr);
     gap:5px;
-    margin-top:6px;
+    margin-top:8px;
 }
 
 .yz-toplam div{
     background:#f5f5f5;
-    padding:7px;
+    padding:8px;
     text-align:center;
     border-radius:6px;
-    font-size:22px;
+
+    font-size:18px;
 }
 
 .yz-fark{
@@ -425,15 +454,13 @@ header p{
 
     #yzOyun{
         width:100%;
-        max-width:700px;
-        height:40vh;
-        min-height:250px;
+        max-width:900px;
     }
 
     .yz-hucre{
-        width:75px;
-        height:50px;
-        min-height:50px;
+        width:95px;
+        min-width:95px;
+        height:60px;
     }
 }
 </style>
@@ -490,7 +517,7 @@ onclick="siparisGonder()">
 
 
 <!-- =========================
-     MENÜ
+     MENÜ PANELİ
 ========================= -->
 
 <div id="menuPanel" class="panel aktif">
@@ -681,7 +708,6 @@ onclick="siparisGonder()">
 
 <div class="menu">
 
-
 <div class="urun">
 
 <h3>Tost</h3>
@@ -723,7 +749,6 @@ onclick="siparisGonder()">
 
 
 <div id="yzAyar" class="yz-ayar">
-
 
 <b>
 Oyun Türü
@@ -922,11 +947,9 @@ measurementId:
 };
 
 
-const app=
-initializeApp(firebaseConfig);
+const app=initializeApp(firebaseConfig);
 
-const db=
-getFirestore(app);
+const db=getFirestore(app);
 
 
 /* =========================
@@ -970,12 +993,10 @@ const urunler={
 let sepet={};
 
 
-Object.keys(urunler)
-.forEach(
+Object.keys(urunler).forEach(
 urun=>{
 sepet[urun]=0;
-}
-);
+});
 
 
 function urunID(urun){
@@ -1001,8 +1022,7 @@ return idler[urun];
    SEPET
 ========================= */
 
-window.adetArtir=
-function(urun){
+window.adetArtir=function(urun){
 
 sepet[urun]++;
 
@@ -1018,8 +1038,7 @@ sepet[urun];
 };
 
 
-window.adetAzalt=
-function(urun){
+window.adetAzalt=function(urun){
 
 if(sepet[urun]>0)
 sepet[urun]--;
@@ -1038,16 +1057,13 @@ sepet[urun];
 
 function sepetiSifirla(){
 
-Object.keys(sepet)
-.forEach(
+Object.keys(sepet).forEach(
 urun=>{
 sepet[urun]=0;
-}
-);
+});
 
 
-Object.keys(urunler)
-.forEach(
+Object.keys(urunler).forEach(
 urun=>{
 
 const el=
@@ -1067,8 +1083,7 @@ el.textContent="0";
    PANEL
 ========================= */
 
-window.panelAc=
-function(panel){
+window.panelAc=function(panel){
 
 document
 .querySelectorAll(".panel")
@@ -1089,8 +1104,7 @@ document
    GARSON
 ========================= */
 
-window.garsonCagir=
-function(){
+window.garsonCagir=function(){
 
 alert(
 "🔔 Garson çağrıldı!\n\n"+
@@ -1101,7 +1115,7 @@ alert(
 
 
 /* =========================
-   SİPARİŞ
+   SİPARİŞ GÖNDER
 ========================= */
 
 window.siparisGonder=
@@ -1112,8 +1126,7 @@ const liste=[];
 let toplam=0;
 
 
-Object.keys(sepet)
-.forEach(
+Object.keys(sepet).forEach(
 urun=>{
 
 const adet=
@@ -1170,12 +1183,10 @@ buton.textContent=
 try{
 
 await addDoc(
-
 collection(
 db,
 "siparisler"
 ),
-
 {
 
 masa:String(masa),
@@ -1190,17 +1201,16 @@ olusturmaZamani:
 serverTimestamp()
 
 }
-
 );
 
 
 /*
- BAŞARILI KAYITTAN SONRA
+ SİPARİŞ BAŞARIYLA
+ GÖNDERİLDİKTEN SONRA
  SEPETİ SIFIRLA
 */
 
 sepetiSifirla();
-
 
 panelAc("hesap");
 
@@ -1245,10 +1255,7 @@ buton.textContent=
 const siparisQuery=
 query(
 
-collection(
-db,
-"siparisler"
-),
+collection(db,"siparisler"),
 
 where(
 "masa",
@@ -1286,13 +1293,11 @@ liste.sort(
 
 const ta=
 a.olusturmaZamani
-?.toMillis?.()||
-0;
+?.toMillis?.()||0;
 
 const tb=
 b.olusturmaZamani
-?.toMillis?.()||
-0;
+?.toMillis?.()||0;
 
 return ta-tb;
 
@@ -1334,9 +1339,7 @@ ${hata.message}
    HESAP GÖSTER
 ========================= */
 
-function hesapGoster(
-siparisler
-){
+function hesapGoster(siparisler){
 
 const alan=
 document.getElementById(
@@ -1409,9 +1412,7 @@ siparis.olusturmaZamani
 ){
 
 const tarih=
-siparis
-.olusturmaZamani
-.toDate();
+siparis.olusturmaZamani.toDate();
 
 
 zaman=
@@ -1437,8 +1438,7 @@ let urunHTML="";
 
 (
 siparis.urunler||[]
-)
-.forEach(
+).forEach(
 u=>{
 
 urunHTML+=`
@@ -1567,8 +1567,7 @@ let yzKilitZamani=null;
    OYUN TÜRÜ
 ========================= */
 
-window.yzTur=
-function(tur){
+window.yzTur=function(tur){
 
 yzTurSec=tur;
 
@@ -1590,27 +1589,20 @@ document.querySelectorAll(
 );
 
 
-esliBtn.classList.remove(
-"aktif"
-);
+esliBtn.classList.remove("aktif");
 
-tekliBtn.classList.remove(
-"aktif"
-);
+tekliBtn.classList.remove("aktif");
 
 
 if(tur==="esli"){
 
-esliBtn.classList.add(
-"aktif"
-);
-
+esliBtn.classList.add("aktif");
 
 yzOyuncuSayisi=2;
 
 
 /*
- EŞLİ OYUNDA
+ EŞLİ OYUN:
  SADECE 2 GÖRÜNÜR
 */
 
@@ -1619,21 +1611,16 @@ oyuncuButonlari.forEach(
 
 if(index===0){
 
-btn.style.display=
-"block";
+btn.style.display="block";
 
-btn.classList.add(
-"aktif"
-);
+btn.classList.add("aktif");
 
-}else{
+}
+else{
 
-btn.style.display=
-"none";
+btn.style.display="none";
 
-btn.classList.remove(
-"aktif"
-);
+btn.classList.remove("aktif");
 
 }
 
@@ -1642,37 +1629,28 @@ btn.classList.remove(
 }
 else{
 
-tekliBtn.classList.add(
-"aktif"
-);
+tekliBtn.classList.add("aktif");
 
 
 /*
- TEKLİ OYUNDA
+ TEKLİ OYUN:
  2-3-4 GÖRÜNÜR
 */
 
 oyuncuButonlari.forEach(
 btn=>{
-
-btn.style.display=
-"block";
-
+btn.style.display="block";
 });
 
 
 oyuncuButonlari.forEach(
 btn=>
-btn.classList.remove(
-"aktif"
-)
+btn.classList.remove("aktif")
 );
 
 
 oyuncuButonlari[0]
-.classList.add(
-"aktif"
-);
+.classList.add("aktif");
 
 
 yzOyuncuSayisi=2;
@@ -1699,8 +1677,13 @@ return;
 }
 
 
-if(btn.style.display==="none")
+if(
+btn.style.display==="none"
+){
+
 return;
+
+}
 
 
 yzOyuncuSayisi=sayi;
@@ -1712,25 +1695,20 @@ document
 )
 .forEach(
 b=>
-b.classList.remove(
-"aktif"
-)
+b.classList.remove("aktif")
 );
 
 
-btn.classList.add(
-"aktif"
-);
+btn.classList.add("aktif");
 
 };
 
 
 /* =========================
-   BAŞLAT
+   OYUNU BAŞLAT
 ========================= */
 
-window.yzBaslat=
-function(){
+window.yzBaslat=function(){
 
 yzOyunSayisi=
 parseInt(
@@ -1784,19 +1762,15 @@ basladi:false
 }
 
 
-document
-.getElementById(
+document.getElementById(
 "yzAyar"
-)
-.style.display=
+).style.display=
 "none";
 
 
-document
-.getElementById(
+document.getElementById(
 "yzOyun"
-)
-.style.display=
+).style.display=
 "block";
 
 
@@ -1832,17 +1806,19 @@ grid.className=
 "yz-grid";
 
 
+/*
+ X EKSENİ GENİŞ:
+ HER SÜTUN 95PX
+*/
+
 grid.style.gridTemplateColumns=
-`75px repeat(
+`95px repeat(
 ${yzOyuncuSayisi},
-75px
+95px
 )`;
 
 
-function hucre(
-html,
-cls=""
-){
+function hucre(html,cls=""){
 
 const d=
 document.createElement(
@@ -1951,9 +1927,7 @@ document.createElement(
 d.className=
 "yz-hucre";
 
-d.appendChild(
-input
-);
+d.appendChild(input);
 
 grid.appendChild(d);
 
@@ -1962,9 +1936,7 @@ grid.appendChild(d);
 });
 
 
-alan.appendChild(
-grid
-);
+alan.appendChild(grid);
 
 }
 
@@ -2042,7 +2014,6 @@ return;
 
 oyun.basladi=true;
 
-
 yzKilitZamani=
 Date.now()+60000;
 
@@ -2070,7 +2041,7 @@ yzSureKontrol();
 
 
 /* =========================
-   SÜRE
+   GERİ SAYIM
 ========================= */
 
 function yzSureKontrol(){
@@ -2086,9 +2057,7 @@ Date.now();
 
 if(kalan<=0){
 
-clearInterval(
-yzTimer
-);
+clearInterval(yzTimer);
 
 yzOyunKilitle();
 
@@ -2110,7 +2079,7 @@ kalan/1000
 
 
 /* =========================
-   KİLİT
+   OYUNU KİLİTLE
 ========================= */
 
 function yzOyunKilitle(){
@@ -2176,7 +2145,7 @@ document.getElementById(
 
 
 /* =========================
-   TOPLAM VE FARK
+   TOPLAM + FARK
 ========================= */
 
 function yzToplamGoster(){
@@ -2217,9 +2186,7 @@ toplam+=skor;
 });
 
 
-toplamlar.push(
-toplam
-);
+toplamlar.push(toplam);
 
 
 alan.innerHTML+=`
@@ -2240,6 +2207,10 @@ ${toplam}
 
 }
 
+
+/*
+ FARKI GÖSTER
+*/
 
 if(
 toplamlar.length>1
@@ -2276,8 +2247,8 @@ ${fark}
 
 
 /* =========================
-   BAŞLANGIÇTA EŞLİ
-   SADECE 2 GÖSTER
+   İLK AÇILIŞ:
+   EŞLİ = SADECE 2
 ========================= */
 
 window.addEventListener(
@@ -2295,8 +2266,7 @@ butonlar.forEach(
 
 if(index>0){
 
-btn.style.display=
-"none";
+btn.style.display="none";
 
 }
 
