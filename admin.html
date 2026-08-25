@@ -6,9 +6,7 @@
 <title>Dijital Kahvem - Yönetici</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -39,6 +37,7 @@ header p{
     z-index:100;
     background:#fff;
     box-shadow:0 2px 10px #0002;
+
     display:grid;
     grid-template-columns:repeat(6,1fr);
     gap:6px;
@@ -48,7 +47,7 @@ header p{
 .nav button{
     border:0;
     border-radius:9px;
-    padding:12px 5px;
+    padding:13px 5px;
     font-size:14px;
     font-weight:bold;
     cursor:pointer;
@@ -67,12 +66,14 @@ header p{
     padding:15px;
 }
 
+/* PANELLER */
+
 .panel{
-    display:none;
+    display:none !important;
 }
 
 .panel.aktif{
-    display:block;
+    display:block !important;
 }
 
 .sayfa-baslik{
@@ -261,7 +262,7 @@ header p{
 }
 
 .hesap{
-    background:white;
+    background:#fff;
     border-radius:14px;
     padding:15px;
     border:2px solid #2e7d32;
@@ -286,7 +287,7 @@ header p{
 }
 
 .stat{
-    background:white;
+    background:#fff;
     padding:20px;
     border-radius:14px;
     box-shadow:0 2px 8px #0001;
@@ -304,7 +305,7 @@ header p{
 }
 
 .istatistik-kutu{
-    background:white;
+    background:#fff;
     padding:20px;
     border-radius:14px;
     margin-top:15px;
@@ -320,7 +321,7 @@ header p{
 /* MENÜ */
 
 .menu-ekle{
-    background:white;
+    background:#fff;
     padding:18px;
     border-radius:14px;
     margin-bottom:15px;
@@ -357,7 +358,7 @@ select{
 }
 
 .menu-kart{
-    background:white;
+    background:#fff;
     border-radius:14px;
     padding:15px;
     box-shadow:0 2px 8px #0001;
@@ -377,7 +378,6 @@ select{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:7px;
-    margin-top:8px;
 }
 
 .kaydet-menu{
@@ -390,10 +390,10 @@ select{
     color:#c62828;
 }
 
-/* GARSON ÇAĞRI */
+/* GARSON */
 
 .cagri{
-    background:white;
+    background:#fff;
     border-radius:14px;
     padding:18px;
     margin-bottom:10px;
@@ -415,10 +415,8 @@ select{
     cursor:pointer;
 }
 
-/* BOŞ */
-
 .bos{
-    background:white;
+    background:#fff;
     padding:35px;
     border-radius:14px;
     text-align:center;
@@ -440,7 +438,6 @@ select{
     .stats{
         grid-template-columns:repeat(2,1fr);
     }
-
 }
 
 @media(max-width:750px){
@@ -468,7 +465,6 @@ select{
     .form-grid{
         grid-template-columns:1fr;
     }
-
 }
 
 @media(max-width:500px){
@@ -492,7 +488,6 @@ select{
     .nav button{
         font-size:12px;
     }
-
 }
 </style>
 </head>
@@ -504,29 +499,31 @@ select{
     <p>Yönetici Paneli</p>
 </header>
 
+<!-- ================= NAV ================= -->
+
 <div class="nav">
 
-    <button class="aktif" onclick="panelAc('masalar',this)">
+    <button class="aktif" data-panel="masalar">
         🪑 Masalar
     </button>
 
-    <button onclick="panelAc('siparisler',this)">
+    <button data-panel="siparisler">
         🛎️ Siparişler
     </button>
 
-    <button onclick="panelAc('hesaplar',this)">
+    <button data-panel="hesaplar">
         💳 Hesaplar
     </button>
 
-    <button onclick="panelAc('istatistik',this)">
+    <button data-panel="istatistik">
         📊 İstatistik
     </button>
 
-    <button onclick="panelAc('menuYonetim',this)">
+    <button data-panel="menuYonetim">
         ☕ Menü
     </button>
 
-    <button onclick="panelAc('garsonCagrilari',this)">
+    <button data-panel="garsonCagrilari">
         🔔 Garson
     </button>
 
@@ -534,7 +531,7 @@ select{
 
 <div class="container">
 
-<!-- MASALAR -->
+<!-- ================= MASALAR ================= -->
 
 <section id="masalar" class="panel aktif">
 
@@ -548,7 +545,7 @@ select{
 </section>
 
 
-<!-- SİPARİŞLER -->
+<!-- ================= SİPARİŞLER ================= -->
 
 <section id="siparisler" class="panel">
 
@@ -562,7 +559,7 @@ select{
 </section>
 
 
-<!-- HESAPLAR -->
+<!-- ================= HESAPLAR ================= -->
 
 <section id="hesaplar" class="panel">
 
@@ -576,7 +573,7 @@ select{
 </section>
 
 
-<!-- İSTATİSTİK -->
+<!-- ================= İSTATİSTİK ================= -->
 
 <section id="istatistik" class="panel">
 
@@ -588,23 +585,39 @@ select{
     <div class="stats">
 
         <div class="stat">
-            <div class="stat-baslik">Toplam Onaylı Satış</div>
-            <div id="statCiro" class="stat-sayi">0 ₺</div>
+            <div class="stat-baslik">
+                Toplam Onaylı Satış
+            </div>
+            <div id="statCiro" class="stat-sayi">
+                0 ₺
+            </div>
         </div>
 
         <div class="stat">
-            <div class="stat-baslik">Onaylanan Sipariş</div>
-            <div id="statSiparis" class="stat-sayi">0</div>
+            <div class="stat-baslik">
+                Onaylanan Sipariş
+            </div>
+            <div id="statSiparis" class="stat-sayi">
+                0
+            </div>
         </div>
 
         <div class="stat">
-            <div class="stat-baslik">Aktif Masa</div>
-            <div id="statMasa" class="stat-sayi">0</div>
+            <div class="stat-baslik">
+                Aktif Masa
+            </div>
+            <div id="statMasa" class="stat-sayi">
+                0
+            </div>
         </div>
 
         <div class="stat">
-            <div class="stat-baslik">Bekleyen Sipariş</div>
-            <div id="statBekleyen" class="stat-sayi">0</div>
+            <div class="stat-baslik">
+                Bekleyen Sipariş
+            </div>
+            <div id="statBekleyen" class="stat-sayi">
+                0
+            </div>
         </div>
 
     </div>
@@ -620,7 +633,7 @@ select{
 </section>
 
 
-<!-- MENÜ -->
+<!-- ================= MENÜ ================= -->
 
 <section id="menuYonetim" class="panel">
 
@@ -635,18 +648,39 @@ select{
 
         <div class="form-grid">
 
-            <input id="yeniUrun" placeholder="Ürün adı">
+            <input
+                id="yeniUrun"
+                placeholder="Ürün adı"
+            >
 
-            <input id="yeniFiyat" type="number" placeholder="Fiyat">
+            <input
+                id="yeniFiyat"
+                type="number"
+                placeholder="Fiyat"
+            >
 
             <select id="yeniKategori">
-                <option value="Sıcak İçecekler">Sıcak İçecekler</option>
-                <option value="Soğuk İçecekler">Soğuk İçecekler</option>
-                <option value="Atıştırmalıklar">Atıştırmalıklar</option>
+
+                <option value="Sıcak İçecekler">
+                    Sıcak İçecekler
+                </option>
+
+                <option value="Soğuk İçecekler">
+                    Soğuk İçecekler
+                </option>
+
+                <option value="Atıştırmalıklar">
+                    Atıştırmalıklar
+                </option>
+
             </select>
 
-            <button class="ekle-btn" onclick="urunEkle()">
+            <button
+                class="ekle-btn"
+                id="urunEkleBtn">
+
                 ➕ Ürün Ekle
+
             </button>
 
         </div>
@@ -658,7 +692,7 @@ select{
 </section>
 
 
-<!-- GARSON ÇAĞRILARI -->
+<!-- ================= GARSON ================= -->
 
 <section id="garsonCagrilari" class="panel">
 
@@ -674,10 +708,85 @@ select{
 </div>
 
 
+<!-- =====================================================
+     PANEL GEÇİŞİ
+     BU KISIM FIREBASE'DEN BAĞIMSIZDIR
+===================================================== -->
+
+<script>
+
+(function(){
+
+    const butonlar =
+        document.querySelectorAll(".nav button");
+
+    const paneller =
+        document.querySelectorAll(".panel");
+
+
+    butonlar.forEach(function(buton){
+
+        buton.addEventListener("click",function(){
+
+            const hedef =
+                buton.getAttribute("data-panel");
+
+
+            /* TÜM PANELLERİ KAPAT */
+
+            paneller.forEach(function(panel){
+
+                panel.classList.remove("aktif");
+
+            });
+
+
+            /* SEÇİLEN PANELİ AÇ */
+
+            const secilen =
+                document.getElementById(hedef);
+
+            if(secilen){
+
+                secilen.classList.add("aktif");
+
+            }
+
+
+            /* BUTONLARI SIFIRLA */
+
+            butonlar.forEach(function(btn){
+
+                btn.classList.remove("aktif");
+
+            });
+
+
+            /* SEÇİLEN BUTONU AKTİF YAP */
+
+            buton.classList.add("aktif");
+
+        });
+
+    });
+
+})();
+
+</script>
+
+
+<!-- =====================================================
+     FIREBASE
+===================================================== -->
+
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import {
+    initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
 
 import {
     getFirestore,
@@ -689,12 +798,11 @@ import {
     deleteDoc,
     serverTimestamp
 }
-from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+from
+"https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
-/* =====================================================
-   FIREBASE
-===================================================== */
+/* ================= FIREBASE ================= */
 
 const firebaseConfig = {
 
@@ -724,14 +832,14 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app =
+    initializeApp(firebaseConfig);
 
-const db = getFirestore(app);
+const db =
+    getFirestore(app);
 
 
-/* =====================================================
-   VERİLER
-===================================================== */
+/* ================= VERİLER ================= */
 
 let oturumlar = [];
 let siparisler = [];
@@ -739,227 +847,196 @@ let menu = [];
 let cagrilar = [];
 
 
-/* =====================================================
-   PANEL GEÇİŞİ
-===================================================== */
-
-window.panelAc = function(id, button){
-
-    const paneller = document.querySelectorAll(".panel");
-
-    paneller.forEach(function(panel){
-        panel.classList.remove("aktif");
-    });
-
-    const secilen = document.getElementById(id);
-
-    if(secilen){
-        secilen.classList.add("aktif");
-    }
-
-    const butonlar = document.querySelectorAll(".nav button");
-
-    butonlar.forEach(function(btn){
-        btn.classList.remove("aktif");
-    });
-
-    if(button){
-        button.classList.add("aktif");
-    }
-
-};
-
-
-/* =====================================================
-   PARA
-===================================================== */
+/* ================= PARA ================= */
 
 function para(n){
 
-    return Number(n || 0).toLocaleString("tr-TR") + " ₺";
+    return Number(n || 0)
+        .toLocaleString("tr-TR") + " ₺";
 
 }
 
 
-/* =====================================================
-   MASALAR
-===================================================== */
+/* ================= MASALAR ================= */
 
 function masalariGoster(){
 
-    const grid = document.getElementById("masaGrid");
+    const grid =
+        document.getElementById("masaGrid");
 
-    if(!grid){
-        return;
-    }
+    if(!grid) return;
 
     grid.innerHTML = "";
 
+
     for(let masa = 1; masa <= 50; masa++){
 
-        const oturum = oturumlar.find(function(o){
+        const oturum =
+            oturumlar.find(function(o){
 
-            return Number(o.masa) === masa &&
-                   o.durum === "acik";
+                return Number(o.masa) === masa &&
+                       o.durum === "acik";
 
-        });
+            });
 
 
-        let onayliSiparisler = [];
-
-        let bekleyenSiparisler = [];
-
-        if(oturum){
-
-            onayliSiparisler = siparisler.filter(function(s){
+        const onayli =
+            oturum
+            ?
+            siparisler.filter(function(s){
 
                 return s.oturumId === oturum.id &&
                        s.durum === "Onaylandı";
 
-            });
+            })
+            :
+            [];
 
-            bekleyenSiparisler = siparisler.filter(function(s){
+
+        const bekleyen =
+            oturum
+            ?
+            siparisler.filter(function(s){
 
                 return s.oturumId === oturum.id &&
                        s.durum === "Bekleyen";
 
-            });
-
-        }
-
-
-        const toplam = onayliSiparisler.reduce(
-            function(t,s){
-                return t + Number(s.toplam || 0);
-            },
-            0
-        );
+            })
+            :
+            [];
 
 
-        const div = document.createElement("div");
+        const toplam =
+            onayli.reduce(function(toplam,s){
 
-        div.className = "masa";
+                return toplam +
+                       Number(s.toplam || 0);
 
-        if(oturum){
-            div.classList.add("acik");
-        }
-
-        if(bekleyenSiparisler.length > 0){
-            div.classList.add("bekleyen");
-        }
+            },0);
 
 
-        let html = "";
-
-        html += '<div class="masa-baslik">';
-
-        html += '<h3>🪑 Masa ' + masa + '</h3>';
-
-        if(oturum){
-
-            html += '<span class="durum acik">🟢 Açık</span>';
-
-        }else{
-
-            html += '<span class="durum kapali">⚪ Kapalı</span>';
-
-        }
-
-        html += '</div>';
+        const div =
+            document.createElement("div");
 
 
-        html += '<div class="masa-toplam">';
-        html += para(toplam);
-        html += '</div>';
+        div.className =
+            "masa" +
+            (oturum ? " acik" : "") +
+            (bekleyen.length ? " bekleyen" : "");
 
 
-        html += '<div>🟡 Bekleyen: <b>';
-        html += bekleyenSiparisler.length;
-        html += '</b></div>';
+        div.innerHTML = `
 
+            <div class="masa-baslik">
 
-        if(oturum){
+                <h3>🪑 Masa ${masa}</h3>
 
-            html += '<div style="margin-top:10px;font-size:13px;color:#666">';
-            html += 'Onaylı sipariş: ';
-            html += onayliSiparisler.length;
-            html += '</div>';
+                <span class="durum ${
+                    oturum ? "acik" : "kapali"
+                }">
 
+                    ${oturum ? "🟢 Açık" : "⚪ Kapalı"}
 
-            html += '<button ';
-            html += 'class="masa-buton odendi" ';
-            html += 'style="margin-top:10px" ';
-            html += 'data-oturum="' + oturum.id + '" ';
-            html += 'data-masa="' + masa + '">';
-            html += '💳 HESAP ÖDENDİ';
-            html += '</button>';
+                </span>
 
-        }else{
+            </div>
 
-            html += '<p style="color:#777">Aktif oturum yok.</p>';
+            <div class="masa-toplam">
+                ${para(toplam)}
+            </div>
 
-        }
+            <div>
+                🟡 Bekleyen:
+                <b>${bekleyen.length}</b>
+            </div>
 
+            <div style="
+                margin-top:8px;
+                font-size:13px;
+                color:#777">
 
-        div.innerHTML = html;
+                🟢 Onaylı:
+                ${onayli.length}
 
+            </div>
 
-        const odemeButonu = div.querySelector(".odendi");
+            ${
+                oturum
+                ?
+                `
+                <button
+                    class="masa-buton odendi"
+                    style="margin-top:12px"
+                    data-kapat="${oturum.id}"
+                    data-masa="${masa}">
 
-        if(odemeButonu){
+                    💳 HESAP ÖDENDİ
 
-            odemeButonu.addEventListener(
-                "click",
-                function(){
+                </button>
+                `
+                :
+                `
+                <p style="color:#777">
+                    Aktif oturum yok.
+                </p>
+                `
+            }
 
-                    const id =
-                    this.getAttribute("data-oturum");
-
-                    const masaNo =
-                    this.getAttribute("data-masa");
-
-                    hesapOdendi(id, masaNo);
-
-                }
-            );
-
-        }
+        `;
 
 
         grid.appendChild(div);
 
     }
 
+
+    /* Hesap kapatma butonları */
+
+    grid.querySelectorAll(
+        "[data-kapat]"
+    ).forEach(function(btn){
+
+        btn.addEventListener("click",function(){
+
+            hesapOdendi(
+                btn.dataset.kapat,
+                btn.dataset.masa
+            );
+
+        });
+
+    });
+
 }
 
 
-/* =====================================================
-   SİPARİŞLER
-===================================================== */
+/* ================= SİPARİŞLER ================= */
 
 function siparisleriGoster(){
 
     const grid =
-    document.getElementById("siparisGrid");
+        document.getElementById("siparisGrid");
 
-    if(!grid){
-        return;
-    }
+    if(!grid) return;
 
     grid.innerHTML = "";
 
 
-    const liste = siparisler.filter(function(s){
+    const liste =
+        siparisler.filter(function(s){
 
-        return s.durum === "Bekleyen";
+            return s.durum === "Bekleyen";
 
-    });
+        });
 
 
-    if(liste.length === 0){
+    if(!liste.length){
 
-        grid.innerHTML =
-        '<div class="bos">✅ Bekleyen sipariş yok.</div>';
+        grid.innerHTML = `
+            <div class="bos">
+                ✅ Bekleyen sipariş yok.
+            </div>
+        `;
 
         return;
 
@@ -968,7 +1045,8 @@ function siparisleriGoster(){
 
     liste.forEach(function(s){
 
-        const div = document.createElement("div");
+        const div =
+            document.createElement("div");
 
         div.className = "siparis";
 
@@ -978,131 +1056,137 @@ function siparisleriGoster(){
 
         (s.urunler || []).forEach(function(u){
 
-            urunHTML +=
-            '<div class="urun-satir">' +
-            '<span>' +
-            Number(u.adet || 0) +
-            ' × ' +
-            String(u.urun || "") +
-            '</span>' +
-            '<b>' +
-            para(u.tutar) +
-            '</b>' +
-            '</div>';
+            urunHTML += `
+
+                <div class="urun-satir">
+
+                    <span>
+                        ${u.adet} × ${u.urun}
+                    </span>
+
+                    <b>
+                        ${para(u.tutar)}
+                    </b>
+
+                </div>
+
+            `;
 
         });
 
 
         const garson =
-        s.kaynak === "garson" ||
-        s.garsonSiparisi === true;
+            s.kaynak === "garson" ||
+            s.garsonSiparisi === true;
 
 
-        let html = "";
+        div.innerHTML = `
+
+            <div class="siparis-baslik">
+
+                <h3>
+                    🪑 Masa ${s.masa}
+                </h3>
+
+                <span>
+                    🟡 Bekleyen
+                </span>
+
+            </div>
 
 
-        html += '<div class="siparis-baslik">';
-        html += '<h3>🪑 Masa ' + String(s.masa || "?") + '</h3>';
-        html += '<span>🟡 Bekleyen</span>';
-        html += '</div>';
+            <span class="kaynak ${
+                garson ? "garson" : "musteri"
+            }">
 
-
-        html += '<span class="kaynak ';
-        html += garson ? "garson" : "musteri";
-        html += '">';
-
-        html += garson
-        ? "👨‍🍳 GARSON SİPARİŞİ"
-        : "👤 MÜŞTERİ SİPARİŞİ";
-
-        html += '</span>';
-
-
-        html += urunHTML;
-
-
-        html += '<div class="sip-toplam">';
-        html += 'Toplam: ' + para(s.toplam);
-        html += '</div>';
-
-
-        html += '<div class="sip-butonlar">';
-
-
-        html += '<button class="btn onay" data-id="' +
-        s.id +
-        '">';
-
-        html += '🟢 Onayla';
-
-        html += '</button>';
-
-
-        html += '<button class="btn iptal-btn" data-id="' +
-        s.id +
-        '">';
-
-        html += '❌ İptal';
-
-        html += '</button>';
-
-
-        html += '</div>';
-
-
-        div.innerHTML = html;
-
-
-        const onayBtn =
-        div.querySelector(".onay");
-
-
-        const iptalBtn =
-        div.querySelector(".iptal-btn");
-
-
-        if(onayBtn){
-
-            onayBtn.addEventListener(
-                "click",
-                function(){
-
-                    siparisOnayla(
-                        this.getAttribute("data-id")
-                    );
-
+                ${
+                    garson
+                    ?
+                    "👨‍🍳 GARSON SİPARİŞİ"
+                    :
+                    "👤 MÜŞTERİ SİPARİŞİ"
                 }
-            );
 
-        }
+            </span>
 
 
-        if(iptalBtn){
+            ${urunHTML}
 
-            iptalBtn.addEventListener(
-                "click",
-                function(){
 
-                    siparisIptal(
-                        this.getAttribute("data-id")
-                    );
+            <div class="sip-toplam">
 
-                }
-            );
+                Toplam:
+                ${para(s.toplam)}
 
-        }
+            </div>
+
+
+            <div class="sip-butonlar">
+
+                <button
+                    class="btn onay"
+                    data-onay="${s.id}">
+
+                    🟢 Onayla
+
+                </button>
+
+
+                <button
+                    class="btn iptal"
+                    data-iptal="${s.id}">
+
+                    ❌ İptal
+
+                </button>
+
+            </div>
+
+        `;
 
 
         grid.appendChild(div);
 
     });
 
+
+    /* ONAY */
+
+    grid.querySelectorAll(
+        "[data-onay]"
+    ).forEach(function(btn){
+
+        btn.addEventListener("click",function(){
+
+            siparisOnayla(
+                btn.dataset.onay
+            );
+
+        });
+
+    });
+
+
+    /* İPTAL */
+
+    grid.querySelectorAll(
+        "[data-iptal]"
+    ).forEach(function(btn){
+
+        btn.addEventListener("click",function(){
+
+            siparisIptal(
+                btn.dataset.iptal
+            );
+
+        });
+
+    });
+
 }
 
 
-/* =====================================================
-   SİPARİŞ ONAYLA
-===================================================== */
+/* ================= SİPARİŞ ONAY ================= */
 
 async function siparisOnayla(id){
 
@@ -1112,43 +1196,42 @@ async function siparisOnayla(id){
             doc(db,"siparisler",id),
             {
                 durum:"Onaylandı",
-                onaylanmaZamani:serverTimestamp()
+                onaylanmaZamani:
+                    serverTimestamp()
             }
         );
 
         alert(
-            "✅ Sipariş onaylandı.\n\nHesaba dahil edildi."
+            "✅ Sipariş onaylandı.\nHesaba dahil edildi."
         );
 
     }
     catch(e){
 
+        console.error(e);
+
         alert(
-            "❌ Sipariş onaylanamadı:\n\n" +
+            "❌ Sipariş onaylanamadı:\n" +
             e.message
         );
-
-        console.error(e);
 
     }
 
 }
 
 
-/* =====================================================
-   SİPARİŞ İPTAL
-===================================================== */
+/* ================= SİPARİŞ İPTAL ================= */
 
 async function siparisIptal(id){
 
-    const onay =
-    confirm(
-        "Bu sipariş iptal edilsin mi?"
-    );
+    if(
+        !confirm(
+            "Bu sipariş iptal edilsin mi?"
+        )
+    ){
 
-
-    if(!onay){
         return;
+
     }
 
 
@@ -1158,59 +1241,51 @@ async function siparisIptal(id){
             doc(db,"siparisler",id),
             {
                 durum:"İptal",
-                iptalZamani:serverTimestamp()
+                iptalZamani:
+                    serverTimestamp()
             }
-        );
-
-
-        alert(
-            "❌ Sipariş iptal edildi.\n\n" +
-            "Hesaba dahil edilmedi."
         );
 
     }
     catch(e){
 
         alert(
-            "❌ Sipariş iptal edilemedi:\n\n" +
+            "❌ Hata:\n" +
             e.message
         );
-
-        console.error(e);
 
     }
 
 }
 
 
-/* =====================================================
-   HESAPLAR
-===================================================== */
+/* ================= HESAPLAR ================= */
 
 function hesaplariGoster(){
 
     const grid =
-    document.getElementById("hesapGrid");
+        document.getElementById("hesapGrid");
 
-    if(!grid){
-        return;
-    }
+    if(!grid) return;
 
     grid.innerHTML = "";
 
 
     const aktif =
-    oturumlar.filter(function(o){
+        oturumlar.filter(function(o){
 
-        return o.durum === "acik";
+            return o.durum === "acik";
 
-    });
+        });
 
 
-    if(aktif.length === 0){
+    if(!aktif.length){
 
-        grid.innerHTML =
-        '<div class="bos">💳 Şu anda açık hesap yok.</div>';
+        grid.innerHTML = `
+            <div class="bos">
+                💳 Şu anda açık hesap yok.
+            </div>
+        `;
 
         return;
 
@@ -1220,98 +1295,99 @@ function hesaplariGoster(){
     aktif.forEach(function(o){
 
         const siparislerOnayli =
-        siparisler.filter(function(s){
+            siparisler.filter(function(s){
 
-            return s.oturumId === o.id &&
-                   s.durum === "Onaylandı";
+                return s.oturumId === o.id &&
+                       s.durum === "Onaylandı";
 
-        });
+            });
 
 
         const toplam =
-        siparislerOnayli.reduce(
-            function(t,s){
-                return t + Number(s.toplam || 0);
-            },
-            0
-        );
+            siparislerOnayli.reduce(
+                function(a,s){
+
+                    return a +
+                           Number(s.toplam || 0);
+
+                },
+                0
+            );
 
 
         const div =
-        document.createElement("div");
+            document.createElement("div");
 
         div.className = "hesap";
 
 
-        let html = "";
+        div.innerHTML = `
 
-        html += '<h3>🪑 Masa ';
-        html += String(o.masa);
-        html += '</h3>';
+            <h3>
+                🪑 Masa ${o.masa}
+            </h3>
 
+            <div class="hesap-toplam">
+                ${para(toplam)}
+            </div>
 
-        html += '<div class="hesap-toplam">';
-        html += para(toplam);
-        html += '</div>';
+            <div>
+                Onaylı sipariş:
+                <b>
+                    ${siparislerOnayli.length}
+                </b>
+            </div>
 
+            <button
+                class="masa-buton odendi"
+                style="margin-top:12px"
+                data-hesap="${o.id}"
+                data-masa="${o.masa}">
 
-        html += '<div>';
-        html += 'Onaylı sipariş: ';
-        html += '<b>' + siparislerOnayli.length + '</b>';
-        html += '</div>';
+                💳 HESAP ÖDENDİ
 
+            </button>
 
-        html += '<button class="masa-buton odendi" ';
-        html += 'data-oturum="' + o.id + '" ';
-        html += 'data-masa="' + o.masa + '" ';
-        html += 'style="margin-top:12px">';
-        html += '💳 HESAP ÖDENDİ';
-        html += '</button>';
-
-
-        div.innerHTML = html;
-
-
-        const btn =
-        div.querySelector(".odendi");
-
-
-        btn.addEventListener(
-            "click",
-            function(){
-
-                hesapOdendi(
-                    this.getAttribute("data-oturum"),
-                    this.getAttribute("data-masa")
-                );
-
-            }
-        );
+        `;
 
 
         grid.appendChild(div);
 
     });
 
+
+    grid.querySelectorAll(
+        "[data-hesap]"
+    ).forEach(function(btn){
+
+        btn.addEventListener("click",function(){
+
+            hesapOdendi(
+                btn.dataset.hesap,
+                btn.dataset.masa
+            );
+
+        });
+
+    });
+
 }
 
 
-/* =====================================================
-   HESAP ÖDENDİ
-===================================================== */
+/* ================= HESAP KAPAT ================= */
 
 async function hesapOdendi(id,masa){
 
-    const onay =
-    confirm(
-        "Masa " +
-        masa +
-        " hesabı ödendi olarak kapatılsın mı?"
-    );
+    if(
+        !confirm(
+            "Masa " +
+            masa +
+            " hesabı ödendi olarak kapatılsın mı?"
+        )
+    ){
 
-
-    if(!onay){
         return;
+
     }
 
 
@@ -1322,7 +1398,8 @@ async function hesapOdendi(id,masa){
             {
                 durum:"kapali",
                 odemeDurumu:"odendi",
-                kapanisZamani:serverTimestamp()
+                kapanisZamani:
+                    serverTimestamp()
             }
         );
 
@@ -1337,76 +1414,74 @@ async function hesapOdendi(id,masa){
     catch(e){
 
         alert(
-            "❌ İşlem başarısız:\n\n" +
+            "❌ İşlem başarısız:\n" +
             e.message
         );
-
-        console.error(e);
 
     }
 
 }
 
 
-/* =====================================================
-   İSTATİSTİK
-===================================================== */
+/* ================= İSTATİSTİK ================= */
 
 function istatistikGoster(){
 
     const onayli =
-    siparisler.filter(function(s){
+        siparisler.filter(function(s){
 
-        return s.durum === "Onaylandı";
+            return s.durum === "Onaylandı";
 
-    });
+        });
 
 
     const bekleyen =
-    siparisler.filter(function(s){
+        siparisler.filter(function(s){
 
-        return s.durum === "Bekleyen";
+            return s.durum === "Bekleyen";
 
-    });
+        });
 
 
     const ciro =
-    onayli.reduce(
-        function(t,s){
+        onayli.reduce(function(a,s){
 
-            return t + Number(s.toplam || 0);
+            return a +
+                   Number(s.toplam || 0);
 
-        },
-        0
-    );
+        },0);
 
 
     const aktifMasa =
-    oturumlar.filter(function(o){
+        oturumlar.filter(function(o){
 
-        return o.durum === "acik";
+            return o.durum === "acik";
 
-    }).length;
+        }).length;
 
 
     document.getElementById(
         "statCiro"
-    ).textContent = para(ciro);
+    ).textContent =
+        para(ciro);
 
 
     document.getElementById(
         "statSiparis"
-    ).textContent = onayli.length;
+    ).textContent =
+        onayli.length;
 
 
     document.getElementById(
         "statMasa"
-    ).textContent = aktifMasa;
+    ).textContent =
+        aktifMasa;
 
 
     document.getElementById(
         "statBekleyen"
-    ).textContent = bekleyen.length;
+    ).textContent =
+        bekleyen.length;
 
 
     const urunler = {};
@@ -1416,13 +1491,14 @@ function istatistikGoster(){
 
         (s.urunler || []).forEach(function(u){
 
-            const ad = String(u.urun || "Bilinmeyen Ürün");
+            if(!urunler[u.urun]){
 
-            if(!urunler[ad]){
-                urunler[ad] = 0;
+                urunler[u.urun] = 0;
+
             }
 
-            urunler[ad] += Number(u.adet || 0);
+            urunler[u.urun] +=
+                Number(u.adet || 0);
 
         });
 
@@ -1430,59 +1506,63 @@ function istatistikGoster(){
 
 
     const sirali =
-    Object.entries(urunler).sort(
-        function(a,b){
+        Object.entries(urunler)
+        .sort(function(a,b){
+
             return b[1] - a[1];
-        }
-    );
+
+        });
 
 
     const alan =
-    document.getElementById("urunIstatistik");
+        document.getElementById(
+            "urunIstatistik"
+        );
 
 
     alan.innerHTML = "";
 
 
-    if(sirali.length === 0){
+    if(!sirali.length){
 
         alan.innerHTML =
-        "Henüz onaylı satış bulunmuyor.";
+            "Henüz satış bulunmuyor.";
 
         return;
 
     }
 
 
-    sirali.forEach(function(item,index){
+    sirali.forEach(
+        function(item,index){
 
-        const div =
-        document.createElement("div");
-
-        div.className = "urun-ist";
-
-
-        div.innerHTML =
-        '<span>' +
-        (index + 1) +
-        '. ' +
-        item[0] +
-        '</span>' +
-        '<b>' +
-        item[1] +
-        ' adet</b>';
+            const ad = item[0];
+            const adet = item[1];
 
 
-        alan.appendChild(div);
+            alan.innerHTML += `
 
-    });
+                <div class="urun-ist">
+
+                    <span>
+                        ${index + 1}. ${ad}
+                    </span>
+
+                    <b>
+                        ${adet} adet
+                    </b>
+
+                </div>
+
+            `;
+
+        }
+    );
 
 }
 
 
-/* =====================================================
-   VARSAYILAN MENÜ
-===================================================== */
+/* ================= VARSAYILAN MENÜ ================= */
 
 const varsayilanMenu = [
 
@@ -1531,173 +1611,135 @@ const varsayilanMenu = [
 ];
 
 
-/* =====================================================
-   MENÜ GÖSTER
-===================================================== */
+/* ================= MENÜ GÖSTER ================= */
 
 function menuGoster(){
 
     const alan =
-    document.getElementById("menuAdmin");
+        document.getElementById("menuAdmin");
 
-    if(!alan){
-        return;
-    }
+    if(!alan) return;
 
     alan.innerHTML = "";
-
-
-    if(menu.length === 0){
-
-        alan.innerHTML =
-        '<div class="bos">☕ Menüde ürün yok.</div>';
-
-        return;
-
-    }
 
 
     menu.forEach(function(u){
 
         const div =
-        document.createElement("div");
+            document.createElement("div");
 
         div.className = "menu-kart";
 
 
-        let html = "";
+        div.innerHTML = `
 
+            <h3>
+                ${u.ad}
+            </h3>
 
-        html += '<h3>';
-        html += String(u.ad || "");
-        html += '</h3>';
+            <div class="menu-kart-kategori">
+                ${u.kategori || ""}
+            </div>
 
+            <input
+                id="fiyat-${u.id}"
+                type="number"
+                value="${u.fiyat || 0}"
+            >
 
-        html += '<div class="menu-kart-kategori">';
-        html += String(u.kategori || "");
-        html += '</div>';
+            <div
+                class="menu-islem"
+                style="margin-top:8px">
 
+                <button
+                    class="btn kaydet-menu"
+                    data-kaydet="${u.id}">
 
-        html += '<input ';
-        html += 'type="number" ';
-        html += 'class="menu-fiyat" ';
-        html += 'value="' + Number(u.fiyat || 0) + '">';
+                    💾 Kaydet
 
+                </button>
 
-        html += '<div class="menu-islem">';
+                <button
+                    class="btn sil-menu"
+                    data-sil="${u.id}">
 
+                    🗑️ Sil
 
-        html += '<button class="btn kaydet-menu">';
-        html += '💾 Kaydet';
-        html += '</button>';
+                </button>
 
+            </div>
 
-        html += '<button class="btn sil-menu">';
-        html += '🗑️ Sil';
-        html += '</button>';
-
-
-        html += '</div>';
-
-
-        div.innerHTML = html;
-
-
-        const kaydet =
-        div.querySelector(".kaydet-menu");
-
-
-        const sil =
-        div.querySelector(".sil-menu");
-
-
-        /*
-         * Sadece gerçek Firebase ürünlerinde
-         * düzenleme yapılabilir.
-         */
-
-        if(String(u.id).indexOf("varsayilan-") === 0){
-
-            kaydet.disabled = true;
-            sil.disabled = true;
-
-            kaydet.title =
-            "Önce Firebase'e bir ürün ekleyin.";
-
-            sil.title =
-            "Varsayılan ürün silinemez.";
-
-        }else{
-
-            kaydet.addEventListener(
-                "click",
-                function(){
-
-                    const input =
-                    div.querySelector(".menu-fiyat");
-
-                    menuFiyatKaydet(
-                        u.id,
-                        input.value
-                    );
-
-                }
-            );
-
-
-            sil.addEventListener(
-                "click",
-                function(){
-
-                    menuSil(u.id);
-
-                }
-            );
-
-        }
+        `;
 
 
         alan.appendChild(div);
 
     });
 
+
+    alan.querySelectorAll(
+        "[data-kaydet]"
+    ).forEach(function(btn){
+
+        btn.addEventListener("click",function(){
+
+            menuFiyatKaydet(
+                btn.dataset.kaydet
+            );
+
+        });
+
+    });
+
+
+    alan.querySelectorAll(
+        "[data-sil]"
+    ).forEach(function(btn){
+
+        btn.addEventListener("click",function(){
+
+            menuSil(
+                btn.dataset.sil
+            );
+
+        });
+
+    });
+
 }
 
 
-/* =====================================================
-   ÜRÜN EKLE
-===================================================== */
+/* ================= ÜRÜN EKLE ================= */
 
-window.urunEkle = async function(){
+document
+.getElementById("urunEkleBtn")
+.addEventListener("click",async function(){
 
     const ad =
-    document.getElementById("yeniUrun")
-    .value
-    .trim();
+        document.getElementById(
+            "yeniUrun"
+        ).value.trim();
 
 
     const fiyat =
-    Number(
-        document.getElementById("yeniFiyat").value
-    );
+        Number(
+            document.getElementById(
+                "yeniFiyat"
+            ).value
+        );
 
 
     const kategori =
-    document.getElementById("yeniKategori").value;
+        document.getElementById(
+            "yeniKategori"
+        ).value;
 
 
-    if(!ad){
+    if(!ad || !fiyat){
 
-        alert("❌ Ürün adı girin.");
-
-        return;
-
-    }
-
-
-    if(!fiyat || fiyat <= 0){
-
-        alert("❌ Geçerli bir fiyat girin.");
+        alert(
+            "Ürün adı ve fiyat girin."
+        );
 
         return;
 
@@ -1713,7 +1755,8 @@ window.urunEkle = async function(){
                 fiyat:fiyat,
                 kategori:kategori,
                 aktif:true,
-                olusturmaZamani:serverTimestamp()
+                olusturmaZamani:
+                    serverTimestamp()
             }
         );
 
@@ -1729,36 +1772,59 @@ window.urunEkle = async function(){
 
 
         alert(
-            "✅ Ürün Firebase menüsüne eklendi."
+            "✅ Ürün eklendi."
         );
 
     }
     catch(e){
 
         alert(
-            "❌ Ürün eklenemedi:\n\n" +
+            "❌ Ürün eklenemedi:\n" +
             e.message
         );
 
-        console.error(e);
+    }
+
+});
+
+
+/* ================= FİYAT ================= */
+
+async function menuFiyatKaydet(id){
+
+    const input =
+        document.getElementById(
+            "fiyat-" + id
+        );
+
+
+    if(!input) return;
+
+
+    const fiyat =
+        Number(input.value);
+
+
+    if(!fiyat){
+
+        alert(
+            "Geçerli bir fiyat girin."
+        );
+
+        return;
 
     }
 
-};
 
+    /* Varsayılan ürün ise Firebase'de
+       henüz kayıtlı değildir. */
 
-/* =====================================================
-   FİYAT KAYDET
-===================================================== */
+    if(id.startsWith("varsayilan-")){
 
-async function menuFiyatKaydet(id,fiyat){
-
-    const yeniFiyat = Number(fiyat);
-
-
-    if(!yeniFiyat || yeniFiyat <= 0){
-
-        alert("❌ Geçerli bir fiyat girin.");
+        alert(
+            "Bu ürün varsayılan menüdedir. " +
+            "Önce Firebase menüsüne ürün olarak eklenmesi gerekir."
+        );
 
         return;
 
@@ -1770,44 +1836,52 @@ async function menuFiyatKaydet(id,fiyat){
         await updateDoc(
             doc(db,"menu",id),
             {
-                fiyat:yeniFiyat
+                fiyat:fiyat
             }
         );
 
 
         alert(
-            "✅ Ürün fiyatı güncellendi."
+            "✅ Fiyat güncellendi."
         );
 
     }
     catch(e){
 
         alert(
-            "❌ Fiyat güncellenemedi:\n\n" +
+            "❌ Güncelleme başarısız:\n" +
             e.message
         );
-
-        console.error(e);
 
     }
 
 }
 
 
-/* =====================================================
-   ÜRÜN SİL
-===================================================== */
+/* ================= ÜRÜN SİL ================= */
 
 async function menuSil(id){
 
-    const onay =
-    confirm(
-        "Bu ürün menüden tamamen silinsin mi?"
-    );
+    if(id.startsWith("varsayilan-")){
 
+        alert(
+            "Bu varsayılan üründür. " +
+            "Firebase menüsünde kayıtlı olmadığı için silinemez."
+        );
 
-    if(!onay){
         return;
+
+    }
+
+
+    if(
+        !confirm(
+            "Bu ürün menüden silinsin mi?"
+        )
+    ){
+
+        return;
+
     }
 
 
@@ -1817,54 +1891,48 @@ async function menuSil(id){
             doc(db,"menu",id)
         );
 
-
-        alert(
-            "🗑️ Ürün silindi."
-        );
-
     }
     catch(e){
 
         alert(
-            "❌ Ürün silinemedi:\n\n" +
+            "❌ Silinemedi:\n" +
             e.message
         );
-
-        console.error(e);
 
     }
 
 }
 
 
-/* =====================================================
-   GARSON ÇAĞRILARI
-===================================================== */
+/* ================= GARSON ÇAĞRILARI ================= */
 
 function cagrilariGoster(){
 
     const alan =
-    document.getElementById("cagriListesi");
+        document.getElementById(
+            "cagriListesi"
+        );
 
-    if(!alan){
-        return;
-    }
+    if(!alan) return;
 
     alan.innerHTML = "";
 
 
     const liste =
-    cagrilar.filter(function(c){
+        cagrilar.filter(function(c){
 
-        return c.durum !== "tamamlandi";
+            return c.durum !== "tamamlandi";
 
-    });
+        });
 
 
-    if(liste.length === 0){
+    if(!liste.length){
 
-        alan.innerHTML =
-        '<div class="bos">🔔 Aktif garson çağrısı yok.</div>';
+        alan.innerHTML = `
+            <div class="bos">
+                🔔 Aktif garson çağrısı yok.
+            </div>
+        `;
 
         return;
 
@@ -1874,59 +1942,65 @@ function cagrilariGoster(){
     liste.forEach(function(c){
 
         const div =
-        document.createElement("div");
+            document.createElement("div");
 
         div.className = "cagri";
 
 
-        let html = "";
+        div.innerHTML = `
 
+            <h3>
+                🔔 Masa ${c.masa}
+            </h3>
 
-        html += '<h3>🔔 Masa ';
-        html += String(c.masa || "?");
-        html += '</h3>';
+            <div>
+                Müşteri garson çağırdı.
+            </div>
 
+            <button
+                data-cagri="${c.id}">
 
-        html += '<div>';
-        html += 'Müşteri garson çağırdı.';
-        html += '</div>';
+                ✅ Çağrıyı Kapat
 
+            </button>
 
-        if(c.olusturmaZamani &&
-           typeof c.olusturmaZamani.toDate === "function"){
-
-            html += '<div style="margin-top:7px;color:#777;font-size:13px">';
-            html += c.olusturmaZamani
-                .toDate()
-                .toLocaleString("tr-TR");
-            html += '</div>';
-
-        }
-
-
-        html += '<button class="cagri-kapat">';
-        html += '✅ Çağrıyı Kapat';
-        html += '</button>';
-
-
-        div.innerHTML = html;
-
-
-        const btn =
-        div.querySelector(".cagri-kapat");
-
-
-        btn.addEventListener(
-            "click",
-            function(){
-
-                cagriTamamla(c.id);
-
-            }
-        );
+        `;
 
 
         alan.appendChild(div);
+
+    });
+
+
+    alan.querySelectorAll(
+        "[data-cagri]"
+    ).forEach(function(btn){
+
+        btn.addEventListener("click",async function(){
+
+            try{
+
+                await updateDoc(
+                    doc(
+                        db,
+                        "garsonCagrilari",
+                        btn.dataset.cagri
+                    ),
+                    {
+                        durum:"tamamlandi",
+                        tamamlanmaZamani:
+                            serverTimestamp()
+                    }
+                );
+
+            }
+            catch(e){
+
+                alert(e.message);
+
+            }
+
+        });
 
     });
 
@@ -1934,130 +2008,19 @@ function cagrilariGoster(){
 
 
 /* =====================================================
-   ÇAĞRI TAMAMLA
+   FIREBASE DİNLEYİCİLERİ
 ===================================================== */
 
-async function cagriTamamla(id){
 
-    try{
-
-        await updateDoc(
-            doc(db,"garsonCagrilari",id),
-            {
-                durum:"tamamlandi",
-                tamamlanmaZamani:serverTimestamp()
-            }
-        );
-
-    }
-    catch(e){
-
-        alert(
-            "❌ Çağrı kapatılamadı:\n\n" +
-            e.message
-        );
-
-        console.error(e);
-
-    }
-
-}
-
-
-/* =====================================================
-   FIREBASE - OTURUMLAR
-===================================================== */
+/* OTURUMLAR */
 
 onSnapshot(
+
     collection(db,"oturumlar"),
+
     function(snap){
 
         oturumlar =
-        snap.docs.map(function(x){
-
-            return {
-                id:x.id,
-                ...x.data()
-            };
-
-        });
-
-
-        masalariGoster();
-        hesaplariGoster();
-        istatistikGoster();
-
-    },
-    function(error){
-
-        console.error(
-            "OTURUMLAR HATASI:",
-            error
-        );
-
-    }
-);
-
-
-/* =====================================================
-   FIREBASE - SİPARİŞLER
-===================================================== */
-
-onSnapshot(
-    collection(db,"siparisler"),
-    function(snap){
-
-        siparisler =
-        snap.docs.map(function(x){
-
-            return {
-                id:x.id,
-                ...x.data()
-            };
-
-        });
-
-
-        masalariGoster();
-        siparisleriGoster();
-        hesaplariGoster();
-        istatistikGoster();
-
-    },
-    function(error){
-
-        console.error(
-            "SİPARİŞLER HATASI:",
-            error
-        );
-
-    }
-);
-
-
-/* =====================================================
-   FIREBASE - MENÜ
-===================================================== */
-
-onSnapshot(
-    collection(db,"menu"),
-    function(snap){
-
-        if(snap.empty){
-
-            menu =
-            varsayilanMenu.map(function(x,i){
-
-                return {
-                    ...x,
-                    id:"varsayilan-" + i
-                };
-
-            });
-
-        }else{
-
-            menu =
             snap.docs.map(function(x){
 
                 return {
@@ -2067,12 +2030,107 @@ onSnapshot(
 
             });
 
+
+        masalariGoster();
+        hesaplariGoster();
+        istatistikGoster();
+
+    },
+
+    function(error){
+
+        console.error(
+            "OTURUM HATASI:",
+            error
+        );
+
+    }
+
+);
+
+
+/* SİPARİŞLER */
+
+onSnapshot(
+
+    collection(db,"siparisler"),
+
+    function(snap){
+
+        siparisler =
+            snap.docs.map(function(x){
+
+                return {
+                    id:x.id,
+                    ...x.data()
+                };
+
+            });
+
+
+        masalariGoster();
+        siparisleriGoster();
+        hesaplariGoster();
+        istatistikGoster();
+
+    },
+
+    function(error){
+
+        console.error(
+            "SİPARİŞ HATASI:",
+            error
+        );
+
+    }
+
+);
+
+
+/* MENÜ */
+
+onSnapshot(
+
+    collection(db,"menu"),
+
+    function(snap){
+
+        if(snap.empty){
+
+            menu =
+                varsayilanMenu.map(
+                    function(x,i){
+
+                        return {
+                            ...x,
+                            id:"varsayilan-" + i
+                        };
+
+                    }
+                );
+
+        }
+        else{
+
+            menu =
+                snap.docs.map(
+                    function(x){
+
+                        return {
+                            id:x.id,
+                            ...x.data()
+                        };
+
+                    }
+                );
+
         }
 
 
         menuGoster();
 
     },
+
     function(error){
 
         console.error(
@@ -2082,63 +2140,69 @@ onSnapshot(
 
 
         menu =
-        varsayilanMenu.map(function(x,i){
+            varsayilanMenu.map(
+                function(x,i){
 
-            return {
-                ...x,
-                id:"varsayilan-" + i
-            };
+                    return {
+                        ...x,
+                        id:"varsayilan-" + i
+                    };
 
-        });
+                }
+            );
 
 
         menuGoster();
 
     }
+
 );
 
 
-/* =====================================================
-   FIREBASE - GARSON ÇAĞRILARI
-===================================================== */
+/* GARSON ÇAĞRILARI */
 
 onSnapshot(
+
     collection(db,"garsonCagrilari"),
+
     function(snap){
 
         cagrilar =
-        snap.docs.map(function(x){
+            snap.docs.map(
+                function(x){
 
-            return {
-                id:x.id,
-                ...x.data()
-            };
+                    return {
+                        id:x.id,
+                        ...x.data()
+                    };
 
-        });
+                }
+            );
 
 
         cagrilariGoster();
 
     },
+
     function(error){
 
         console.error(
-            "GARSON ÇAĞRI HATASI:",
+            "ÇAĞRI HATASI:",
             error
         );
 
     }
+
 );
 
 
-/* =====================================================
-   BAŞLANGIÇ
-===================================================== */
+/* İLK ÇİZİM */
 
 masalariGoster();
 siparisleriGoster();
 hesaplariGoster();
 istatistikGoster();
+menuGoster();
 cagrilariGoster();
 
 </script>
