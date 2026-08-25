@@ -1618,6 +1618,72 @@ async function(id){
 
 /* =========================
 ÜRÜN SİL
+
+/* =========================
+   HESAP ÖDENDİ
+========================= */
+
+window.hesapOdendi =
+async function(oturumId, masa){
+
+    if(
+        !confirm(
+            "Masa " + masa +
+            " hesabı ödendi mi?\n\n" +
+            "Masa kapatılacak ve toplam sıfırlanacak."
+        )
+    ){
+
+        return;
+
+    }
+
+
+    try{
+
+        await updateDoc(
+
+            doc(
+                db,
+                "oturumlar",
+                oturumId
+            ),
+
+            {
+
+                durum:
+                    "kapali",
+
+                kapanmaZamani:
+                    serverTimestamp(),
+
+                hesapOdendi:
+                    true
+
+            }
+
+        );
+
+
+        alert(
+            "✅ Hesap ödendi.\n\n" +
+            "Masa " + masa +
+            " kapatıldı."
+        );
+
+    }
+    catch(e){
+
+        console.error(e);
+
+        alert(
+            "❌ Masa kapatılamadı:\n" +
+            e.message
+        );
+
+    }
+
+};
 ========================= */
 
 window.menuSil =
