@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Dijital Kahvem - Yönetici Paneli</title>
+<title>Dijital Kahvem - Yönetici</title>
 
 <style>
 
@@ -23,7 +23,7 @@ body{
 
 header{
     background:#4e342e;
-    color:#fff;
+    color:white;
     padding:18px;
     text-align:center;
 }
@@ -43,28 +43,35 @@ header p{
     position:sticky;
     top:0;
     z-index:100;
-    background:#fff;
-    padding:10px;
+    background:white;
+    box-shadow:0 2px 10px #0002;
+
     display:grid;
-    grid-template-columns:repeat(6,1fr);
-    gap:8px;
-    box-shadow:0 2px 8px #0002;
+    grid-template-columns:
+        repeat(6,1fr);
+
+    gap:6px;
+
+    padding:8px;
 }
 
 .nav button{
     border:0;
     border-radius:9px;
-    padding:13px 8px;
+    padding:12px 5px;
+
     font-size:14px;
     font-weight:bold;
+
     cursor:pointer;
+
     background:#eee;
     color:#333;
 }
 
 .nav button.aktif{
     background:#4e342e;
-    color:#fff;
+    color:white;
 }
 
 /* CONTAINER */
@@ -85,19 +92,21 @@ header p{
     display:block;
 }
 
-.baslik{
-    background:#fff;
-    padding:16px;
-    border-radius:12px;
+/* BASLIK */
+
+.sayfa-baslik{
+    background:white;
+    border-radius:14px;
+    padding:18px;
     margin-bottom:15px;
     box-shadow:0 2px 8px #0001;
 }
 
-.baslik h2{
+.sayfa-baslik h2{
     margin:0 0 5px;
 }
 
-.baslik p{
+.sayfa-baslik p{
     margin:0;
     color:#777;
 }
@@ -106,16 +115,21 @@ header p{
 
 .masa-grid{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:
+        repeat(5,1fr);
+
     gap:14px;
 }
 
 .masa{
-    background:#fff;
-    border:2px solid #ddd;
+    background:white;
     border-radius:14px;
     padding:15px;
-    box-shadow:0 2px 8px #0001;
+
+    border:2px solid #ddd;
+
+    box-shadow:
+        0 2px 8px #0001;
 }
 
 .masa.acik{
@@ -134,20 +148,23 @@ header p{
 
 .masa-baslik h3{
     margin:0;
-    font-size:20px;
 }
 
 .durum{
-    padding:6px 9px;
+    padding:5px 8px;
     border-radius:15px;
     font-size:12px;
     font-weight:bold;
-    background:#eee;
 }
 
 .durum.acik{
     background:#e8f5e9;
     color:#2e7d32;
+}
+
+.durum.kapali{
+    background:#eee;
+    color:#777;
 }
 
 .durum.bekleyen{
@@ -161,64 +178,50 @@ header p{
     margin:15px 0;
 }
 
-.masa-bilgi{
-    color:#777;
-    font-size:13px;
-    margin-bottom:10px;
-}
-
-.btn{
+.masa-buton{
     width:100%;
     border:0;
-    border-radius:8px;
-    padding:11px;
+    border-radius:9px;
+    padding:12px;
+
     font-weight:bold;
     cursor:pointer;
+}
+
+.odendi{
+    background:#2e7d32;
+    color:white;
+}
+
+.detay-btn{
+    background:#1565c0;
+    color:white;
     margin-top:7px;
 }
 
-.btn-yesil{
-    background:#2e7d32;
-    color:#fff;
-}
-
-.btn-turuncu{
-    background:#ef6c00;
-    color:#fff;
-}
-
-.btn-mavi{
-    background:#1565c0;
-    color:#fff;
-}
-
-.btn-kirmizi{
-    background:#c62828;
-    color:#fff;
-}
-
-.btn-gri{
-    background:#ddd;
-}
-
-/* SIPARIS */
+/* SİPARİŞ */
 
 .siparis-grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:14px;
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:15px;
 }
 
 .siparis{
-    background:#fff;
-    border:2px solid #ddd;
+    background:white;
     border-radius:14px;
     padding:15px;
-    box-shadow:0 2px 8px #0001;
+
+    border-left:5px solid #ef6c00;
+
+    box-shadow:
+        0 2px 8px #0001;
 }
 
-.siparis.bekleyen{
-    border-color:#ef6c00;
+.siparis.onayli{
+    border-left-color:#2e7d32;
 }
 
 .siparis-baslik{
@@ -228,34 +231,18 @@ header p{
     margin-bottom:10px;
 }
 
-.siparis-no{
-    font-weight:bold;
-    font-size:18px;
-}
-
-.siparis-durum{
-    padding:6px 9px;
-    border-radius:14px;
-    font-size:12px;
-    font-weight:bold;
-}
-
-.siparis-durum.bekleyen{
-    background:#fff3cd;
-    color:#ef6c00;
-}
-
-.siparis-durum.onaylandi{
-    background:#e8f5e9;
-    color:#2e7d32;
+.siparis-baslik h3{
+    margin:0;
 }
 
 .kaynak{
     display:inline-block;
-    padding:6px 9px;
-    border-radius:14px;
-    font-size:12px;
+    padding:5px 8px;
+    border-radius:12px;
+
+    font-size:11px;
     font-weight:bold;
+
     margin-bottom:8px;
 }
 
@@ -269,249 +256,328 @@ header p{
     color:#ef6c00;
 }
 
-.zaman{
-    color:#777;
-    font-size:12px;
-    margin-bottom:10px;
-}
-
 .urun-satir{
     display:flex;
     justify-content:space-between;
-    padding:7px 0;
+
+    padding:6px 0;
+
     border-bottom:1px solid #eee;
 }
 
-.siparis-toplam{
+.sip-toplam{
     text-align:right;
     font-size:18px;
     font-weight:bold;
+
     margin-top:10px;
 }
 
-/* ISTATISTIK */
-
-.istatistik-grid{
+.sip-butonlar{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:15px;
-    margin-bottom:20px;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+
+    margin-top:12px;
 }
 
-.istatistik{
-    background:#fff;
+.btn{
+    border:0;
+    border-radius:8px;
+    padding:10px;
+
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.onay{
+    background:#2e7d32;
+    color:white;
+}
+
+.iptal{
+    background:#ffebee;
+    color:#c62828;
+}
+
+/* HESAPLAR */
+
+.hesap-grid{
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:14px;
+}
+
+.hesap{
+    background:white;
     border-radius:14px;
-    padding:20px;
-    box-shadow:0 2px 8px #0001;
+    padding:15px;
+
+    border:2px solid #2e7d32;
 }
 
-.istatistik h3{
+.hesap h3{
     margin:0;
+}
+
+.hesap-toplam{
+    font-size:25px;
+    font-weight:bold;
+    margin:15px 0;
+}
+
+/* İSTATİSTİK */
+
+.stats{
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:14px;
+}
+
+.stat{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+
+    box-shadow:
+        0 2px 8px #0001;
+}
+
+.stat-baslik{
     color:#777;
     font-size:14px;
 }
 
-.istatistik .sayi{
-    margin-top:10px;
+.stat-sayi{
     font-size:30px;
     font-weight:bold;
+    margin-top:8px;
 }
 
-.urun-istatistik{
-    background:#fff;
+.istatistik-kutu{
+    background:white;
+    padding:20px;
     border-radius:14px;
-    padding:15px;
-    box-shadow:0 2px 8px #0001;
+
+    margin-top:15px;
 }
 
-.urun-istatistik-satir{
+.urun-ist{
     display:flex;
     justify-content:space-between;
-    padding:10px;
+
+    padding:10px 0;
+
     border-bottom:1px solid #eee;
 }
 
-/* MENU */
+/* MENÜ YÖNETİMİ */
 
-.menu-grid{
+.menu-ekle{
+    background:white;
+    padding:18px;
+    border-radius:14px;
+
+    margin-bottom:15px;
+}
+
+.form-grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+    grid-template-columns:
+        2fr 1fr 1fr;
+
+    gap:10px;
+}
+
+input,select{
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #ccc;
+    border-radius:8px;
+
+    font-size:15px;
+}
+
+.ekle-btn{
+    background:#2e7d32;
+    color:white;
+    border:0;
+    border-radius:8px;
+
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.menu-admin{
+    display:grid;
+    grid-template-columns:
+        repeat(4,1fr);
+
     gap:14px;
 }
 
 .menu-kart{
-    background:#fff;
+    background:white;
     border-radius:14px;
     padding:15px;
+
     box-shadow:0 2px 8px #0001;
 }
 
 .menu-kart h3{
-    margin:0 0 5px;
+    margin:0 0 8px;
 }
 
-.menu-fiyat{
-    color:#795548;
-    font-size:18px;
+.menu-kart-fiyat{
+    font-size:20px;
     font-weight:bold;
 }
 
-.form{
-    background:#fff;
-    border-radius:14px;
-    padding:18px;
-    margin-bottom:15px;
-    box-shadow:0 2px 8px #0001;
+.menu-kart-kategori{
+    color:#777;
+    font-size:13px;
+    margin:5px 0 12px;
 }
 
-.form input{
-    width:100%;
-    padding:12px;
-    margin:6px 0;
-    border:1px solid #ccc;
-    border-radius:8px;
-    font-size:16px;
-}
-
-/* GARSON */
-
-.cagri-grid{
+.menu-islem{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:14px;
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:7px;
 }
+
+.kaydet-menu{
+    background:#1565c0;
+    color:white;
+}
+
+.sil-menu{
+    background:#ffebee;
+    color:#c62828;
+}
+
+/* GARSON ÇAĞRI */
 
 .cagri{
-    background:#fff;
-    border:2px solid #ef6c00;
+    background:white;
     border-radius:14px;
+
     padding:18px;
-    box-shadow:0 2px 8px #0001;
+
+    margin-bottom:10px;
+
+    border-left:5px solid #ef6c00;
 }
 
 .cagri h3{
-    margin-top:0;
+    margin:0 0 5px;
 }
 
-.cagri .masa-numara{
-    font-size:30px;
+.cagri button{
+    margin-top:10px;
+    border:0;
+    padding:10px 15px;
+
+    border-radius:8px;
+
+    background:#2e7d32;
+    color:white;
+
     font-weight:bold;
-    color:#ef6c00;
 }
 
-/* BOS */
+/* BOŞ */
 
 .bos{
-    background:#fff;
-    border-radius:12px;
-    padding:30px;
+    background:white;
+    padding:35px;
+
+    border-radius:14px;
+
     text-align:center;
     color:#777;
 }
 
-/* MODAL */
-
-.modal{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:#0008;
-    z-index:1000;
-    padding:20px;
-    overflow:auto;
-}
-
-.modal.acik{
-    display:block;
-}
-
-.modal-kutu{
-    max-width:500px;
-    margin:30px auto;
-    background:#fff;
-    border-radius:15px;
-    padding:20px;
-}
-
-.modal-kutu h2{
-    margin-top:0;
-}
-
-.kapat{
-    float:right;
-    border:0;
-    background:none;
-    font-size:25px;
-    cursor:pointer;
-}
-
-/* BAGLANTI */
-
-.baglanti{
-    position:fixed;
-    bottom:10px;
-    right:10px;
-    background:#fff;
-    padding:8px 12px;
-    border-radius:20px;
-    box-shadow:0 2px 8px #0002;
-    font-size:12px;
-    z-index:200;
-}
-
-/* RESPONSIVE */
+/* MOBİL */
 
 @media(max-width:1100px){
 
     .masa-grid{
-        grid-template-columns:repeat(3,1fr);
+        grid-template-columns:
+            repeat(3,1fr);
     }
 
-    .siparis-grid{
-        grid-template-columns:repeat(2,1fr);
+    .menu-admin{
+        grid-template-columns:
+            repeat(3,1fr);
     }
 
-    .menu-grid{
-        grid-template-columns:repeat(2,1fr);
+    .stats{
+        grid-template-columns:
+            repeat(2,1fr);
     }
 
 }
 
-@media(max-width:800px){
+@media(max-width:750px){
 
     .nav{
-        grid-template-columns:repeat(3,1fr);
-    }
-
-    .istatistik-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .cagri-grid{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:
+            repeat(3,1fr);
     }
 
     .masa-grid{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .siparis-grid{
+        grid-template-columns:1fr;
+    }
+
+    .hesap-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .menu-admin{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
     }
 
 }
 
-@media(max-width:550px){
+@media(max-width:500px){
 
-    .nav{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .masa-grid,
-    .siparis-grid,
-    .menu-grid,
-    .cagri-grid{
+    .masa-grid{
         grid-template-columns:1fr;
     }
 
-    .istatistik-grid{
-        grid-template-columns:1fr 1fr;
+    .hesap-grid{
+        grid-template-columns:1fr;
+    }
+
+    .menu-admin{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .nav button{
+        font-size:12px;
     }
 
 }
@@ -524,6 +590,7 @@ header p{
 <header>
 
 <h1>☕ DİJİTAL KAHVEM</h1>
+
 <p>Yönetici Paneli</p>
 
 </header>
@@ -533,28 +600,35 @@ header p{
 
 <div class="nav">
 
-<button class="aktif" onclick="panelAc('masalar',this)">
+<button
+class="aktif"
+onclick="panelAc('masalar',this)">
 🪑 Masalar
 </button>
 
-<button onclick="panelAc('siparisler',this)">
+<button
+onclick="panelAc('siparisler',this)">
 🛎️ Siparişler
 </button>
 
-<button onclick="panelAc('istatistik',this)">
+<button
+onclick="panelAc('hesaplar',this)">
+💳 Hesaplar
+</button>
+
+<button
+onclick="panelAc('istatistik',this)">
 📊 İstatistik
 </button>
 
-<button onclick="panelAc('menuYonetim',this)">
+<button
+onclick="panelAc('menuYonetim',this)">
 ☕ Menü
 </button>
 
-<button onclick="panelAc('garsonCagrilari',this)">
+<button
+onclick="panelAc('garsonCagrilari',this)">
 🔔 Garson
-</button>
-
-<button onclick="panelAc('ayarlar',this)">
-⚙️ Ayarlar
 </button>
 
 </div>
@@ -563,97 +637,153 @@ header p{
 <div class="container">
 
 
-<!-- MASALAR -->
+<!-- ================= MASALAR ================= -->
 
-<section id="masalar" class="panel aktif">
+<section
+id="masalar"
+class="panel aktif">
 
-<div class="baslik">
+<div class="sayfa-baslik">
 
-<h2>🪑 Masa Yönetimi</h2>
+<h2>🪑 Masalar</h2>
 
 <p>
-Aktif masalar, siparişler ve hesap durumları
+Aktif masalar ve hesap durumları
 </p>
 
 </div>
 
-<div id="masaGrid" class="masa-grid"></div>
+<div
+id="masaGrid"
+class="masa-grid">
+
+</div>
 
 </section>
 
 
-<!-- SIPARISLER -->
+<!-- ================= SİPARİŞLER ================= -->
 
-<section id="siparisler" class="panel">
+<section
+id="siparisler"
+class="panel">
 
-<div class="baslik">
+<div class="sayfa-baslik">
 
-<h2>🛎️ Sipariş Yönetimi</h2>
+<h2>🛎️ Siparişler</h2>
 
 <p>
 Bekleyen siparişleri buradan onaylayabilirsiniz.
-Bekleyen siparişler hesaba dahil edilmez.
 </p>
 
 </div>
 
-<div id="siparisGrid" class="siparis-grid"></div>
+<div
+id="siparisGrid"
+class="siparis-grid">
+
+</div>
 
 </section>
 
 
-<!-- ISTATISTIK -->
+<!-- ================= HESAPLAR ================= -->
 
-<section id="istatistik" class="panel">
+<section
+id="hesaplar"
+class="panel">
 
-<div class="baslik">
+<div class="sayfa-baslik">
 
-<h2>📊 İstatistikler</h2>
+<h2>💳 Hesaplar</h2>
 
-<p>Onaylanan siparişler üzerinden hesaplanır.</p>
+<p>
+Sadece onaylanmış siparişler hesaba dahil edilir.
+</p>
 
 </div>
 
-<div class="istatistik-grid">
+<div
+id="hesapGrid"
+class="hesap-grid">
 
-<div class="istatistik">
+</div>
 
-<h3>TOPLAM CİRO</h3>
+</section>
 
-<div id="statCiro" class="sayi">
+
+<!-- ================= İSTATİSTİK ================= -->
+
+<section
+id="istatistik"
+class="panel">
+
+<div class="sayfa-baslik">
+
+<h2>📊 İstatistikler</h2>
+
+<p>
+Dijital Kahvem işletme özeti
+</p>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+
+<div class="stat-baslik">
+Toplam Onaylı Satış
+</div>
+
+<div
+id="statCiro"
+class="stat-sayi">
 0 ₺
 </div>
 
 </div>
 
 
-<div class="istatistik">
+<div class="stat">
 
-<h3>ONAYLANAN SİPARİŞ</h3>
+<div class="stat-baslik">
+Onaylanan Sipariş
+</div>
 
-<div id="statSiparis" class="sayi">
+<div
+id="statSiparis"
+class="stat-sayi">
 0
 </div>
 
 </div>
 
 
-<div class="istatistik">
+<div class="stat">
 
-<h3>BEKLEYEN SİPARİŞ</h3>
+<div class="stat-baslik">
+Aktif Masa
+</div>
 
-<div id="statBekleyen" class="sayi">
+<div
+id="statMasa"
+class="stat-sayi">
 0
 </div>
 
 </div>
 
 
-<div class="istatistik">
+<div class="stat">
 
-<h3>AÇIK MASA</h3>
+<div class="stat-baslik">
+Bekleyen Sipariş
+</div>
 
-<div id="statMasa" class="sayi">
+<div
+id="statBekleyen"
+class="stat-sayi">
 0
 </div>
 
@@ -662,166 +792,117 @@ Bekleyen siparişler hesaba dahil edilmez.
 </div>
 
 
-<div class="baslik">
+<div class="istatistik-kutu">
 
-<h2>☕ En Çok Satılan Ürünler</h2>
+<h3>
+🏆 En Çok Satılan Ürünler
+</h3>
+
+<div
+id="urunIstatistik">
 
 </div>
 
-<div id="urunIstatistik" class="urun-istatistik"></div>
+</div>
 
 </section>
 
 
-<!-- MENU YONETIM -->
+<!-- ================= MENÜ ================= -->
 
-<section id="menuYonetim" class="panel">
+<section
+id="menuYonetim"
+class="panel">
 
-<div class="baslik">
+<div class="sayfa-baslik">
 
 <h2>☕ Menü Yönetimi</h2>
 
 <p>
-Ürün ekleyebilir, fiyat değiştirebilir veya ürün silebilirsiniz.
+Ürün ekleyebilir, fiyat değiştirebilir veya silebilirsiniz.
 </p>
 
 </div>
 
 
-<div class="form">
+<div class="menu-ekle">
 
-<h3>➕ Yeni Ürün Ekle</h3>
+<h3>
+➕ Yeni Ürün Ekle
+</h3>
+
+<div class="form-grid">
 
 <input
 id="yeniUrun"
-type="text"
-placeholder="Ürün adı"
->
+placeholder="Ürün adı">
 
 <input
 id="yeniFiyat"
 type="number"
-placeholder="Fiyat"
->
+placeholder="Fiyat">
+
+<select id="yeniKategori">
+
+<option>
+Sıcak İçecekler
+</option>
+
+<option>
+Soğuk İçecekler
+</option>
+
+<option>
+Atıştırmalıklar
+</option>
+
+</select>
 
 <button
-class="btn btn-yesil"
-onclick="urunEkle()"
->
-➕ Ürünü Ekle
+class="ekle-btn"
+onclick="urunEkle()">
+
+➕ Ürün Ekle
+
 </button>
 
 </div>
 
+</div>
 
-<div id="menuGrid" class="menu-grid"></div>
+
+<div
+id="menuAdmin"
+class="menu-admin">
+
+</div>
 
 </section>
 
 
-<!-- GARSON CAGRILARI -->
+<!-- ================= GARSON ================= -->
 
-<section id="garsonCagrilari" class="panel">
+<section
+id="garsonCagrilari"
+class="panel">
 
-<div class="baslik">
+<div class="sayfa-baslik">
 
 <h2>🔔 Garson Çağrıları</h2>
 
 <p>
-Müşterilerin yaptığı garson çağrıları.
+Müşterilerden gelen garson çağrıları
 </p>
 
 </div>
 
-<div id="cagriGrid" class="cagri-grid"></div>
-
-</section>
-
-
-<!-- AYARLAR -->
-
-<section id="ayarlar" class="panel">
-
-<div class="baslik">
-
-<h2>⚙️ Sistem</h2>
-
-<p>Dijital Kahvem yönetici paneli.</p>
-
-</div>
-
-<div class="form">
-
-<h3>🔥 Firebase</h3>
-
-<p>
-Firebase bağlantısı aktif olduğu sürece müşteri,
-garson ve yönetici panelleri aynı verileri kullanır.
-</p>
-
-<button
-class="btn btn-mavi"
-onclick="location.reload()"
->
-🔄 Paneli Yenile
-</button>
+<div
+id="cagriListesi">
 
 </div>
 
 </section>
 
-</div>
-
-
-<div id="baglanti" class="baglanti">
-🟡 Firebase bağlanıyor...
-</div>
-
-
-<!-- ÜRÜN DÜZENLEME MODAL -->
-
-<div id="urunModal" class="modal">
-
-<div class="modal-kutu">
-
-<button
-class="kapat"
-onclick="modalKapat()"
->
-×
-</button>
-
-<h2>☕ Ürün Düzenle</h2>
-
-<input
-id="editAd"
-type="text"
-placeholder="Ürün adı"
-style="width:100%;padding:12px;margin:6px 0;border:1px solid #ccc;border-radius:8px"
->
-
-<input
-id="editFiyat"
-type="number"
-placeholder="Fiyat"
-style="width:100%;padding:12px;margin:6px 0;border:1px solid #ccc;border-radius:8px"
->
-
-<button
-class="btn btn-mavi"
-onclick="urunKaydet()"
->
-💾 Kaydet
-</button>
-
-<button
-class="btn btn-kirmizi"
-onclick="urunSil()"
->
-🗑️ Ürünü Sil
-</button>
-
-</div>
 
 </div>
 
@@ -841,10 +922,10 @@ collection,
 onSnapshot,
 query,
 where,
+doc,
 updateDoc,
 addDoc,
 deleteDoc,
-doc,
 serverTimestamp
 }
 from
@@ -884,46 +965,56 @@ measurementId:
 };
 
 
-const app=initializeApp(firebaseConfig);
+const app=
+initializeApp(firebaseConfig);
 
-const db=getFirestore(app);
+const db=
+getFirestore(app);
 
 
 /* =========================
-DATA
+VERİLER
 ========================= */
 
 let oturumlar=[];
 let siparisler=[];
-let urunler=[];
+let menu=[];
 let cagrilar=[];
-
-let duzenlenenUrunId=null;
 
 
 /* =========================
-PANEL
+PANEL GEÇİŞİ
 ========================= */
 
 window.panelAc=function(id,button){
 
 document
 .querySelectorAll(".panel")
-.forEach(x=>x.classList.remove("aktif"));
+.forEach(
+p=>p.classList.remove("aktif")
+);
+
+const panel=
+document.getElementById(id);
+
+if(panel){
+
+panel.classList.add("aktif");
+
+}
+
 
 document
 .querySelectorAll(".nav button")
-.forEach(x=>x.classList.remove("aktif"));
-
-document
-.getElementById(id)
-.classList.add("aktif");
+.forEach(
+b=>b.classList.remove("aktif")
+);
 
 if(button){
-button.classList.add("aktif");
-}
 
-render();
+button.classList.add("aktif");
+
+}
 
 };
 
@@ -935,32 +1026,8 @@ PARA
 function para(n){
 
 return Number(n||0)
-.toLocaleString("tr-TR")+" ₺";
-
-}
-
-
-/* =========================
-ZAMAN
-========================= */
-
-function saat(timestamp){
-
-if(
-timestamp &&
-typeof timestamp.toDate==="function"
-){
-
-return timestamp
-.toDate()
-.toLocaleString(
-"tr-TR"
-);
-
-}
-
-return "--";
-
+.toLocaleString("tr-TR")
++" ₺";
 
 }
 
@@ -969,7 +1036,7 @@ return "--";
 MASALAR
 ========================= */
 
-function renderMasalar(){
+function masalariGoster(){
 
 const grid=
 document.getElementById(
@@ -979,47 +1046,46 @@ document.getElementById(
 grid.innerHTML="";
 
 
-for(let masa=1;masa<=50;masa++){
+for(
+let masa=1;
+masa<=50;
+masa++
+){
 
-const oturum=
+const o=
 oturumlar.find(
-o=>
-Number(o.masa)===masa &&
-o.durum==="acik"
+x=>
+Number(x.masa)===masa &&
+x.durum==="acik"
 );
 
 
-const ss=oturum
+const ss=
+o
 ?
 siparisler.filter(
 s=>
-s.oturumId===oturum.id
+s.oturumId===o.id &&
+s.durum==="Onaylandı"
 )
 :
 [];
 
 
-/*
-SADECE ONAYLANANLAR
-HESABA DAHİL
-*/
-
-const onaylanan=
-ss.filter(
-s=>
-s.durum==="Onaylandı"
-);
-
-
 const bekleyen=
-ss.filter(
+o
+?
+siparisler.filter(
 s=>
+s.oturumId===o.id &&
 s.durum==="Bekleyen"
-);
+)
+:
+[];
 
 
 const toplam=
-onaylanan.reduce(
+ss.reduce(
 (a,s)=>
 a+Number(s.toplam||0),
 0
@@ -1027,12 +1093,14 @@ a+Number(s.toplam||0),
 
 
 const div=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 
 div.className=
 "masa"+
-(oturum?" acik":"")+
+(o?" acik":"")+
 (bekleyen.length?" bekleyen":"");
 
 
@@ -1044,29 +1112,12 @@ div.innerHTML=`
 🪑 Masa ${masa}
 </h3>
 
-<span class="durum ${
-oturum
-?
-bekleyen.length
-?
-"bekleyen"
-:
-"acik"
-:
-""
-}">
+<span class="
+durum
+${o?"acik":"kapali"}
+">
 
-${
-oturum
-?
-bekleyen.length
-?
-"🟡 Bekleyen"
-:
-"🟢 Açık"
-:
-"⚪ Kapalı"
-}
+${o?"🟢 Açık":"⚪ Kapalı"}
 
 </span>
 
@@ -1080,75 +1131,51 @@ ${para(toplam)}
 </div>
 
 
-<div class="masa-bilgi">
+<div>
 
-${
-onaylanan.length
-} onaylanan sipariş
-
-<br>
-
-${
-bekleyen.length
-} bekleyen sipariş
+🟡 Bekleyen:
+<b>
+${bekleyen.length}
+</b>
 
 </div>
 
 
 ${
-oturum
+o
 ?
-
 `
 
+<div style="
+margin-top:10px;
+font-size:13px;
+color:#666">
+
+Onaylı sipariş:
+${ss.length}
+
+</div>
+
 <button
-class="btn btn-yesil"
+class="masa-buton odendi"
+style="margin-top:10px"
 onclick="
 hesapOdendi(
-'${oturum.id}',
+'${o.id}',
 ${masa}
-)
-">
+)">
 
 💳 HESAP ÖDENDİ
 
 </button>
 
 `
-
 :
-
 `
-
-<div class="masa-bilgi">
-Bu masa için aktif oturum yok.
-</div>
-
+<p style="color:#777">
+Aktif oturum yok.
+</p>
 `
-}
-
-
-${
-bekleyen.length
-?
-
-`
-
-<button
-class="btn btn-turuncu"
-onclick="
-panelAc('siparisler')
-">
-
-🛎️ ${bekleyen.length}
-Bekleyen Sipariş
-
-</button>
-
-`
-
-:""
-
 }
 
 `;
@@ -1162,10 +1189,10 @@ grid.appendChild(div);
 
 
 /* =========================
-SIPARISLER
+SİPARİŞLER
 ========================= */
 
-function renderSiparisler(){
+function siparisleriGoster(){
 
 const grid=
 document.getElementById(
@@ -1175,14 +1202,13 @@ document.getElementById(
 grid.innerHTML="";
 
 
-const bekleyen=
+const liste=
 siparisler.filter(
-s=>
-s.durum==="Bekleyen"
+s=>s.durum==="Bekleyen"
 );
 
 
-if(!bekleyen.length){
+if(!liste.length){
 
 grid.innerHTML=`
 
@@ -1199,8 +1225,16 @@ return;
 }
 
 
-bekleyen.forEach(
+liste.forEach(
 (s,index)=>{
+
+const div=
+document.createElement(
+"div"
+);
+
+div.className="siparis";
+
 
 let urunHTML="";
 
@@ -1233,38 +1267,23 @@ s.kaynak==="garson" ||
 s.garsonSiparisi===true;
 
 
-const div=
-document.createElement("div");
-
-div.className=
-"siparis bekleyen";
-
-
 div.innerHTML=`
 
 <div class="siparis-baslik">
 
-<span class="siparis-no">
+<h3>
+🪑 Masa ${s.masa}
+</h3>
 
-Masa ${s.masa}
-
-</span>
-
-<span class="siparis-durum bekleyen">
-
-🟡 BEKLEYEN
-
+<span>
+🟡 Bekleyen
 </span>
 
 </div>
 
 
-<div class="kaynak ${
-garson
-?
-"garson"
-:
-"musteri"
+<span class="kaynak ${
+garson?"garson":"musteri"
 }">
 
 ${
@@ -1275,20 +1294,13 @@ garson
 "👤 MÜŞTERİ SİPARİŞİ"
 }
 
-</div>
-
-
-<div class="zaman">
-
-🕐 ${saat(s.olusturmaZamani)}
-
-</div>
+</span>
 
 
 ${urunHTML}
 
 
-<div class="siparis-toplam">
+<div class="sip-toplam">
 
 Toplam:
 ${para(s.toplam)}
@@ -1296,28 +1308,226 @@ ${para(s.toplam)}
 </div>
 
 
+<div class="sip-butonlar">
+
 <button
-class="btn btn-yesil"
+class="btn onay"
 onclick="
 siparisOnayla(
 '${s.id}'
-)
-">
+)">
 
-🟢 SİPARİŞİ ONAYLA
+🟢 Onayla
 
 </button>
 
 
 <button
-class="btn btn-kirmizi"
+class="btn iptal"
 onclick="
 siparisIptal(
 '${s.id}'
-)
-">
+)">
 
-❌ İPTAL ET
+❌ İptal
+
+</button>
+
+</div>
+
+`;
+
+
+grid.appendChild(div);
+
+});
+
+}
+
+
+/* =========================
+SİPARİŞ ONAY
+========================= */
+
+window.siparisOnayla=
+async function(id){
+
+try{
+
+await updateDoc(
+doc(db,"siparisler",id),
+{
+
+durum:
+"Onaylandı",
+
+onaylanmaZamani:
+serverTimestamp()
+
+}
+);
+
+alert(
+"✅ Sipariş onaylandı.\nHesaba dahil edildi."
+);
+
+}
+catch(e){
+
+alert(
+"❌ Hata:\n"+
+e.message
+);
+
+}
+
+};
+
+
+/* =========================
+SİPARİŞ İPTAL
+========================= */
+
+window.siparisIptal=
+async function(id){
+
+if(
+!confirm(
+"Bu sipariş iptal edilsin mi?"
+)
+){
+
+return;
+
+}
+
+
+try{
+
+await updateDoc(
+doc(db,"siparisler",id),
+{
+
+durum:
+"İptal",
+
+iptalZamani:
+serverTimestamp()
+
+}
+);
+
+}
+catch(e){
+
+alert(
+"❌ Hata:\n"+
+e.message
+);
+
+}
+
+};
+
+
+/* =========================
+HESAPLAR
+========================= */
+
+function hesaplariGoster(){
+
+const grid=
+document.getElementById(
+"hesapGrid"
+);
+
+grid.innerHTML="";
+
+
+const aktif=
+oturumlar.filter(
+o=>o.durum==="acik"
+);
+
+
+if(!aktif.length){
+
+grid.innerHTML=`
+
+<div class="bos">
+
+💳 Şu anda açık hesap yok.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+aktif.forEach(
+o=>{
+
+const ss=
+siparisler.filter(
+s=>
+s.oturumId===o.id &&
+s.durum==="Onaylandı"
+);
+
+
+const toplam=
+ss.reduce(
+(a,s)=>
+a+Number(s.toplam||0),
+0
+);
+
+
+const div=
+document.createElement(
+"div"
+);
+
+div.className="hesap";
+
+
+div.innerHTML=`
+
+<h3>
+🪑 Masa ${o.masa}
+</h3>
+
+
+<div class="hesap-toplam">
+
+${para(toplam)}
+
+</div>
+
+
+<div>
+
+Onaylı sipariş:
+<b>
+${ss.length}
+</b>
+
+</div>
+
+
+<button
+class="masa-buton odendi"
+style="margin-top:12px"
+onclick="
+hesapOdendi(
+'${o.id}',
+${o.masa}
+)">
+
+💳 HESAP ÖDENDİ
 
 </button>
 
@@ -1332,132 +1542,6 @@ grid.appendChild(div);
 
 
 /* =========================
-SIPARIS ONAY
-========================= */
-
-window.siparisOnayla=
-async function(id){
-
-const s=
-siparisler.find(
-x=>x.id===id
-);
-
-if(!s)
-return;
-
-
-if(
-!confirm(
-"Masa "+
-s.masa+
-" siparişi onaylansın mı?"
-)
-)
-return;
-
-
-try{
-
-await updateDoc(
-
-doc(
-db,
-"siparisler",
-id
-),
-
-{
-
-durum:
-"Onaylandı",
-
-onaylanmaZamani:
-serverTimestamp()
-
-}
-
-);
-
-}
-catch(e){
-
-alert(
-"❌ Sipariş onaylanamadı:\n"+
-e.message
-);
-
-}
-
-};
-
-
-/* =========================
-SIPARIS IPTAL
-========================= */
-
-window.siparisIptal=
-async function(id){
-
-const s=
-siparisler.find(
-x=>x.id===id
-);
-
-if(!s)
-return;
-
-
-const neden=
-prompt(
-"Masa "+
-s.masa+
-" siparişi neden iptal edildi?"
-);
-
-if(neden===null)
-return;
-
-
-try{
-
-await updateDoc(
-
-doc(
-db,
-"siparisler",
-id
-),
-
-{
-
-durum:
-"İptal",
-
-iptalNedeni:
-neden,
-
-iptalZamani:
-serverTimestamp()
-
-}
-
-);
-
-}
-catch(e){
-
-alert(
-"❌ Sipariş iptal edilemedi:\n"+
-e.message
-);
-
-}
-
-};
-
-
-/* =========================
 HESAP ÖDENDİ
 ========================= */
 
@@ -1468,23 +1552,19 @@ if(
 !confirm(
 "Masa "+
 masa+
-" hesabı ödendi mi?\n\n"+
-"Aktif oturum kapatılacak."
+" hesabı ödendi olarak kapatılsın mı?"
 )
-)
+){
+
 return;
+
+}
 
 
 try{
 
 await updateDoc(
-
-doc(
-db,
-"oturumlar",
-id
-),
-
+doc(db,"oturumlar",id),
 {
 
 durum:
@@ -1497,8 +1577,8 @@ kapanisZamani:
 serverTimestamp()
 
 }
-
 );
+
 
 alert(
 "✅ Masa "+
@@ -1520,37 +1600,34 @@ e.message
 
 
 /* =========================
-ISTATISTIK
+İSTATİSTİK
 ========================= */
 
-function renderIstatistik(){
+function istatistikGoster(){
 
-const onaylanan=
+const onayli=
 siparisler.filter(
-s=>
-s.durum==="Onaylandı"
+s=>s.durum==="Onaylandı"
 );
 
 
 const bekleyen=
 siparisler.filter(
-s=>
-s.durum==="Bekleyen"
+s=>s.durum==="Bekleyen"
 );
 
 
 const ciro=
-onaylanan.reduce(
+onayli.reduce(
 (a,s)=>
 a+Number(s.toplam||0),
 0
 );
 
 
-const acikMasa=
+const aktifMasa=
 oturumlar.filter(
-o=>
-o.durum==="acik"
+o=>o.durum==="acik"
 ).length;
 
 
@@ -1563,7 +1640,13 @@ para(ciro);
 document.getElementById(
 "statSiparis"
 ).textContent=
-onaylanan.length;
+onayli.length;
+
+
+document.getElementById(
+"statMasa"
+).textContent=
+aktifMasa;
 
 
 document.getElementById(
@@ -1572,28 +1655,27 @@ document.getElementById(
 bekleyen.length;
 
 
-document.getElementById(
-"statMasa"
-).textContent=
-acikMasa;
+/* ÜRÜN İSTATİSTİĞİ */
+
+const urunler={};
 
 
-/* ÜRÜN SATIŞ */
-
-const urunMap={};
-
-
-onaylanan.forEach(
+onayli.forEach(
 s=>{
 
 (s.urunler||[])
 .forEach(
 u=>{
 
-if(!urunMap[u.urun])
-urunMap[u.urun]=0;
+if(
+!urunler[u.urun]
+){
 
-urunMap[u.urun]+=
+urunler[u.urun]=0;
+
+}
+
+urunler[u.urun]+=
 Number(u.adet||0);
 
 });
@@ -1602,9 +1684,7 @@ Number(u.adet||0);
 
 
 const sirali=
-Object.entries(
-urunMap
-)
+Object.entries(urunler)
 .sort(
 (a,b)=>b[1]-a[1]
 );
@@ -1621,11 +1701,7 @@ alan.innerHTML="";
 if(!sirali.length){
 
 alan.innerHTML=
-`
-<div class="bos">
-Henüz onaylanmış satış yok.
-</div>
-`;
+"Henüz satış bulunmuyor.";
 
 return;
 
@@ -1633,14 +1709,14 @@ return;
 
 
 sirali.forEach(
-([urun,adet])=>{
+([ad,adet],i)=>{
 
 alan.innerHTML+=`
 
-<div class="urun-istatistik-satir">
+<div class="urun-ist">
 
 <span>
-☕ ${urun}
+${i+1}. ${ad}
 </span>
 
 <b>
@@ -1657,74 +1733,131 @@ ${adet} adet
 
 
 /* =========================
-MENU
+MENÜ
 ========================= */
 
-function renderMenu(){
+const varsayilanMenu=[
 
-const grid=
-document.getElementById(
-"menuGrid"
-);
+{
+ad:"Çay",
+fiyat:25,
+kategori:"Sıcak İçecekler"
+},
 
-grid.innerHTML="";
+{
+ad:"Nescafe",
+fiyat:60,
+kategori:"Sıcak İçecekler"
+},
 
+{
+ad:"Türk Kahvesi",
+fiyat:70,
+kategori:"Sıcak İçecekler"
+},
 
-if(!urunler.length){
+{
+ad:"Su",
+fiyat:15,
+kategori:"Soğuk İçecekler"
+},
 
-grid.innerHTML=`
+{
+ad:"Kola",
+fiyat:50,
+kategori:"Soğuk İçecekler"
+},
 
-<div class="bos">
+{
+ad:"Fanta",
+fiyat:50,
+kategori:"Soğuk İçecekler"
+},
 
-Menüde ürün bulunmuyor.
-
-</div>
-
-`;
-
-return;
-
+{
+ad:"Tost",
+fiyat:100,
+kategori:"Atıştırmalıklar"
 }
 
+];
 
-urunler.forEach(
+
+function menuGoster(){
+
+const alan=
+document.getElementById(
+"menuAdmin"
+);
+
+alan.innerHTML="";
+
+
+menu.forEach(
 u=>{
 
 const div=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
-div.className=
-"menu-kart";
+div.className="menu-kart";
 
 
 div.innerHTML=`
 
 <h3>
-☕ ${u.ad}
+${u.ad}
 </h3>
 
-<div class="menu-fiyat">
 
-${para(u.fiyat)}
+<div class="menu-kart-kategori">
+
+${u.kategori||""}
 
 </div>
 
 
-<button
-class="btn btn-mavi"
-onclick="
-urunDuzenle(
-'${u.id}'
-)
-">
+<input
+id="fiyat-${u.id}"
+type="number"
+value="${u.fiyat}"
+>
 
-✏️ Düzenle
+
+<div
+class="menu-islem"
+style="margin-top:8px">
+
+<button
+class="btn kaydet-menu"
+onclick="
+menuFiyatKaydet(
+'${u.id}'
+)">
+
+💾 Kaydet
 
 </button>
 
+
+<button
+class="btn sil-menu"
+onclick="
+menuSil(
+'${u.id}'
+)">
+
+🗑️ Sil
+
+</button>
+
+</div>
+
 `;
 
-grid.appendChild(div);
+
+alan.appendChild(div);
 
 });
 
@@ -1739,35 +1872,29 @@ window.urunEkle=
 async function(){
 
 const ad=
-document
-.getElementById("yeniUrun")
-.value
-.trim();
+document.getElementById(
+"yeniUrun"
+).value.trim();
 
 
 const fiyat=
 Number(
-document
-.getElementById("yeniFiyat")
-.value
+document.getElementById(
+"yeniFiyat"
+).value
 );
 
 
-if(!ad){
+const kategori=
+document.getElementById(
+"yeniKategori"
+).value;
+
+
+if(!ad||!fiyat){
 
 alert(
-"Ürün adını girin."
-);
-
-return;
-
-}
-
-
-if(!fiyat || fiyat<0){
-
-alert(
-"Geçerli bir fiyat girin."
+"Ürün adı ve fiyat girin."
 );
 
 return;
@@ -1778,28 +1905,17 @@ return;
 try{
 
 await addDoc(
-
-collection(
-db,
-"urunler"
-),
-
+collection(db,"menu"),
 {
 
-ad:
 ad,
-
-fiyat:
 fiyat,
-
-aktif:
-true,
-
+kategori,
+aktif:true,
 olusturmaZamani:
 serverTimestamp()
 
 }
-
 );
 
 
@@ -1831,131 +1947,35 @@ e.message
 
 
 /* =========================
-ÜRÜN DÜZENLE
+FİYAT KAYDET
 ========================= */
 
-window.urunDuzenle=
-function(id){
-
-const u=
-urunler.find(
-x=>x.id===id
-);
-
-if(!u)
-return;
-
-
-duzenlenenUrunId=id;
-
-
-document.getElementById(
-"editAd"
-).value=
-u.ad;
-
-
-document.getElementById(
-"editFiyat"
-).value=
-u.fiyat;
-
-
-document
-.getElementById(
-"urunModal"
-)
-.classList.add("acik");
-
-};
-
-
-/* =========================
-MODAL KAPAT
-========================= */
-
-window.modalKapat=
-function(){
-
-document
-.getElementById(
-"urunModal"
-)
-.classList.remove("acik");
-
-duzenlenenUrunId=null;
-
-};
-
-
-/* =========================
-ÜRÜN KAYDET
-========================= */
-
-window.urunKaydet=
-async function(){
-
-if(!duzenlenenUrunId)
-return;
-
-
-const ad=
-document
-.getElementById("editAd")
-.value
-.trim();
-
+window.menuFiyatKaydet=
+async function(id){
 
 const fiyat=
 Number(
-document
-.getElementById("editFiyat")
-.value
+document.getElementById(
+"fiyat-"+id
+).value
 );
-
-
-if(!ad){
-
-alert(
-"Ürün adı boş olamaz."
-);
-
-return;
-
-}
 
 
 try{
 
 await updateDoc(
-
-doc(
-db,
-"urunler",
-duzenlenenUrunId
-),
-
+doc(db,"menu",id),
 {
 
-ad:
-ad,
-
-fiyat:
-fiyat,
-
-guncellenmeZamani:
-serverTimestamp()
+fiyat
 
 }
-
 );
 
 
 alert(
-"✅ Ürün güncellendi."
+"✅ Fiyat güncellendi."
 );
-
-modalKapat();
 
 }
 catch(e){
@@ -1974,57 +1994,31 @@ e.message
 ÜRÜN SİL
 ========================= */
 
-window.urunSil=
-async function(){
-
-if(!duzenlenenUrunId)
-return;
-
-
-const u=
-urunler.find(
-x=>
-x.id===duzenlenenUrunId
-);
-
-
-if(!u)
-return;
-
+window.menuSil=
+async function(id){
 
 if(
 !confirm(
-u.ad+
-" ürünü silinsin mi?"
+"Bu ürün menüden silinsin mi?"
 )
-)
+){
+
 return;
+
+}
 
 
 try{
 
 await deleteDoc(
-
-doc(
-db,
-"urunler",
-duzenlenenUrunId
-)
-
+doc(db,"menu",id)
 );
-
-
-alert(
-"✅ Ürün silindi."
-);
-
-modalKapat();
 
 }
 catch(e){
 
 alert(
-"❌ Ürün silinemedi:\n"+
+"❌ Silinemedi:\n"+
 e.message
 );
 
@@ -2037,30 +2031,29 @@ e.message
 GARSON ÇAĞRILARI
 ========================= */
 
-function renderCagrilar(){
+function cagrilariGoster(){
 
-const grid=
+const alan=
 document.getElementById(
-"cagriGrid"
+"cagriListesi"
 );
 
-grid.innerHTML="";
+alan.innerHTML="";
 
 
-const aktif=
+const liste=
 cagrilar.filter(
-x=>
-x.durum!=="goruldu"
+c=>c.durum!=="tamamlandi"
 );
 
 
-if(!aktif.length){
+if(!liste.length){
 
-grid.innerHTML=`
+alan.innerHTML=`
 
 <div class="bos">
 
-🔔 Şu anda bekleyen garson çağrısı yok.
+🔔 Aktif garson çağrısı yok.
 
 </div>
 
@@ -2071,95 +2064,71 @@ return;
 }
 
 
-aktif.forEach(
+liste.forEach(
 c=>{
 
 const div=
-document.createElement("div");
+document.createElement(
+"div"
+);
 
-div.className=
-"cagri";
+div.className="cagri";
 
 
 div.innerHTML=`
 
-<div class="masa-numara">
-
-🪑 Masa ${c.masa}
-
-</div>
-
-
 <h3>
-🔔 GARSON ÇAĞRISI
+🔔 Masa ${c.masa}
 </h3>
 
 
-<p>
-
-🕐 ${saat(c.zaman || c.olusturmaZamani)}
-
-</p>
+<div>
+Müşteri garson çağırdı.
+</div>
 
 
 <button
-class="btn btn-yesil"
 onclick="
-cagriGoruldu(
+cagriTamamla(
 '${c.id}'
-)
-">
+)">
 
-✅ GÖRÜLDÜ
+✅ Çağrıyı Kapat
 
 </button>
 
 `;
 
 
-grid.appendChild(div);
+alan.appendChild(div);
 
 });
 
 }
 
 
-/* =========================
-ÇAĞRI GÖRÜLDÜ
-========================= */
-
-window.cagriGoruldu=
+window.cagriTamamla=
 async function(id){
 
 try{
 
 await updateDoc(
-
-doc(
-db,
-"garsonCagrilari",
-id
-),
-
+doc(db,"garsonCagrilari",id),
 {
 
 durum:
-"goruldu",
+"tamamlandi",
 
-gorulmeZamani:
+tamamlanmaZamani:
 serverTimestamp()
 
 }
-
 );
 
 }
 catch(e){
 
-alert(
-"❌ İşlem başarısız:\n"+
-e.message
-);
+alert(e.message);
 
 }
 
@@ -2167,27 +2136,11 @@ e.message
 
 
 /* =========================
-ANA RENDER
+FIREBASE DİNLE
 ========================= */
 
-function render(){
 
-renderMasalar();
-
-renderSiparisler();
-
-renderIstatistik();
-
-renderMenu();
-
-renderCagrilar();
-
-}
-
-
-/* =========================
-OTURUMLAR
-========================= */
+/* OTURUMLAR */
 
 onSnapshot(
 
@@ -2196,47 +2149,35 @@ db,
 "oturumlar"
 ),
 
-snapshot=>{
+snap=>{
 
 oturumlar=
-snapshot.docs.map(
+snap.docs.map(
 x=>({
-
-id:
-x.id,
-
+id:x.id,
 ...x.data()
-
 })
 );
 
 
-document.getElementById(
-"baglanti"
-).textContent=
-"🟢 Firebase bağlantısı aktif";
-
-render();
+masalariGoster();
+hesaplariGoster();
+istatistikGoster();
 
 },
 
 error=>{
 
-console.error(error);
-
-document.getElementById(
-"baglanti"
-).textContent=
-"🔴 Firebase bağlantı hatası";
+console.error(
+"OTURUM HATASI",
+error
+);
 
 }
-
 );
 
 
-/* =========================
-SİPARİŞLER
-========================= */
+/* SİPARİŞLER */
 
 onSnapshot(
 
@@ -2245,77 +2186,112 @@ db,
 "siparisler"
 ),
 
-snapshot=>{
+snap=>{
 
 siparisler=
-snapshot.docs.map(
+snap.docs.map(
 x=>({
-
-id:
-x.id,
-
+id:x.id,
 ...x.data()
-
 })
 );
 
-render();
 
-},
-
-error=>{
-
-console.error(error);
-
-}
-
-);
-
-
-/* =========================
-ÜRÜNLER
-========================= */
-
-onSnapshot(
-
-collection(
-db,
-"urunler"
-),
-
-snapshot=>{
-
-urunler=
-snapshot.docs.map(
-x=>({
-
-id:
-x.id,
-
-...x.data()
-
-})
-);
-
-render();
+masalariGoster();
+siparisleriGoster();
+hesaplariGoster();
+istatistikGoster();
 
 },
 
 error=>{
 
 console.error(
-"ÜRÜN HATASI",
+"SİPARİŞ HATASI",
 error
 );
 
 }
-
 );
 
 
-/* =========================
-GARSON ÇAĞRILARI
-========================= */
+/* MENÜ */
+
+onSnapshot(
+
+collection(
+db,
+"menu"
+),
+
+snap=>{
+
+if(
+snap.empty
+){
+
+/*
+Firebase menu koleksiyonu
+boşsa varsayılan ürünleri
+göster.
+*/
+
+menu=
+varsayilanMenu.map(
+(x,i)=>({
+
+...x,
+
+id:"varsayilan-"+i
+
+})
+);
+
+}
+else{
+
+menu=
+snap.docs.map(
+x=>({
+
+id:x.id,
+...x.data()
+
+})
+);
+
+}
+
+
+menuGoster();
+
+},
+
+error=>{
+
+console.error(
+"MENU HATASI",
+error
+);
+
+menu=
+varsayilanMenu.map(
+(x,i)=>({
+
+...x,
+
+id:"varsayilan-"+i
+
+})
+);
+
+menuGoster();
+
+}
+);
+
+
+/* GARSON ÇAĞRILARI */
 
 onSnapshot(
 
@@ -2324,34 +2300,43 @@ db,
 "garsonCagrilari"
 ),
 
-snapshot=>{
+snap=>{
 
 cagrilar=
-snapshot.docs.map(
+snap.docs.map(
 x=>({
 
-id:
-x.id,
-
+id:x.id,
 ...x.data()
 
 })
 );
 
-render();
+
+cagrilariGoster();
 
 },
 
 error=>{
 
 console.error(
-"GARSON ÇAĞRI HATASI",
+"ÇAĞRI HATASI",
 error
 );
 
 }
 
 );
+
+
+/* =========================
+BAŞLANGIÇ
+========================= */
+
+masalariGoster();
+siparisleriGoster();
+hesaplariGoster();
+istatistikGoster();
 
 </script>
 
