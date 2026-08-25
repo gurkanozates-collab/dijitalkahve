@@ -1029,6 +1029,27 @@ function masalariGoster(){
                 ${siparisHTML}
 
             </div>
+            ${
+    oturum
+    ?
+    `
+        <button
+            class="btn"
+            style="
+                width:100%;
+                margin-top:12px;
+                background:#2e7d32;
+                color:white;
+            "
+            onclick="hesapOdendi('${oturum.id}',${masa})">
+
+            💳 Hesap Ödendi
+
+        </button>
+    `
+    :
+    ""
+}
 
         `;
 
