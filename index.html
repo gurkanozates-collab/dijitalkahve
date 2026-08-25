@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -8,9 +9,7 @@
 
 <style>
 
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
     margin:0;
@@ -44,7 +43,9 @@ header p{
     font-weight:bold;
 }
 
-/* ÜST MENÜ */
+/* ================================
+   ÜST MENÜ
+================================ */
 
 .ust-menu{
     display:grid;
@@ -73,27 +74,15 @@ header p{
     cursor:not-allowed;
 }
 
-.menu-btn{
-    background:#5d4037;
-}
+.menu-btn{background:#5d4037}
+.garson-btn{background:#ef6c00}
+.yazboz-btn{background:#7b1fa2}
+.hesap-btn{background:#2e7d32}
+.siparis-btn{background:#1565c0}
 
-.garson-btn{
-    background:#ef6c00;
-}
-
-.yazboz-btn{
-    background:#7b1fa2;
-}
-
-.hesap-btn{
-    background:#2e7d32;
-}
-
-.siparis-btn{
-    background:#1565c0;
-}
-
-/* KONTEYNER */
+/* ================================
+   KONTEYNER
+================================ */
 
 .container{
     max-width:1000px;
@@ -101,7 +90,9 @@ header p{
     padding:12px;
 }
 
-/* OTURUM */
+/* ================================
+   OTURUM
+================================ */
 
 .oturum{
     padding:14px;
@@ -118,7 +109,9 @@ header p{
     color:#c62828;
 }
 
-/* AKTİF DEĞİL */
+/* ================================
+   AKTİF DEĞİL
+================================ */
 
 .aktif-degil{
     background:#fff;
@@ -144,7 +137,9 @@ header p{
     line-height:1.5;
 }
 
-/* PANELLER */
+/* ================================
+   PANELLER
+================================ */
 
 .panel{
     display:none;
@@ -163,7 +158,9 @@ header p{
     margin-top:0;
 }
 
-/* MENÜ */
+/* ================================
+   MENÜ
+================================ */
 
 .kategori{
     margin:18px 0 10px;
@@ -220,7 +217,9 @@ header p{
     font-weight:bold;
 }
 
-/* SİPARİŞ */
+/* ================================
+   SİPARİŞ
+================================ */
 
 .bekleyen-bilgi{
     background:#fff3cd;
@@ -246,13 +245,8 @@ header p{
     font-weight:bold;
 }
 
-.bekleyen{
-    color:#ef6c00;
-}
-
-.onaylanan{
-    color:#2e7d32;
-}
+.bekleyen{color:#ef6c00}
+.onaylanan{color:#2e7d32}
 
 .garson-kaynak{
     display:inline-block;
@@ -311,7 +305,9 @@ header p{
     padding:30px 10px;
 }
 
-/* YAZ BOZ */
+/* ================================
+   YAZ BOZ
+================================ */
 
 .yz-ayar{
     display:grid;
@@ -481,7 +477,9 @@ header p{
     background:#fff3cd!important;
 }
 
-/* GARSON ÇAĞRI */
+/* ================================
+   GARSON ÇAĞRI
+================================ */
 
 .garson-bilgi{
     position:fixed;
@@ -502,7 +500,9 @@ header p{
     display:block;
 }
 
-/* MOBİL */
+/* ================================
+   MOBİL
+================================ */
 
 @media(max-width:800px){
 
@@ -580,7 +580,6 @@ header p{
 
     </button>
 
-
     <button
         class="garson-btn"
         onclick="garsonCagir()">
@@ -588,7 +587,6 @@ header p{
         🔔 Garson
 
     </button>
-
 
     <button
         class="yazboz-btn"
@@ -598,7 +596,6 @@ header p{
 
     </button>
 
-
     <button
         class="hesap-btn"
         onclick="panelAc('hesap')">
@@ -606,7 +603,6 @@ header p{
         💳 Hesabım
 
     </button>
-
 
     <button
         class="siparis-btn"
@@ -711,9 +707,7 @@ header p{
             id="yzAyar"
             class="yz-ayar">
 
-            <b>
-                Oyun Türü
-            </b>
+            <b>Oyun Türü</b>
 
             <div class="yz-secim">
 
@@ -737,9 +731,7 @@ header p{
             </div>
 
 
-            <b>
-                Oyuncu Sayısı
-            </b>
+            <b>Oyuncu Sayısı</b>
 
             <div class="yz-oyuncular">
 
@@ -768,9 +760,7 @@ header p{
             </div>
 
 
-            <b>
-                Kaç oyun oynanacak?
-            </b>
+            <b>Kaç oyun oynanacak?</b>
 
             <input
                 id="oyunSayisi"
@@ -873,8 +863,6 @@ header p{
 </div>
 
 
-<!-- FIREBASE -->
-
 <script type="module">
 
 import {
@@ -949,14 +937,12 @@ const params =
         location.search
     );
 
-
 const masa =
     String(
         params.get("masa") ||
         params.get("table") ||
         "1"
     );
-
 
 document.getElementById(
     "masaNo"
@@ -971,17 +957,11 @@ document.getElementById(
 const urunler = {
 
     "Çay":25,
-
     "Nescafe":60,
-
     "Türk Kahvesi":70,
-
     "Su":15,
-
     "Kola":50,
-
     "Fanta":50,
-
     "Tost":100
 
 };
@@ -990,17 +970,11 @@ const urunler = {
 const idler = {
 
     "Çay":"Cay",
-
     "Nescafe":"Nescafe",
-
     "Türk Kahvesi":"TurkKahvesi",
-
     "Su":"Su",
-
     "Kola":"Kola",
-
     "Fanta":"Fanta",
-
     "Tost":"Tost"
 
 };
@@ -1020,7 +994,6 @@ Object.keys(
 ================================ */
 
 let oturumId = null;
-
 let oturumAcik = false;
 
 
@@ -1034,9 +1007,7 @@ function kart(u){
 
         <div class="urun">
 
-            <h3>
-                ${u}
-            </h3>
+            <h3>${u}</h3>
 
             <div class="fiyat">
                 ${urunler[u]} ₺
@@ -1073,8 +1044,6 @@ function kart(u){
 
 }
 
-
-/* MENÜLERİ OLUŞTUR */
 
 document.getElementById(
     "sicakMenu"
@@ -1115,20 +1084,10 @@ async function oturumKontrol(){
             "oturumDurum"
         );
 
-
     durum.textContent =
         "🟡 Masa kontrol ediliyor...";
 
-
     try{
-
-        /*
-         * SADECE GARSON TARAFINDAN
-         * AÇILMIŞ OTURUMU ARA.
-         *
-         * Müşteri burada yeni oturum
-         * oluşturamaz.
-         */
 
         const q =
             query(
@@ -1162,7 +1121,6 @@ async function oturumKontrol(){
         ){
 
             oturumId = null;
-
             oturumAcik = false;
 
             masaPasifGoster();
@@ -1175,10 +1133,8 @@ async function oturumKontrol(){
         const oturum =
             snap.docs[0];
 
-
         oturumId =
             oturum.id;
-
 
         oturumAcik =
             true;
@@ -1192,15 +1148,12 @@ async function oturumKontrol(){
 
         masaAktifGoster();
 
-
         siparisDinle();
-
 
     }
     catch(error){
 
         console.error(error);
-
 
         durum.textContent =
             "❌ Masa kontrolü yapılamadı.";
@@ -1217,6 +1170,7 @@ async function oturumKontrol(){
 function masaPasifGoster(){
 
     oturumAcik = false;
+
 
     document.getElementById(
         "oturumDurum"
@@ -1236,22 +1190,18 @@ function masaPasifGoster(){
         "block";
 
 
-    document.getElementById(
-        "menuPanel"
-    ).style.display =
-        "none";
+    /* TÜM PANELLERİ KAPAT */
 
+    document.querySelectorAll(
+        ".panel"
+    ).forEach(
+        p => {
 
-    document.getElementById(
-        "hesap"
-    ).style.display =
-        "none";
+            p.classList.remove("aktif");
+            p.style.display = "";
 
-
-    document.getElementById(
-        "yazboz"
-    ).style.display =
-        "none";
+        }
+    );
 
 
     document.querySelector(
@@ -1321,19 +1271,22 @@ function masaAktifGoster(){
         false;
 
 
-    document.getElementById(
-        "menuPanel"
-    ).style.display =
-        "block";
-
+    /*
+     * BURADA SADECE MENÜ AKTİF
+     *
+     * Artık menuPanel.style.display="block"
+     * kullanmıyoruz.
+     */
 
     document.querySelectorAll(
         ".panel"
     ).forEach(
-        p =>
-            p.classList.remove(
-                "aktif"
-            )
+        p => {
+
+            p.style.display = "";
+            p.classList.remove("aktif");
+
+        }
     );
 
 
@@ -1354,14 +1307,10 @@ window.adetArtir =
 function(u){
 
     if(!oturumAcik){
-
         return;
-
     }
 
-
     sepet[u]++;
-
 
     document.getElementById(
         "adet-"+idler[u]
@@ -1375,20 +1324,14 @@ window.adetAzalt =
 function(u){
 
     if(!oturumAcik){
-
         return;
-
     }
-
 
     if(
         sepet[u] > 0
     ){
-
         sepet[u]--;
-
     }
-
 
     document.getElementById(
         "adet-"+idler[u]
@@ -1411,18 +1354,14 @@ function sepetiSifirla(){
 
             sepet[u] = 0;
 
-
             const el =
                 document.getElementById(
                     "adet-"+idler[u]
                 );
 
-
             if(el){
-
                 el.textContent =
                     "0";
-
             }
 
         }
@@ -1432,7 +1371,7 @@ function sepetiSifirla(){
 
 
 /* ================================
-   PANEL
+   PANEL GEÇİŞİ
 ================================ */
 
 window.panelAc =
@@ -1442,19 +1381,30 @@ function(panel){
         !oturumAcik &&
         panel !== "yazboz"
     ){
-
         return;
-
     }
 
+
+    /*
+     * ÖNEMLİ:
+     *
+     * Önce bütün paneller kapanıyor.
+     * Inline display değerleri temizleniyor.
+     */
 
     document.querySelectorAll(
         ".panel"
     ).forEach(
-        x =>
-            x.classList.remove(
+        p => {
+
+            p.classList.remove(
                 "aktif"
-            )
+            );
+
+            p.style.display =
+                "";
+
+        }
     );
 
 
@@ -1555,7 +1505,6 @@ async function(){
 
         console.error(error);
 
-
         alert(
             "❌ Garson çağrısı gönderilemedi.\n\n" +
             error.message
@@ -1586,7 +1535,6 @@ async function(){
 
 
     const liste = [];
-
     let toplam = 0;
 
 
@@ -1658,14 +1606,11 @@ async function(){
     buton.disabled =
         true;
 
-
     buton.textContent =
         "⏳ Gönderiliyor...";
 
 
     try{
-
-        /* OTURUMU TEKRAR KONTROL ET */
 
         const os =
             await getDoc(
@@ -1685,9 +1630,7 @@ async function(){
             oturumAcik =
                 false;
 
-
             masaPasifGoster();
-
 
             throw new Error(
                 "Masa oturumu kapanmış."
@@ -1752,7 +1695,6 @@ async function(){
 
         console.error(error);
 
-
         alert(
             "❌ Sipariş gönderilemedi.\n\n" +
             error.message
@@ -1763,7 +1705,6 @@ async function(){
 
         buton.disabled =
             !oturumAcik;
-
 
         buton.textContent =
             "🛎 Sipariş Gönder";
@@ -1780,9 +1721,7 @@ async function(){
 function siparisDinle(){
 
     if(!oturumId){
-
         return;
-
     }
 
 
@@ -1856,12 +1795,8 @@ function hesapGoster(list){
     alan.innerHTML = "";
 
 
-    let toplam =
-        0;
-
-
-    let bekleyen =
-        0;
+    let toplam = 0;
+    let bekleyen = 0;
 
 
     list.sort(
@@ -1871,11 +1806,9 @@ function hesapGoster(list){
                 a.olusturmaZamani
                 ?.toMillis?.() || 0;
 
-
             const bb =
                 b.olusturmaZamani
                 ?.toMillis?.() || 0;
-
 
             return aa-bb;
 
@@ -2075,9 +2008,7 @@ function hesapGoster(list){
 function oturumDinle(){
 
     if(!oturumId){
-
         return;
-
     }
 
 
@@ -2114,7 +2045,51 @@ function oturumDinle(){
                 oturumAcik =
                     true;
 
-                masaAktifGoster();
+                /*
+                 * Burada masaAktifGoster()
+                 * çağrılınca tekrar Menüye
+                 * dönmesini istemiyoruz.
+                 *
+                 * Eğer zaten başka panel açıksa
+                 * onu koruyoruz.
+                 */
+
+                document.getElementById(
+                    "aktifDegil"
+                ).style.display =
+                    "none";
+
+
+                document.getElementById(
+                    "oturumDurum"
+                ).className =
+                    "oturum";
+
+
+                document.getElementById(
+                    "oturumDurum"
+                ).textContent =
+                    "🟢 Masa " +
+                    masa +
+                    " oturumu açık";
+
+
+                document.querySelector(
+                    ".siparis-btn"
+                ).disabled =
+                    false;
+
+
+                document.querySelector(
+                    ".garson-btn"
+                ).disabled =
+                    false;
+
+
+                document.getElementById(
+                    "menuBtn"
+                ).disabled =
+                    false;
 
             }
             else{
@@ -2155,7 +2130,6 @@ oturumKontrol()
 
 /* ================================
    YAZ-BOZ
-   SİPARİŞTEN BAĞIMSIZ
 ================================ */
 
 let yzTurSec =
@@ -2725,3 +2699,4 @@ function yzToplamGoster(){
 
 </body>
 </html>
+```
