@@ -146,6 +146,15 @@ header p{
 .garson-btn:hover{
     background:#4e342e;
 }
+.masa-ac-btn{
+    background:#2e7d32;
+    margin-bottom:8px;
+}
+
+.masa-ac-btn:hover{
+    background:#1b5e20;
+}
+
 
 /* =========================
    SİPARİŞ
@@ -552,6 +561,9 @@ import {
     getFirestore,
     collection,
     query,
+    where,
+    limit,
+    getDocs,
     onSnapshot,
     addDoc,
     updateDoc,
@@ -670,6 +682,73 @@ function sepetSifirla(){
     );
 
 }
+
+
+/* =========================
+   MASA OTURUMU AÇ
+========================= */
+
+window.masaOturumuAc = async function(masa){
+
+    const onay = confirm(
+        "🪑 Masa " + masa + " için oturum açılsın mı?\n\n" +
+        "Bu işlemden sonra müşterinin bu masaya ait QR kodundan " +
+        "sipariş vermesine izin verilebilir."
+    );
+
+    if(!onay) return;
+
+    try{
+
+        // Aynı masa için zaten aktif oturum var mı?
+        const aktifSorgu = query(
+            collection(db,"masaOturumlari"),
+            where("masa","==",String(masa)),
+            where("aktif","==",true),
+            limit(1)
+        );
+
+        const mevcut = await getDocs(aktifSorgu);
+
+        if(!mevcut.empty){
+
+            alert(
+                "⚠️ Masa " + masa + " zaten açık.\n\n" +
+                "Bu masa için aktif bir oturum zaten bulunuyor."
+            );
+
+            return;
+        }
+
+        await addDoc(
+            collection(db,"masaOturumlari"),
+            {
+                masa:String(masa),
+                aktif:true,
+                acilisZamani:serverTimestamp()
+            }
+        );
+
+        alert(
+            "✅ MASA OTURUMU AÇILDI!\n\n" +
+            "Masa: " + masa + "\n\n" +
+            "Artık bu masa için müşteri siparişi alınabilir."
+        );
+
+        masalariGoster();
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert(
+            "❌ Masa oturumu açılamadı:\n\n" +
+            error.message
+        );
+    }
+
+};
 
 
 /* =========================
@@ -1707,6 +1786,18 @@ function masalariGoster(){
 
                 </div>
 
+
+                <button
+                class="garson-btn masa-ac-btn"
+                onclick="
+                    masaOturumuAc(
+                        ${masa}
+                    )
+                ">
+
+                    🟢 Masa Oturumu Aç
+
+                </button>
 
                 <button
                 class="garson-btn"
