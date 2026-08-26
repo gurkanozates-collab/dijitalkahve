@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width,initial-scale=1.0">
 
 <title>Dijital Kahvem - Yönetici</title>
 
@@ -21,7 +26,7 @@ body{
 
 header{
     background:#4e342e;
-    color:white;
+    color:#fff;
     padding:20px;
     text-align:center;
 }
@@ -36,15 +41,15 @@ header p{
 }
 
 .topbar{
-    position:sticky;
-    top:0;
-    z-index:100;
-    background:white;
+    background:#fff;
     padding:12px 15px;
     display:flex;
     justify-content:space-between;
     align-items:center;
     box-shadow:0 2px 8px #0002;
+    position:sticky;
+    top:0;
+    z-index:100;
 }
 
 .baglanti{
@@ -54,7 +59,7 @@ header p{
 .yenile{
     border:0;
     background:#1565c0;
-    color:white;
+    color:#fff;
     padding:10px 15px;
     border-radius:8px;
     font-weight:bold;
@@ -67,39 +72,40 @@ header p{
     padding:15px;
 }
 
-.istatistikler{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-    margin-bottom:20px;
-}
-
-.istatistik{
-    background:white;
-    padding:18px;
+.bilgi{
+    background:#fff;
+    padding:16px;
     border-radius:12px;
+    margin-bottom:15px;
     box-shadow:0 2px 8px #0001;
 }
 
-.istatistik span{
-    display:block;
-    color:#777;
-    font-size:13px;
-    margin-bottom:7px;
+.bilgi h2{
+    margin:0 0 6px;
 }
 
-.istatistik b{
-    font-size:25px;
+.istatistik{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:12px;
 }
 
-.masa-grid{
+.istatistik-kutu{
+    background:#f8f5f2;
+    border-radius:10px;
+    padding:10px 14px;
+    font-weight:bold;
+}
+
+.grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:15px;
+    gap:14px;
 }
 
 .masa{
-    background:white;
+    background:#fff;
     border:2px solid #ddd;
     border-radius:14px;
     padding:15px;
@@ -110,19 +116,18 @@ header p{
     border-color:#2e7d32;
 }
 
-.masa.bekleyen{
-    border-color:#ef6c00;
-    box-shadow:0 0 0 3px #ef6c0020;
+.masa.kapali{
+    border-color:#ddd;
 }
 
-.masa-baslik{
+.baslik{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:12px;
+    gap:8px;
 }
 
-.masa-baslik h3{
+.baslik h2{
     margin:0;
     font-size:21px;
 }
@@ -130,10 +135,11 @@ header p{
 .durum{
     padding:6px 9px;
     border-radius:15px;
-    font-size:12px;
-    font-weight:bold;
     background:#eee;
     color:#777;
+    font-size:12px;
+    font-weight:bold;
+    white-space:nowrap;
 }
 
 .durum.acik{
@@ -141,57 +147,59 @@ header p{
     color:#2e7d32;
 }
 
-.durum.bekleyen{
-    background:#fff3cd;
-    color:#ef6c00;
+.durum.kapali{
+    background:#eee;
+    color:#777;
 }
 
-.oturum{
-    background:#f7f7f7;
-    padding:10px;
-    border-radius:8px;
-    margin-bottom:10px;
-    font-size:13px;
+.toplam{
+    font-size:25px;
+    font-weight:bold;
+    margin:18px 0;
+    color:#4e342e;
+}
+
+.detay{
+    margin-top:12px;
+    border-top:1px solid #ddd;
+    padding-top:10px;
 }
 
 .siparis{
-    background:#fffaf5;
     border:1px solid #ddd;
-    border-left:5px solid #1565c0;
-    border-radius:9px;
+    border-radius:10px;
     padding:10px;
-    margin-top:10px;
+    margin-bottom:10px;
+    background:#fafafa;
 }
 
 .siparis.garson{
-    border-left-color:#ef6c00;
+    border-left:5px solid #ef6c00;
     background:#fff8ef;
 }
 
-.siparis.bekleyen{
-    box-shadow:0 0 0 2px #ef6c0020;
+.siparis.musteri{
+    border-left:5px solid #1565c0;
+    background:#f4f9ff;
 }
 
-.siparis-baslik{
+.siparis-ust{
     display:flex;
     justify-content:space-between;
-    gap:8px;
+    align-items:center;
+    gap:5px;
     margin-bottom:8px;
+}
+
+.siparis-no{
+    font-weight:bold;
 }
 
 .kaynak{
-    display:block;
-    text-align:center;
-    padding:7px;
-    border-radius:7px;
-    font-size:12px;
+    font-size:11px;
     font-weight:bold;
-    margin-bottom:8px;
-}
-
-.kaynak.musteri{
-    background:#e3f2fd;
-    color:#1565c0;
+    padding:5px 7px;
+    border-radius:7px;
 }
 
 .kaynak.garson{
@@ -199,9 +207,14 @@ header p{
     color:#e65100;
 }
 
-.zaman{
-    color:#777;
+.kaynak.musteri{
+    background:#e3f2fd;
+    color:#1565c0;
+}
+
+.siparis-durum{
     font-size:12px;
+    font-weight:bold;
     margin-bottom:7px;
 }
 
@@ -210,95 +223,66 @@ header p{
     justify-content:space-between;
     padding:5px 0;
     border-bottom:1px solid #eee;
+    font-size:14px;
 }
 
 .siparis-toplam{
     text-align:right;
-    font-weight:bold;
     margin-top:8px;
-}
-
-.bekleyen-yazi{
-    color:#ef6c00;
+    font-size:16px;
     font-weight:bold;
 }
 
-.onayli-yazi{
-    color:#2e7d32;
-    font-weight:bold;
+.zaman{
+    color:#777;
+    font-size:11px;
+    margin-top:7px;
 }
 
-.masa-toplam{
-    margin-top:15px;
-    padding:14px;
-    background:#4e342e;
-    color:white;
+.odendi{
+    width:100%;
+    border:0;
     border-radius:10px;
-}
-
-.masa-toplam-satir{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
-
-.masa-toplam strong{
-    font-size:24px;
-}
-
-.butons{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:8px;
+    padding:14px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    background:#2e7d32;
+    color:#fff;
     margin-top:10px;
 }
 
-.btn{
-    border:0;
-    border-radius:9px;
-    padding:12px;
-    font-weight:bold;
-    cursor:pointer;
-}
-
-.onay{
-    background:#2e7d32;
-    color:white;
-}
-
-.odeme{
-    background:#1565c0;
-    color:white;
-}
-
-.kapat{
-    background:#c62828;
-    color:white;
+.odendi:hover{
+    background:#1b5e20;
 }
 
 .bos{
-    text-align:center;
-    padding:40px 15px;
     color:#777;
-    background:white;
-    border-radius:14px;
+    text-align:center;
+    padding:20px 5px;
+}
+
+.uyari{
+    background:#fff3cd;
+    color:#856404;
+    padding:9px;
+    border-radius:8px;
+    margin-top:8px;
+    font-size:12px;
+    font-weight:bold;
 }
 
 @media(max-width:1100px){
 
-    .masa-grid{
+    .grid{
         grid-template-columns:repeat(3,1fr);
-    }
-
-    .istatistikler{
-        grid-template-columns:repeat(2,1fr);
     }
 
 }
 
-@media(max-width:750px){
+@media(max-width:800px){
 
-    .masa-grid{
+    .grid{
         grid-template-columns:repeat(2,1fr);
     }
 
@@ -306,21 +290,18 @@ header p{
 
 @media(max-width:520px){
 
-    .masa-grid{
+    .grid{
         grid-template-columns:1fr;
     }
 
-    .istatistikler{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .istatistik b{
-        font-size:20px;
+    header h1{
+        font-size:23px;
     }
 
 }
 
 </style>
+
 </head>
 
 <body>
@@ -344,7 +325,6 @@ header p{
 
     </div>
 
-
     <button
         class="yenile"
         onclick="location.reload()">
@@ -359,56 +339,49 @@ header p{
 <div class="container">
 
 
-    <div class="istatistikler">
+    <div class="bilgi">
 
-        <div class="istatistik">
+        <h2>💳 Hesap Yönetimi</h2>
 
-            <span>
-                🪑 Açık Masa
-            </span>
+        <div>
 
-            <b id="acikMasaSayisi">
-                0
-            </b>
+            Garson tarafından açılan aktif masalar
+            ve bu masalara ait müşteri/garson siparişleri
+            burada görünür.
 
         </div>
 
 
         <div class="istatistik">
 
-            <span>
-                🟡 Bekleyen Sipariş
-            </span>
+            <div class="istatistik-kutu">
 
-            <b id="bekleyenSayisi">
-                0
-            </b>
+                🟢 Açık Masa:
+                <span id="acikMasaSayisi">
+                    0
+                </span>
 
-        </div>
-
-
-        <div class="istatistik">
-
-            <span>
-                📦 Toplam Sipariş
-            </span>
-
-            <b id="siparisSayisi">
-                0
-            </b>
-
-        </div>
+            </div>
 
 
-        <div class="istatistik">
+            <div class="istatistik-kutu">
 
-            <span>
-                💰 Açık Hesap
-            </span>
+                🧾 Sipariş:
+                <span id="siparisSayisi">
+                    0
+                </span>
 
-            <b id="acikHesap">
-                0 ₺
-            </b>
+            </div>
+
+
+            <div class="istatistik-kutu">
+
+                💰 Toplam:
+                <span id="genelToplam">
+                    0 ₺
+                </span>
+
+            </div>
 
         </div>
 
@@ -416,10 +389,11 @@ header p{
 
 
     <div
-        id="masaGrid"
-        class="masa-grid">
+        id="grid"
+        class="grid">
 
     </div>
+
 
 </div>
 
@@ -427,31 +401,34 @@ header p{
 <script type="module">
 
 
+/* =====================================================
+   FIREBASE
+===================================================== */
+
 import {
+
     initializeApp
+
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 
 import {
+
     getFirestore,
     collection,
-    query,
     onSnapshot,
+    query,
+    where,
     updateDoc,
     doc,
-    serverTimestamp,
-    where,
-    getDocs
+    serverTimestamp
+
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-
-/* =========================
-   FIREBASE
-========================= */
 
 const firebaseConfig = {
 
@@ -490,159 +467,192 @@ const db =
 getFirestore(app);
 
 
-/* =========================
-   VERİLER
-========================= */
+/* =====================================================
+   DEĞİŞKENLER
+===================================================== */
 
 let oturumlar = [];
 
 let siparisler = [];
 
 
-/* =========================
-   ZAMAN
-========================= */
+/* =====================================================
+   PARA
+===================================================== */
 
-function zaman(veri){
+function para(n){
 
-    if(
-        veri &&
-        veri.olusturmaZamani &&
-        typeof veri.olusturmaZamani.toMillis ===
-        "function"
-    ){
-
-        return veri.olusturmaZamani.toMillis();
-
-    }
-
-    if(
-        veri &&
-        veri.acilisZamani &&
-        typeof veri.acilisZamani.toMillis ===
-        "function"
-    ){
-
-        return veri.acilisZamani.toMillis();
-
-    }
-
-    return 0;
+    return Number(n || 0)
+        .toLocaleString(
+            "tr-TR"
+        ) + " ₺";
 
 }
 
+
+/* =====================================================
+   ZAMAN
+===================================================== */
 
 function saat(veri){
 
-    const tarih =
-    veri?.olusturmaZamani?.toDate?.() ||
-    veri?.acilisZamani?.toDate?.();
+    if(
+        veri &&
+        veri.toDate &&
+        typeof veri.toDate === "function"
+    ){
+
+        return veri
+            .toDate()
+            .toLocaleTimeString(
+                "tr-TR",
+                {
+                    hour:"2-digit",
+                    minute:"2-digit"
+                }
+            );
+
+    }
+
+    return "--:--";
+
+}
 
 
-    if(!tarih){
+/* =====================================================
+   SİPARİŞİ OTURUMA BAĞLA
+===================================================== */
 
-        return "--:--";
+function siparisBuOturumaAit(
+    siparis,
+    oturum,
+    masa
+){
+
+    /*
+     * Normal sistem:
+     * Siparişin oturumId'si varsa
+     * doğrudan kontrol edilir.
+     */
+
+    if(
+        siparis.oturumId &&
+        oturum &&
+        siparis.oturumId === oturum.id
+    ){
+
+        return true;
 
     }
 
 
-    return tarih.toLocaleTimeString(
-        "tr-TR",
-        {
-            hour:"2-digit",
-            minute:"2-digit"
-        }
-    );
+    /*
+     * Eski kayıtlar için:
+     * oturumId yoksa masa numarasına bak.
+     */
+
+    if(
+        !siparis.oturumId &&
+        Number(siparis.masa) === Number(masa)
+    ){
+
+        return true;
+
+    }
+
+
+    return false;
 
 }
 
 
-/* =========================
-   SİPARİŞ KAYNAĞI
-========================= */
-
-function garsonMu(s){
-
-    return (
-        s.kaynak === "garson" ||
-        s.garsonSiparisi === true
-    );
-
-}
-
-
-/* =========================
+/* =====================================================
    SİPARİŞ HTML
-========================= */
+===================================================== */
 
 function siparisHTML(s){
 
-    let html = "";
-
-
-    (s.urunler || []).forEach(u => {
-
-        const adet =
-        Number(u.adet || 0);
-
-
-        const fiyat =
-        Number(u.fiyat || 0);
-
-
-        html += `
-
-            <div class="urun">
-
-                <span>
-                    ${u.urun} × ${adet}
-                </span>
-
-                <b>
-                    ${adet * fiyat} ₺
-                </b>
-
-            </div>
-
-        `;
-
-    });
-
-
     const garson =
-    garsonMu(s);
+        s.kaynak === "garson" ||
+        s.garsonSiparisi === true;
+
+
+    let urunHTML = "";
+
+
+    (s.urunler || []).forEach(
+        u => {
+
+            const adet =
+                Number(u.adet || 0);
+
+
+            const fiyat =
+                Number(u.fiyat || 0);
+
+
+            const tutar =
+                adet * fiyat;
+
+
+            urunHTML += `
+
+                <div class="urun">
+
+                    <span>
+
+                        ${u.urun || u.ad || "Ürün"}
+
+                        × ${adet}
+
+                    </span>
+
+                    <b>
+
+                        ${para(tutar)}
+
+                    </b>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    const durum =
+        s.durum || "Bekleyen";
 
 
     return `
 
         <div class="
             siparis
-            ${garson ? "garson" : ""}
-            ${s.durum === "Bekleyen" ? "bekleyen" : ""}
+            ${garson ? "garson" : "musteri"}
         ">
 
-            <div class="siparis-baslik">
 
-                <strong>
-                    ${garson ? "👨‍🍳 Garson" : "👤 Müşteri"}
-                </strong>
+            <div class="siparis-ust">
+
+                <span class="siparis-no">
+
+                    🧾 Sipariş
+
+                </span>
+
 
                 <span class="
-                    ${
-                        s.durum === "Bekleyen"
-                        ?
-                        "bekleyen-yazi"
-                        :
-                        "onayli-yazi"
-                    }
+                    kaynak
+                    ${garson ? "garson" : "musteri"}
                 ">
 
                     ${
-                        s.durum === "Bekleyen"
+                        garson
                         ?
-                        "🟡 Bekleyen"
+                        "👨‍🍳 GARSON"
                         :
-                        "🟢 Onaylandı"
+                        "👤 MÜŞTERİ"
                     }
 
                 </span>
@@ -650,63 +660,36 @@ function siparisHTML(s){
             </div>
 
 
-            <div class="
-                kaynak
-                ${garson ? "garson" : "musteri"}
-            ">
+            <div class="siparis-durum">
 
                 ${
-                    garson
+                    durum === "Onaylandı"
                     ?
-                    "👨‍🍳 GARSON SİPARİŞİ"
+                    "🟢 Onaylandı"
                     :
-                    "👤 MÜŞTERİ SİPARİŞİ"
+                    "🟡 Bekleyen"
                 }
+
+            </div>
+
+
+            ${urunHTML}
+
+
+            <div class="siparis-toplam">
+
+                Toplam:
+                ${para(s.toplam)}
 
             </div>
 
 
             <div class="zaman">
 
-                🕐 ${saat(s)}
+                🕐 ${saat(s.olusturmaZamani)}
 
             </div>
 
-
-            ${html}
-
-
-            <div class="siparis-toplam">
-
-                ${Number(s.toplam || 0)} ₺
-
-            </div>
-
-
-            ${
-                s.durum === "Bekleyen"
-                ?
-
-                `
-
-                <button
-                    class="btn onay"
-                    style="width:100%;margin-top:8px"
-                    onclick="
-                        siparisOnayla('${s.id}')
-                    ">
-
-                    🟢 Siparişi Onayla
-
-                </button>
-
-                `
-
-                :
-
-                ""
-
-            }
 
         </div>
 
@@ -715,507 +698,194 @@ function siparisHTML(s){
 }
 
 
-/* =========================
-   MASA HESABI
-========================= */
-
-function masaHesapla(oturumId){
-
-    return siparisler
-        .filter(
-            s =>
-            s.oturumId === oturumId
-        )
-        .reduce(
-            (toplam,s) =>
-            toplam +
-            Number(s.toplam || 0),
-            0
-        );
-
-}
-
-
-/* =========================
-   MASA SİPARİŞLERİ
-========================= */
-
-function masaSiparisleri(oturumId){
-
-    return siparisler
-        .filter(
-            s =>
-            s.oturumId === oturumId
-        )
-        .sort(
-            (a,b) =>
-            zaman(a)-zaman(b)
-        );
-
-}
-
-
-/* =========================
-   SİPARİŞ ONAY
-========================= */
-
-window.siparisOnayla =
-async function(id){
-
-    const s =
-    siparisler.find(
-        x => x.id === id
-    );
-
-
-    if(!s){
-
-        return;
-
-    }
-
-
-    if(
-        !confirm(
-            "Masa " +
-            s.masa +
-            " siparişi onaylansın mı?"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    try{
-
-        await updateDoc(
-
-            doc(
-                db,
-                "siparisler",
-                id
-            ),
-
-            {
-
-                durum:
-                "Onaylandı",
-
-                onaylanmaZamani:
-                serverTimestamp()
-
-            }
-
-        );
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        alert(
-            "❌ Sipariş onaylanamadı:\n\n" +
-            error.message
-        );
-
-    }
-
-};
-
-
-/* =========================
-   HESAP ÖDENDİ
-========================= */
-
-window.hesapOdendi =
-async function(oturumId){
-
-    const oturum =
-    oturumlar.find(
-        x => x.id === oturumId
-    );
-
-
-    if(!oturum){
-
-        alert(
-            "❌ Oturum bulunamadı."
-        );
-
-        return;
-
-    }
-
-
-    const toplam =
-    masaHesapla(oturumId);
-
-
-    if(
-        !confirm(
-            "💰 HESAP ÖDENDİ olarak işaretlensin mi?\n\n" +
-            "Masa: " +
-            oturum.masa +
-            "\n" +
-            "Toplam: " +
-            toplam +
-            " ₺"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    try{
-
-        /*
-         * OTURUMU ÖDENDİ YAP
-         */
-
-        await updateDoc(
-
-            doc(
-                db,
-                "oturumlar",
-                oturumId
-            ),
-
-            {
-
-                hesapOdendi:
-                true,
-
-                odemeZamani:
-                serverTimestamp()
-
-            }
-
-        );
-
-
-        /*
-         * BU OTURUMA AİT SİPARİŞLERİ
-         * DEĞİŞTİRMEK ZORUNDA DEĞİLİZ.
-         *
-         * Oturum bilgisi ödeme bilgisinin
-         * ana kaynağıdır.
-         */
-
-
-        alert(
-            "✅ HESAP ÖDENDİ!\n\n" +
-            "Masa " +
-            oturum.masa +
-            "\n" +
-            toplam +
-            " ₺"
-        );
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        alert(
-            "❌ Ödeme kaydedilemedi:\n\n" +
-            error.message
-        );
-
-    }
-
-};
-
-
-/* =========================
-   MASA KAPAT
-========================= */
-
-window.masaKapat =
-async function(oturumId){
-
-    const oturum =
-    oturumlar.find(
-        x => x.id === oturumId
-    );
-
-
-    if(!oturum){
-
-        return;
-
-    }
-
-
-    /*
-     * ÖDEME YAPILMADAN MASA KAPATILAMAZ
-     */
-
-    if(
-        oturum.hesapOdendi !== true
-    ){
-
-        alert(
-            "⚠️ Önce hesabı 'Hesap Ödendi' olarak işaretlemelisin."
-        );
-
-        return;
-
-    }
-
-
-    const toplam =
-    masaHesapla(oturumId);
-
-
-    if(
-        !confirm(
-            "🔒 Masa " +
-            oturum.masa +
-            " kapatılsın mı?\n\n" +
-            "Ödenen hesap: " +
-            toplam +
-            " ₺"
-        )
-    ){
-
-        return;
-
-    }
-
-
-    try{
-
-        await updateDoc(
-
-            doc(
-                db,
-                "oturumlar",
-                oturumId
-            ),
-
-            {
-
-                durum:
-                "kapali",
-
-                kapanisZamani:
-                serverTimestamp()
-
-            }
-
-        );
-
-
-        alert(
-            "✅ Masa " +
-            oturum.masa +
-            " kapatıldı."
-        );
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        alert(
-            "❌ Masa kapatılamadı:\n\n" +
-            error.message
-        );
-
-    }
-
-};
-
-
-/* =========================
+/* =====================================================
    MASALARI GÖSTER
-========================= */
+===================================================== */
 
-function masalariGoster(){
+function render(){
 
     const grid =
-    document.getElementById(
-        "masaGrid"
-    );
+        document.getElementById("grid");
 
 
     grid.innerHTML = "";
 
 
-    /*
-     * SADECE AÇIK OTURUMLAR
-     */
+    let acikMasa = 0;
 
-    const acikOturumlar =
-    oturumlar.filter(
-        o =>
-        o.durum === "acik"
-    );
-
-
-    document.getElementById(
-        "acikMasaSayisi"
-    ).textContent =
-    acikOturumlar.length;
-
-
-    const bekleyen =
-    siparisler.filter(
-        s =>
-        s.durum === "Bekleyen"
-    );
-
-
-    document.getElementById(
-        "bekleyenSayisi"
-    ).textContent =
-    bekleyen.length;
-
-
-    document.getElementById(
-        "siparisSayisi"
-    ).textContent =
-    siparisler.length;
-
+    let toplamSiparis = 0;
 
     let genelToplam = 0;
 
 
-    acikOturumlar.forEach(
-        oturum => {
+    for(
+        let masa = 1;
+        masa <= 50;
+        masa++
+    ){
 
-            const liste =
-            masaSiparisleri(
-                oturum.id
+        /*
+         * BU MASANIN AKTİF OTURUMU
+         */
+
+        const oturum =
+            oturumlar.find(
+                x =>
+                    Number(x.masa) === Number(masa) &&
+                    x.durum === "acik"
             );
 
 
-            const toplam =
-            masaHesapla(
-                oturum.id
+        /*
+         * AKTİF OTURUM VARSA
+         */
+
+        if(oturum){
+
+            acikMasa++;
+
+        }
+
+
+        /*
+         * BU MASANIN SİPARİŞLERİ
+         */
+
+        let masaSiparisleri = [];
+
+
+        if(oturum){
+
+            masaSiparisleri =
+                siparisler.filter(
+                    s =>
+                        siparisBuOturumaAit(
+                            s,
+                            oturum,
+                            masa
+                        ) &&
+                        s.oturumKapandi !== true
+                );
+
+        }
+
+
+        /*
+         * TOPLAM
+         */
+
+        const masaToplam =
+            masaSiparisleri.reduce(
+                (
+                    toplam,
+                    s
+                ) =>
+                    toplam +
+                    Number(
+                        s.toplam || 0
+                    ),
+                0
             );
 
 
-            genelToplam += toplam;
+        toplamSiparis +=
+            masaSiparisleri.length;
 
 
-            const bekleyenSayisi =
-            liste.filter(
-                s =>
-                s.durum ===
-                "Bekleyen"
-            ).length;
+        genelToplam +=
+            masaToplam;
 
 
-            const div =
+        /*
+         * KART
+         */
+
+        const div =
             document.createElement(
                 "div"
             );
 
 
-            div.className =
-            "masa acik";
+        div.className =
+            "masa " +
+            (
+                oturum
+                ?
+                "acik"
+                :
+                "kapali"
+            );
 
 
-            if(
-                bekleyenSayisi > 0
-            ){
+        let html = `
 
-                div.classList.add(
-                    "bekleyen"
-                );
+            <div class="baslik">
 
-            }
+                <h2>
+                    🪑 Masa ${masa}
+                </h2>
 
-
-            let html = `
-
-                <div class="masa-baslik">
-
-                    <h3>
-                        🪑 Masa ${oturum.masa}
-                    </h3>
-
-                    <span class="
-                        durum
-                        ${
-                            bekleyenSayisi
-                            ?
-                            "bekleyen"
-                            :
-                            "acik"
-                        }
-                    ">
-
-                        ${
-                            bekleyenSayisi
-                            ?
-                            "🟡 " +
-                            bekleyenSayisi +
-                            " Bekleyen"
-                            :
-                            "🟢 Açık"
-                        }
-
-                    </span>
-
-                </div>
-
-
-                <div class="oturum">
-
-                    <b>
-                        🟢 Aktif Masa Oturumu
-                    </b>
-
-                    <br>
-
-                    Oturum ID:
-                    <small>
-                        ${oturum.id}
-                    </small>
+                <span class="
+                    durum
+                    ${
+                        oturum
+                        ?
+                        "acik"
+                        :
+                        "kapali"
+                    }
+                ">
 
                     ${
-                        oturum.hesapOdendi === true
+                        oturum
                         ?
-
-                        `
-                        <br>
-                        <strong style="color:#2e7d32">
-                            ✅ Hesap Ödendi
-                        </strong>
-                        `
-
+                        "🟢 Açık"
                         :
-
-                        `
-                        <br>
-                        <strong style="color:#ef6c00">
-                            💰 Hesap Açık
-                        </strong>
-                        `
+                        "⚪ Kapalı"
                     }
+
+                </span>
+
+            </div>
+
+        `;
+
+
+        /*
+         * AÇIK MASA
+         */
+
+        if(oturum){
+
+            html += `
+
+                <div class="toplam">
+
+                    ${para(masaToplam)}
 
                 </div>
 
             `;
 
 
+            /*
+             * SİPARİŞLER
+             */
+
+            html += `
+
+                <div class="detay">
+
+            `;
+
+
             if(
-                liste.length === 0
+                masaSiparisleri.length === 0
             ){
 
                 html += `
 
-                    <div style="
-                        text-align:center;
-                        color:#999;
-                        padding:15px;
-                    ">
+                    <div class="bos">
 
                         Henüz sipariş yok.
 
@@ -1224,33 +894,21 @@ function masalariGoster(){
                 `;
 
             }
+            else{
 
+                masaSiparisleri.forEach(
+                    s => {
 
-            liste.forEach(
-                s => {
+                        html +=
+                            siparisHTML(s);
 
-                    html +=
-                    siparisHTML(s);
+                    }
+                );
 
-                }
-            );
+            }
 
 
             html += `
-
-                <div class="masa-toplam">
-
-                    <div class="masa-toplam-satir">
-
-                        <span>
-                            💰 MASA HESABI
-                        </span>
-
-                        <strong>
-                            ${toplam} ₺
-                        </strong>
-
-                    </div>
 
                 </div>
 
@@ -1258,124 +916,303 @@ function masalariGoster(){
 
 
             /*
-             * ÖDEME BUTONU
+             * HESAP ÖDENDİ
              */
 
-            if(
-                oturum.hesapOdendi !== true
-            ){
+            html += `
 
-                html += `
+                <button
+                    class="buton odendi"
+                    onclick="
+                        hesapOdendi(
+                            '${oturum.id}',
+                            ${masa}
+                        )
+                    ">
 
-                    <div class="butons">
+                    💳 HESAP ÖDENDİ
 
-                        <button
-                            class="btn odeme"
-                            onclick="
-                                hesapOdendi(
-                                    '${oturum.id}'
-                                )
-                            ">
+                </button>
 
-                            💰 HESAP ÖDENDİ
+            `;
 
-                        </button>
+        }
+        else{
 
-                    </div>
+            html += `
 
-                `;
+                <div class="bos">
 
-            }
-            else{
+                    Aktif oturum yok.
 
-                html += `
+                    <div class="uyari">
 
-                    <div class="butons">
-
-                        <button
-                            class="btn kapat"
-                            onclick="
-                                masaKapat(
-                                    '${oturum.id}'
-                                )
-                            ">
-
-                            🔒 MASA OTURUMUNU KAPAT
-
-                        </button>
+                        🪑 Masayı garson açabilir.
 
                     </div>
 
-                `;
+                </div>
 
-            }
+            `;
+
+        }
 
 
-            div.innerHTML =
+        div.innerHTML =
             html;
 
 
-            grid.appendChild(
-                div
-            );
+        grid.appendChild(
+            div
+        );
 
-        }
-    );
+    }
+
+
+    /*
+     * İSTATİSTİKLER
+     */
+
+    document.getElementById(
+        "acikMasaSayisi"
+    ).textContent =
+        acikMasa;
 
 
     document.getElementById(
-        "acikHesap"
+        "siparisSayisi"
     ).textContent =
-    genelToplam +
-    " ₺";
+        toplamSiparis;
 
 
-    if(
-        acikOturumlar.length === 0
-    ){
-
-        grid.innerHTML = `
-
-            <div
-                class="bos"
-                style="
-                    grid-column:1/-1;
-                ">
-
-                <div style="font-size:45px">
-                    🪑
-                </div>
-
-                <h2>
-                    Açık masa yok
-                </h2>
-
-                <p>
-                    Garson panelinden bir masa
-                    oturumu açıldığında burada
-                    görünecektir.
-                </p>
-
-            </div>
-
-        `;
-
-    }
+    document.getElementById(
+        "genelToplam"
+    ).textContent =
+        para(genelToplam);
 
 }
 
 
-/* =========================
+/* =====================================================
+   HESAP ÖDENDİ
+   MASA OTOMATİK KAPANIR
+===================================================== */
+
+window.hesapOdendi =
+async function(
+    oturumId,
+    masa
+){
+
+    const onay =
+        confirm(
+
+            "💳 MASA " +
+            masa +
+            "\n\n" +
+
+            "Hesap ödendi mi?\n\n" +
+
+            "Onayladığında:\n" +
+
+            "• Hesap ödendi olarak işaretlenecek\n" +
+
+            "• Masa oturumu kapanacak\n" +
+
+            "• Müşteri yeni sipariş veremeyecek\n" +
+
+            "• Garson panelinde masa tekrar açılabilir olacak"
+
+        );
+
+
+    if(!onay){
+
+        return;
+
+    }
+
+
+    try{
+
+        /*
+         * 1
+         * OTURUMU KAPAT
+         */
+
+        await updateDoc(
+
+            doc(
+                db,
+                "oturumlar",
+                oturumId
+            ),
+
+            {
+
+                durum:
+                    "kapali",
+
+                odemeDurumu:
+                    "odendi",
+
+                hesapOdendi:
+                    true,
+
+                kapanisZamani:
+                    serverTimestamp()
+
+            }
+
+        );
+
+
+        /*
+         * 2
+         * BU OTURUMA AİT SİPARİŞLERİ
+         * KAPANMIŞ OTURUM OLARAK İŞARETLE
+         *
+         * SİPARİŞLER SİLİNMİYOR.
+         */
+
+        const ilgiliSiparisler =
+            siparisler.filter(
+                s =>
+                    s.oturumId ===
+                    oturumId
+            );
+
+
+        for(
+            const siparis
+            of ilgiliSiparisler
+        ){
+
+            try{
+
+                await updateDoc(
+
+                    doc(
+                        db,
+                        "siparisler",
+                        siparis.id
+                    ),
+
+                    {
+
+                        oturumKapandi:
+                            true,
+
+                        hesapOdendi:
+                            true,
+
+                        masaKapanisZamani:
+                            serverTimestamp()
+
+                    }
+
+                );
+
+            }
+            catch(
+                siparisHatasi
+            ){
+
+                console.error(
+                    "Sipariş güncelleme hatası:",
+                    siparisHatasi
+                );
+
+            }
+
+        }
+
+
+        /*
+         * 3
+         * YEREL EKRANI HEMEN GÜNCELLE
+         */
+
+        oturumlar =
+            oturumlar.map(
+                o => {
+
+                    if(
+                        o.id ===
+                        oturumId
+                    ){
+
+                        return {
+
+                            ...o,
+
+                            durum:
+                                "kapali",
+
+                            odemeDurumu:
+                                "odendi",
+
+                            hesapOdendi:
+                                true
+
+                        };
+
+                    }
+
+                    return o;
+
+                }
+            );
+
+
+        render();
+
+
+        alert(
+
+            "✅ HESAP ÖDENDİ\n\n" +
+
+            "Masa " +
+            masa +
+            " kapatıldı.\n\n" +
+
+            "Garson panelinde masa tekrar açılabilir."
+
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "HESAP KAPATMA HATASI:",
+            error
+        );
+
+
+        alert(
+
+            "❌ MASA KAPATILAMADI\n\n" +
+
+            error.message
+
+        );
+
+    }
+
+};
+
+
+/* =====================================================
    OTURUMLARI DİNLE
-========================= */
+===================================================== */
 
 const oturumQuery =
-query(
-    collection(
-        db,
-        "oturumlar"
-    )
-);
+    query(
+        collection(
+            db,
+            "oturumlar"
+        )
+    );
 
 
 onSnapshot(
@@ -1393,7 +1230,7 @@ onSnapshot(
                 oturumlar.push({
 
                     id:
-                    item.id,
+                        item.id,
 
                     ...item.data()
 
@@ -1403,20 +1240,20 @@ onSnapshot(
         );
 
 
-        masalariGoster();
-
-
         document.getElementById(
             "baglanti"
         ).textContent =
-        "🟢 Firebase bağlantısı aktif";
+            "🟢 Firebase bağlantısı aktif";
+
+
+        render();
 
     },
 
     error => {
 
         console.error(
-            "OTURUM HATASI:",
+            "OTURUMLAR HATASI:",
             error
         );
 
@@ -1424,25 +1261,24 @@ onSnapshot(
         document.getElementById(
             "baglanti"
         ).textContent =
-        "🔴 Firebase bağlantı hatası: " +
-        error.message;
+            "🔴 Firebase bağlantı hatası";
 
     }
 
 );
 
 
-/* =========================
+/* =====================================================
    SİPARİŞLERİ DİNLE
-========================= */
+===================================================== */
 
 const siparisQuery =
-query(
-    collection(
-        db,
-        "siparisler"
-    )
-);
+    query(
+        collection(
+            db,
+            "siparisler"
+        )
+    );
 
 
 onSnapshot(
@@ -1460,7 +1296,7 @@ onSnapshot(
                 siparisler.push({
 
                     id:
-                    item.id,
+                        item.id,
 
                     ...item.data()
 
@@ -1471,27 +1307,21 @@ onSnapshot(
 
 
         /*
-         * TÜM SİPARİŞLERİ TUTUYORUZ.
+         * BURADA ARTIK SADECE
+         * "Bekleyen" SİPARİŞLERİ ALMIYORUZ.
          *
          * Bekleyen + Onaylandı
-         *
-         * Böylece hesap toplamı kaybolmaz.
+         * hepsi yönetici panelinde görünür.
          */
 
-        siparisler.sort(
-            (a,b) =>
-            zaman(a)-zaman(b)
-        );
-
-
-        masalariGoster();
+        render();
 
     },
 
     error => {
 
         console.error(
-            "SİPARİŞ HATASI:",
+            "SİPARİŞLER HATASI:",
             error
         );
 
@@ -1499,14 +1329,21 @@ onSnapshot(
         document.getElementById(
             "baglanti"
         ).textContent =
-        "🔴 Sipariş bağlantı hatası";
+            "🔴 Sipariş bağlantı hatası";
 
     }
 
 );
 
 
+/* =====================================================
+   BAŞLANGIÇ
+===================================================== */
+
+render();
+
 </script>
 
 </body>
+
 </html>
