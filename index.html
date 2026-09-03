@@ -585,6 +585,10 @@ header p{
         MASA
     </div>
 
+    <div id="ustMasaKodu" style="display:none;margin:10px auto 0;background:#7b1fa2;color:#fff;width:max-content;padding:7px 14px;border-radius:20px;font-weight:bold;letter-spacing:2px">
+        KOD: ----
+    </div>
+
 </header>
 
 <div id="girisKapisi" class="giris-kapisi">
@@ -1081,6 +1085,7 @@ let oturumId = null;
 let oturumAcik = false;
 let girisYetkili = false;
 let aktifGirisKodu = null;
+let yetkiliOturumId = null;
 
 
 /* ================================
@@ -1194,18 +1199,12 @@ function oturumKontrol(){
         oturumId = oturum.id;
         oturumAcik = true;
         sessionStorage.setItem("dk_oturum_"+masa,oturumId);
-        girisYetkili = sessionStorage.getItem("dk_giris_"+oturumId) === "ok";
+        girisYetkili = yetkiliOturumId === oturumId;
 
         if(girisYetkili){
             masaAktifGoster();
         }else{
-            const kod = oturum.data().girisKodu;
-            if(!kod){
-                document.getElementById("oturumDurum").textContent = "⚠️ Eski oturum: Masayı kapatıp yeniden açın.";
-                masaPasifGoster();
-                return;
-            }
-            aktifGirisKodu = String(kod);
+            aktifGirisKodu = oturumKoduUret(oturumId);
             girisEkraniGoster();
         }
 
@@ -1218,6 +1217,14 @@ function oturumKontrol(){
         console.error(error);
         durum.textContent = "❌ Masa kontrolü yapılamadı.";
     });
+}
+
+function oturumKoduUret(id){
+    let sayi = 0;
+    for(let i=0;i<id.length;i++){
+        sayi = (sayi * 31 + id.charCodeAt(i)) >>> 0;
+    }
+    return String(1000 + (sayi % 9000));
 }
 
 function girisEkraniGoster(){
@@ -1234,7 +1241,7 @@ function girisEkraniGoster(){
 }
 
 window.ilkGirisTamamla = function(){
-    sessionStorage.setItem("dk_giris_"+oturumId,"ok");
+    yetkiliOturumId = oturumId;
     girisYetkili = true;
     masaAktifGoster();
 };
@@ -1245,7 +1252,7 @@ window.kodlaGiris = function(){
         alert("❌ Masa kodu yanlış.");
         return;
     }
-    sessionStorage.setItem("dk_giris_"+oturumId,"ok");
+    yetkiliOturumId = oturumId;
     girisYetkili = true;
     masaAktifGoster();
 };
@@ -1261,6 +1268,7 @@ function masaPasifGoster(){
     girisYetkili = false;
     aktifGirisKodu = null;
     document.getElementById("girisKapisi").style.display = "none";
+    document.getElementById("ustMasaKodu").style.display = "none";
 
 
     document.getElementById(
@@ -1323,6 +1331,8 @@ function masaAktifGoster(){
 
     oturumAcik = true;
     document.getElementById("girisKapisi").style.display = "none";
+    document.getElementById("ustMasaKodu").style.display = "block";
+    document.getElementById("ustMasaKodu").textContent = "KOD: " + aktifGirisKodu;
     document.querySelectorAll(".ust-menu button").forEach(b=>b.disabled=false);
 
 
