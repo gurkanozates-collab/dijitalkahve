@@ -1211,7 +1211,8 @@ function oturumKontrol(){
         sessionStorage.setItem("dk_oturum_"+masa,oturumId);
         girisYetkili =
             yetkiliOturumId === oturumId ||
-            siparisKaynagi === "garson";
+            siparisKaynagi === "garson" &&
+            sessionStorage.getItem("dk_garson_giris") === "ok";
 
         if(girisYetkili){
             aktifGirisKodu = oturum.data().masaKodu || "Henüz oluşmadı";
