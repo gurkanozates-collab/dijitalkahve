@@ -568,6 +568,8 @@ header p{
 
 }
 
+.giris-kapisi{display:none;background:#fff;border:2px solid #7b1fa2;border-radius:16px;padding:22px;margin:12px auto;max-width:520px;text-align:center;box-shadow:0 5px 18px #0002}.giris-kapisi h2{margin:0 0 10px}.ortak-kod{font-size:38px;font-weight:900;letter-spacing:8px;color:#7b1fa2;background:#f3e5f5;border-radius:12px;padding:13px;margin:14px 0}.kod-giris{display:flex;gap:8px;justify-content:center}.kod-giris input{width:160px;padding:13px;text-align:center;font-size:24px;letter-spacing:5px;border:2px solid #bbb;border-radius:10px}.kod-giris button,.giris-kapisi>button{border:0;border-radius:10px;padding:13px 18px;background:#7b1fa2;color:#fff;font-weight:bold;cursor:pointer}
+
 </style>
 </head>
 
@@ -584,6 +586,20 @@ header p{
     </div>
 
 </header>
+
+<div id="girisKapisi" class="giris-kapisi">
+    <h2>🔐 Masa Girişi</h2>
+    <div id="ilkKodBolumu" style="display:none">
+        <p>Bu masanın ortak giriş kodu:</p>
+        <div id="ortakKod" class="ortak-kod"></div>
+        <p>Masadaki diğer kişiler bu kodla giriş yapabilir.</p>
+        <button onclick="ilkGirisTamamla()">Menüye Gir</button>
+    </div>
+    <div id="kodGirisBolumu" style="display:none">
+        <p>Masadaki ortak 4 haneli kodu girin.</p>
+        <div class="kod-giris"><input id="kodInput" inputmode="numeric" maxlength="4" placeholder="0000"><button onclick="kodlaGiris()">Giriş Yap</button></div>
+    </div>
+</div>
 
 
 <!-- ÜST MENÜ -->
@@ -901,7 +917,8 @@ import {
     serverTimestamp,
     getDocs,
     doc,
-    getDoc
+    getDoc,
+    runTransaction
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -1063,6 +1080,8 @@ Object.keys(
 
 let oturumId = null;
 let oturumAcik = false;
+let girisYetkili = false;
+let aktifGirisKodu = null;
 
 
 /* ================================
@@ -1163,7 +1182,7 @@ function oturumKontrol(){
         where("durum","==","acik")
     );
 
-    onSnapshot(q, snap => {
+    onSnapshot(q, async snap => {
 
         if(snap.empty){
             oturumId = null;
@@ -1173,10 +1192,34 @@ function oturumKontrol(){
         }
 
         const oturum = snap.docs[0];
+        const oncekiOturumId = oturumId;
         oturumId = oturum.id;
         oturumAcik = true;
         sessionStorage.setItem("dk_oturum_"+masa,oturumId);
-        masaAktifGoster();
+        girisYetkili = sessionStorage.getItem("dk_giris_"+oturumId) === "ok";
+
+        if(girisYetkili){
+            masaAktifGoster();
+        }else{
+            let kod = oturum.data().girisKodu || null;
+            let ilkTelefon = false;
+
+            if(!kod){
+                const sonuc = await runTransaction(db, async islem => {
+                    const guncel = await islem.get(oturum.ref);
+                    const mevcutKod = guncel.data().girisKodu;
+                    if(mevcutKod) return {kod:mevcutKod,ilk:false};
+                    const yeniKod = String(Math.floor(1000 + Math.random()*9000));
+                    islem.update(oturum.ref,{girisKodu:yeniKod,kodOlusturmaZamani:serverTimestamp()});
+                    return {kod:yeniKod,ilk:true};
+                });
+                kod = sonuc.kod;
+                ilkTelefon = sonuc.ilk;
+            }
+
+            aktifGirisKodu = String(kod);
+            girisEkraniGoster(ilkTelefon || oncekiOturumId === oturumId && document.getElementById("ilkKodBolumu").style.display === "block");
+        }
 
         if(dinlenenOturumId !== oturumId){
             dinlenenOturumId = oturumId;
@@ -1189,6 +1232,35 @@ function oturumKontrol(){
     });
 }
 
+function girisEkraniGoster(ilkTelefon){
+    document.getElementById("aktifDegil").style.display = "none";
+    document.getElementById("girisKapisi").style.display = "block";
+    document.getElementById("ilkKodBolumu").style.display = ilkTelefon ? "block" : "none";
+    document.getElementById("kodGirisBolumu").style.display = ilkTelefon ? "none" : "block";
+    document.getElementById("ortakKod").textContent = aktifGirisKodu || "";
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("aktif"));
+    document.querySelectorAll(".ust-menu button").forEach(b=>b.disabled=true);
+    document.getElementById("oturumDurum").className = "oturum";
+    document.getElementById("oturumDurum").textContent = "🟡 Masa açık - Giriş kodu gerekli";
+}
+
+window.ilkGirisTamamla = function(){
+    sessionStorage.setItem("dk_giris_"+oturumId,"ok");
+    girisYetkili = true;
+    masaAktifGoster();
+};
+
+window.kodlaGiris = function(){
+    const girilen = document.getElementById("kodInput").value.trim();
+    if(girilen !== aktifGirisKodu){
+        alert("❌ Masa kodu yanlış.");
+        return;
+    }
+    sessionStorage.setItem("dk_giris_"+oturumId,"ok");
+    girisYetkili = true;
+    masaAktifGoster();
+};
+
 
 /* ================================
    MASA PASİF
@@ -1197,6 +1269,9 @@ function oturumKontrol(){
 function masaPasifGoster(){
 
     oturumAcik = false;
+    girisYetkili = false;
+    aktifGirisKodu = null;
+    document.getElementById("girisKapisi").style.display = "none";
 
 
     document.getElementById(
@@ -1258,6 +1333,8 @@ function masaPasifGoster(){
 function masaAktifGoster(){
 
     oturumAcik = true;
+    document.getElementById("girisKapisi").style.display = "none";
+    document.querySelectorAll(".ust-menu button").forEach(b=>b.disabled=false);
 
 
     document.getElementById(
