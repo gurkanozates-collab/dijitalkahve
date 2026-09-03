@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dijital Kahvem - Garson</title>
+<style>
+:root{--kahve:#4e342e;--krem:#f6f1ec;--yesil:#2e7d32;--turuncu:#ef6c00;--mavi:#1565c0;--kirmizi:#c62828}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--krem);color:#302724}header{background:linear-gradient(135deg,#3e2723,#6d4c41);color:#fff;padding:20px}header>div,main{max-width:1150px;margin:auto}h1{margin:0 0 5px}.alt{opacity:.8}
+main{padding:16px}.ust{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}.yenile{border:0;border-radius:10px;background:var(--kahve);color:#fff;padding:11px 15px;font-weight:700;cursor:pointer}.sayac{background:#fff;padding:9px 13px;border-radius:20px;font-weight:700}
+.baslik{margin:24px 0 11px;font-size:21px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.kart{background:#fff;border-radius:16px;padding:15px;box-shadow:0 5px 16px #3e272317;border-top:5px solid var(--turuncu)}.kart.hazirlaniyor{border-color:var(--mavi)}.kart.hazir{border-color:var(--yesil)}
+.kart-ust{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.masa{font-size:20px;font-weight:800}.zaman{font-size:12px;color:#716762}.urun{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid #eee}.toplam{font-size:18px;font-weight:800;margin:13px 0}.durum{width:100%;padding:10px;border:1px solid #d7ccc8;border-radius:9px;background:#fff}.butonlar{display:flex;gap:7px;margin-top:9px}.butonlar button{flex:1;border:0;border-radius:9px;padding:9px;cursor:pointer;font-weight:700}.kaydet{background:var(--kahve);color:#fff}.kapat{background:#ffebee;color:var(--kirmizi)}
+.istek{background:#fff;border-left:6px solid var(--kirmizi);padding:14px;border-radius:12px;box-shadow:0 4px 14px #3e272315;display:flex;align-items:center;justify-content:space-between;gap:10px}.istek.hesap{border-color:var(--mavi)}.istek b{font-size:18px}.tamam{background:var(--yesil);color:#fff;border:0;border-radius:9px;padding:9px 12px;font-weight:700;cursor:pointer}.bos{grid-column:1/-1;text-align:center;background:#fff;padding:28px;border-radius:14px;color:#756a65}
+.bildirim{position:fixed;z-index:10;top:15px;left:50%;transform:translate(-50%,-90px);background:#263238;color:white;padding:12px 18px;border-radius:10px;transition:.25s}.bildirim.goster{transform:translate(-50%,0)}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:570px){.grid{grid-template-columns:1fr}.ust{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="bildirim" class="bildirim"></div>
+<header><div><h1>☕ Dijital Kahvem</h1><div class="alt">Garson Paneli</div></div></header>
+<main>
+ <div class="ust"><div class="sayac"><span id="acikSayisi">0</span> açık sipariş · <span id="istekSayisi">0</span> bekleyen istek</div><button class="yenile" onclick="ciz()">↻ Yenile</button></div>
+ <h2 class="baslik">🔔 Masa İstekleri</h2><section id="istekler" class="grid"></section>
+ <h2 class="baslik">🧾 Siparişler</h2><section id="siparisler" class="grid"></section>
+</main>
+<script>
+const para=n=>new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:2}).format(n);
+const oku=ad=>JSON.parse(localStorage.getItem(ad)||'[]'),yaz=(ad,v)=>localStorage.setItem(ad,JSON.stringify(v));
+function saat(t){const d=new Date(t);return d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})}
+function temiz(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function ciz(){
+ const siparisler=oku('dk_siparisler').map((s,_i)=>({...s,_i})).filter(s=>s.durum!=='tamamlandi');
+ const istekler=oku('dk_istekler').filter(i=>!i.tamamlandi);
+ document.getElementById('acikSayisi').textContent=siparisler.length;document.getElementById('istekSayisi').textContent=istekler.length;
+ document.getElementById('istekler').innerHTML=istekler.length?istekler.map((i,n)=>`<article class="istek ${i.tur.includes('Hesap')?'hesap':''}"><div><b>Masa ${temiz(i.masa)}</b><div>${temiz(i.tur)} · ${saat(i.zaman)}</div></div><button class="tamam" onclick="istekTamamla(${n})">Tamamlandı</button></article>`).join(''):'<div class="bos">Bekleyen masa isteği yok.</div>';
+ document.getElementById('siparisler').innerHTML=siparisler.length?siparisler.map(s=>{const asil=s._i,toplam=(s.urunler||[]).reduce((a,u)=>a+Number(u.fiyat)*Number(u.adet),0);return `<article class="kart ${s.durum||'bekliyor'}"><div class="kart-ust"><span class="masa">Masa ${temiz(s.masa)}</span><span class="zaman">${saat(s.zaman)}</span></div>${(s.urunler||[]).map(u=>`<div class="urun"><span>${u.adet} × ${temiz(u.ad)}</span><b>${para(u.fiyat*u.adet)}</b></div>`).join('')}<div class="toplam">Toplam: ${para(toplam)}</div><select id="durum_${asil}" class="durum"><option value="bekliyor" ${s.durum==='bekliyor'?'selected':''}>Bekliyor</option><option value="hazirlaniyor" ${s.durum==='hazirlaniyor'?'selected':''}>Hazırlanıyor</option><option value="hazir" ${s.durum==='hazir'?'selected':''}>Hazır</option><option value="teslim" ${s.durum==='teslim'?'selected':''}>Teslim Edildi</option></select><div class="butonlar"><button class="kaydet" onclick="durumKaydet(${asil})">Durumu Kaydet</button><button class="kapat" onclick="siparisKapat(${asil})">Kapat</button></div></article>`}).join(''):'<div class="bos">Açık sipariş yok.</div>';
+}
+function istekTamamla(gorunenIndex){let liste=oku('dk_istekler'),acik=liste.map((x,i)=>({...x,_i:i})).filter(x=>!x.tamamlandi),hedef=acik[gorunenIndex];if(hedef){liste[hedef._i].tamamlandi=true;yaz('dk_istekler',liste);bildir('İstek tamamlandı');ciz()}}
+function durumKaydet(i){const liste=oku('dk_siparisler');liste[i].durum=document.getElementById('durum_'+i).value;yaz('dk_siparisler',liste);bildir('Sipariş durumu güncellendi');ciz()}
+function siparisKapat(i){if(!confirm('Bu sipariş kapatılsın mı?'))return;const liste=oku('dk_siparisler');liste[i].durum='tamamlandi';yaz('dk_siparisler',liste);bildir('Sipariş kapatıldı');ciz()}
+function bildir(m){const b=document.getElementById('bildirim');b.textContent=m;b.classList.add('goster');setTimeout(()=>b.classList.remove('goster'),2000)}
+ciz();setInterval(ciz,5000);
+</script>
+</body>
+</html>
