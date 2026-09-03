@@ -921,7 +921,8 @@ import {
     serverTimestamp,
     getDocs,
     doc,
-    getDoc
+    getDoc,
+    runTransaction
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -982,6 +983,11 @@ const masa =
         params.get("table") ||
         "1"
     );
+
+const siparisKaynagi =
+    params.get("kaynak") === "garson"
+    ? "garson"
+    : "musteri";
 
 document.getElementById(
     "masaNo"
@@ -1086,6 +1092,8 @@ let oturumAcik = false;
 let girisYetkili = false;
 let aktifGirisKodu = null;
 let yetkiliOturumId = null;
+let ilkGirisMi = false;
+let kodOturumId = null;
 
 
 /* ================================
@@ -1204,8 +1212,18 @@ function oturumKontrol(){
         if(girisYetkili){
             masaAktifGoster();
         }else{
-            aktifGirisKodu = oturumKoduUret(oturumId);
-            girisEkraniGoster();
+            const kayitliKod = oturum.data().masaKodu;
+            if(kayitliKod){
+                aktifGirisKodu = String(kayitliKod);
+                ilkGirisMi = false;
+            }else{
+                if(kodOturumId !== oturumId){
+                    aktifGirisKodu = String(Math.floor(1000 + Math.random()*9000));
+                    kodOturumId = oturumId;
+                }
+                ilkGirisMi = true;
+            }
+            girisEkraniGoster(ilkGirisMi);
         }
 
         if(dinlenenOturumId !== oturumId){
@@ -1219,21 +1237,17 @@ function oturumKontrol(){
     });
 }
 
-function oturumKoduUret(id){
-    let sayi = 0;
-    for(let i=0;i<id.length;i++){
-        sayi = (sayi * 31 + id.charCodeAt(i)) >>> 0;
-    }
-    return String(1000 + (sayi % 9000));
-}
-
-function girisEkraniGoster(){
+function girisEkraniGoster(ilk){
     document.getElementById("aktifDegil").style.display = "none";
     document.getElementById("girisKapisi").style.display = "block";
-    document.getElementById("ilkKodBolumu").style.display = "block";
+    document.getElementById("ilkKodBolumu").style.display = ilk ? "block" : "none";
     document.getElementById("kodGirisBolumu").style.display = "block";
     document.querySelector("#ilkKodBolumu > button").style.display = "none";
     document.getElementById("ortakKod").textContent = aktifGirisKodu || "";
+    document.querySelector("#kodGirisBolumu p").textContent = ilk
+        ? "Ekrandaki 4 haneli kodu girin."
+        : "Masa açık. Açık olan masa kodunu giriniz.";
+    document.getElementById("kodInput").value = "";
     document.querySelectorAll(".panel").forEach(p=>p.classList.remove("aktif"));
     document.querySelectorAll(".ust-menu button").forEach(b=>b.disabled=true);
     document.getElementById("oturumDurum").className = "oturum";
@@ -1246,11 +1260,38 @@ window.ilkGirisTamamla = function(){
     masaAktifGoster();
 };
 
-window.kodlaGiris = function(){
+window.kodlaGiris = async function(){
     const girilen = document.getElementById("kodInput").value.trim();
     if(girilen !== aktifGirisKodu){
         alert("❌ Masa kodu yanlış.");
         return;
+    }
+
+    if(ilkGirisMi){
+        try{
+            const sonuc = await runTransaction(db, async islem => {
+                const ref = doc(db,"oturumlar",oturumId);
+                const guncel = await islem.get(ref);
+                const mevcutKod = guncel.data().masaKodu;
+                if(mevcutKod && String(mevcutKod) !== girilen){
+                    return {onay:false,kod:String(mevcutKod)};
+                }
+                if(!mevcutKod){
+                    islem.update(ref,{masaKodu:girilen,musteriGirisiAktif:true,kodOlusturmaZamani:serverTimestamp()});
+                }
+                return {onay:true,kod:girilen};
+            });
+            if(!sonuc.onay){
+                aktifGirisKodu = sonuc.kod;
+                ilkGirisMi = false;
+                girisEkraniGoster(false);
+                alert("Masa başka bir müşteri tarafından açıldı. Açık masa kodunu giriniz.");
+                return;
+            }
+        }catch(error){
+            alert("Masa girişi kaydedilemedi: " + error.message);
+            return;
+        }
     }
     yetkiliOturumId = oturumId;
     girisYetkili = true;
@@ -1767,10 +1808,10 @@ async function(){
                     "Bekleyen",
 
                 kaynak:
-                    "musteri",
+                    siparisKaynagi,
 
                 garsonSiparisi:
-                    false,
+                    siparisKaynagi === "garson",
 
                 olusturmaZamani:
                     serverTimestamp()
