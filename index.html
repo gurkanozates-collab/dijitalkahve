@@ -917,8 +917,7 @@ import {
     serverTimestamp,
     getDocs,
     doc,
-    getDoc,
-    runTransaction
+    getDoc
 }
 from
 "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -1192,7 +1191,6 @@ function oturumKontrol(){
         }
 
         const oturum = snap.docs[0];
-        const oncekiOturumId = oturumId;
         oturumId = oturum.id;
         oturumAcik = true;
         sessionStorage.setItem("dk_oturum_"+masa,oturumId);
@@ -1201,24 +1199,14 @@ function oturumKontrol(){
         if(girisYetkili){
             masaAktifGoster();
         }else{
-            let kod = oturum.data().girisKodu || null;
-            let ilkTelefon = false;
-
+            const kod = oturum.data().girisKodu;
             if(!kod){
-                const sonuc = await runTransaction(db, async islem => {
-                    const guncel = await islem.get(oturum.ref);
-                    const mevcutKod = guncel.data().girisKodu;
-                    if(mevcutKod) return {kod:mevcutKod,ilk:false};
-                    const yeniKod = String(Math.floor(1000 + Math.random()*9000));
-                    islem.update(oturum.ref,{girisKodu:yeniKod,kodOlusturmaZamani:serverTimestamp()});
-                    return {kod:yeniKod,ilk:true};
-                });
-                kod = sonuc.kod;
-                ilkTelefon = sonuc.ilk;
+                document.getElementById("oturumDurum").textContent = "⚠️ Eski oturum: Masayı kapatıp yeniden açın.";
+                masaPasifGoster();
+                return;
             }
-
             aktifGirisKodu = String(kod);
-            girisEkraniGoster(ilkTelefon || oncekiOturumId === oturumId && document.getElementById("ilkKodBolumu").style.display === "block");
+            girisEkraniGoster();
         }
 
         if(dinlenenOturumId !== oturumId){
@@ -1232,11 +1220,12 @@ function oturumKontrol(){
     });
 }
 
-function girisEkraniGoster(ilkTelefon){
+function girisEkraniGoster(){
     document.getElementById("aktifDegil").style.display = "none";
     document.getElementById("girisKapisi").style.display = "block";
-    document.getElementById("ilkKodBolumu").style.display = ilkTelefon ? "block" : "none";
-    document.getElementById("kodGirisBolumu").style.display = ilkTelefon ? "none" : "block";
+    document.getElementById("ilkKodBolumu").style.display = "block";
+    document.getElementById("kodGirisBolumu").style.display = "block";
+    document.querySelector("#ilkKodBolumu > button").style.display = "none";
     document.getElementById("ortakKod").textContent = aktifGirisKodu || "";
     document.querySelectorAll(".panel").forEach(p=>p.classList.remove("aktif"));
     document.querySelectorAll(".ust-menu button").forEach(b=>b.disabled=true);
