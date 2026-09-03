@@ -1149,89 +1149,44 @@ document.getElementById(
    OTURUM BUL
 ================================ */
 
-async function oturumKontrol(){
+let dinlenenOturumId = null;
 
-    const durum =
-        document.getElementById(
-            "oturumDurum"
-        );
+function oturumKontrol(){
 
-    durum.textContent =
-        "🟡 Masa kontrol ediliyor...";
+    const durum = document.getElementById("oturumDurum");
 
-    try{
+    durum.textContent = "🟡 Masa kontrol ediliyor...";
 
-        const q =
-            query(
+    const q = query(
+        collection(db,"oturumlar"),
+        where("masa","==",Number(masa)),
+        where("durum","==","acik")
+    );
 
-                collection(
-                    db,
-                    "oturumlar"
-                ),
+    onSnapshot(q, snap => {
 
-                where(
-                    "masa",
-                    "==",
-                    Number(masa)
-                ),
-
-                where(
-                    "durum",
-                    "==",
-                    "acik"
-                )
-
-            );
-
-
-        const snap =
-            await getDocs(q);
-
-
-        if(
-            snap.empty
-        ){
-
+        if(snap.empty){
             oturumId = null;
-            oturumAcik = false;
-
+            dinlenenOturumId = null;
             masaPasifGoster();
-
             return;
-
         }
 
-
-        const oturum =
-            snap.docs[0];
-
-        oturumId =
-            oturum.id;
-
-        oturumAcik =
-            true;
-
-
-        sessionStorage.setItem(
-            "dk_oturum_"+masa,
-            oturumId
-        );
-
-
+        const oturum = snap.docs[0];
+        oturumId = oturum.id;
+        oturumAcik = true;
+        sessionStorage.setItem("dk_oturum_"+masa,oturumId);
         masaAktifGoster();
 
-        siparisDinle();
+        if(dinlenenOturumId !== oturumId){
+            dinlenenOturumId = oturumId;
+            siparisDinle();
+        }
 
-    }
-    catch(error){
-
+    }, error => {
         console.error(error);
-
-        durum.textContent =
-            "❌ Masa kontrolü yapılamadı.";
-
-    }
-
+        durum.textContent = "❌ Masa kontrolü yapılamadı.";
+    });
 }
 
 
@@ -2184,20 +2139,7 @@ function oturumDinle(){
    BAŞLAT
 ================================ */
 
-oturumKontrol()
-.then(
-    () => {
-
-        if(
-            oturumId
-        ){
-
-            oturumDinle();
-
-        }
-
-    }
-);
+oturumKontrol();
 
 
 /* ================================
