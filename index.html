@@ -967,6 +967,8 @@ const app =
 const db =
     getFirestore(app);
 
+document.querySelectorAll(".ust-menu button").forEach(b=>b.disabled=true);
+
 
 /* ================================
    MASA
@@ -1310,6 +1312,7 @@ function masaPasifGoster(){
     aktifGirisKodu = null;
     document.getElementById("girisKapisi").style.display = "none";
     document.getElementById("ustMasaKodu").style.display = "none";
+    document.querySelectorAll(".ust-menu button").forEach(b=>b.disabled=true);
 
 
     document.getElementById(
@@ -1450,7 +1453,7 @@ function masaAktifGoster(){
 window.adetArtir =
 function(u){
 
-    if(!oturumAcik){
+    if(!oturumAcik || !girisYetkili){
         return;
     }
 
@@ -1467,7 +1470,7 @@ function(u){
 window.adetAzalt =
 function(u){
 
-    if(!oturumAcik){
+    if(!oturumAcik || !girisYetkili){
         return;
     }
 
@@ -1522,9 +1525,10 @@ window.panelAc =
 function(panel){
 
     if(
-        !oturumAcik &&
-        panel !== "yazboz"
+        !oturumAcik ||
+        !girisYetkili
     ){
+        alert("Önce masa koduyla giriş yapmalısınız.");
         return;
     }
 
@@ -1576,7 +1580,7 @@ function(panel){
 window.garsonCagir =
 async function(){
 
-    if(!oturumAcik){
+    if(!oturumAcik || !girisYetkili){
 
         alert(
             "🔴 Bu masa şu anda aktif değil.\n\n" +
@@ -1666,7 +1670,7 @@ async function(){
 window.siparisGonder =
 async function(){
 
-    if(!oturumAcik){
+    if(!oturumAcik || !girisYetkili){
 
         alert(
             "🔴 Bu masa şu anda aktif değil.\n\n" +
