@@ -134,6 +134,44 @@
           alert("Yönetici şifresi yanlış. Gün sonu yapılmadı.");
         }
       };
+      window.gunSonuGeriAlSifreSor = async () => {
+        const sifre = prompt(
+          "Gün sonunu geri almak için yönetici şifresini girin:",
+        );
+        if (sifre === null) return;
+        if (!sifre) return alert("Yönetici şifresini girmelisiniz.");
+        try {
+          const u = auth.currentUser;
+          await reauthenticateWithCredential(
+            u,
+            EmailAuthProvider.credential(u.email, sifre),
+          );
+          window.gunSonuGeriAlYetkili = true;
+          await window.sonGunSonunuGeriAl();
+        } catch (e) {
+          window.gunSonuGeriAlYetkili = false;
+          alert("Yönetici şifresi yanlış. Gün sonu geri alınmadı.");
+        }
+      };
+      window.hesapOdemeGeriAlSifreSor = async (masaNo) => {
+        const sifre = prompt(
+          `Masa ${masaNo} hesap ödemesini geri almak için yönetici şifresini girin:`,
+        );
+        if (sifre === null) return;
+        if (!sifre) return alert("Yönetici şifresini girmelisiniz.");
+        try {
+          const u = auth.currentUser;
+          await reauthenticateWithCredential(
+            u,
+            EmailAuthProvider.credential(u.email, sifre),
+          );
+          window.hesapGeriAlYetkiliMasa = Number(masaNo);
+          await window.sonIslemiGeriAl(Number(masaNo));
+        } catch (e) {
+          window.hesapGeriAlYetkiliMasa = null;
+          alert("Yönetici şifresi yanlış. Hesap ödemesi geri alınmadı.");
+        }
+      };
       arayuz();
       gorunur(false);
       onAuthStateChanged(auth, (u) => gorunur(!!u));
@@ -492,7 +530,7 @@
           📊 İstatistikler</button
         ><button
           id="btnGunSonu"
-          onclick="gunSonuSifreSor()"
+          onclick="panelAc('gunSonuPanel',this)"
           style="
             border: 0;
             border-radius: 10px;
@@ -555,14 +593,29 @@
       <section id="istatistikPanel" class="yonetim-panel" style="display: none">
         <h2>📊 Günlük Satış İstatistikleri</h2>
         <section class="panel">
+          <div id="istatistikler">Henüz gün sonu kaydı yok.</div>
+        </section>
+      </section>
+      <section id="gunSonuPanel" class="yonetim-panel" style="display: none">
+        <h2>🌙 Gün Sonu İşlemleri</h2>
+        <section
+          class="panel"
+          style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px"
+        >
           <button
             class="ana"
-            style="max-width: 320px; background: #ef6c00; margin-bottom: 14px"
-            onclick="sonGunSonunuGeriAl()"
+            style="background: #263238"
+            onclick="gunSonuSifreSor()"
           >
-            ↩ Son Gün Sonunu Geri Al
+            🌙 Gün Sonunu Sıfırla
           </button>
-          <div id="istatistikler">Henüz gün sonu kaydı yok.</div>
+          <button
+            class="ana"
+            style="background: #ef6c00"
+            onclick="gunSonuGeriAlSifreSor()"
+          >
+            ↩ Gün Sonunu Geri Al
+          </button>
         </section>
       </section>
     </main>
@@ -604,12 +657,10 @@
           .querySelectorAll(".yonetim-panel")
           .forEach((p) => (p.style.display = "none"));
         document.getElementById(id).style.display = "block";
-        document
-          .querySelectorAll("nav button:not(#btnGunSonu)")
-          .forEach((b) => {
-            b.style.background = "#eee";
-            b.style.color = "#33231e";
-          });
+        document.querySelectorAll("nav button").forEach((b) => {
+          b.style.background = "#eee";
+          b.style.color = "#33231e";
+        });
         buton.style.background = "#4e342e";
         buton.style.color = "#fff";
         if (id === "garsonPanel") {
@@ -652,7 +703,7 @@
         siparisler = [],
         menu = [],
         gunSonlari = [];
-      let sonOdeme = null;
+      let sonOdemeler = {};
       let gunBaslangic = new Date();
       gunBaslangic.setHours(0, 0, 0, 0);
       const para = (n) =>
@@ -710,14 +761,10 @@
                     )}<div class="masa-siparis-durum">🟢 ${masaSiparisleri.filter((s) => s.durum === "Onaylandı").length} onaylı · 🟡 ${masaSiparisleri.filter((s) => s.durum === "Bekleyen").length} bekleyen</div></div>`
                 : `<div class="masa-siparisler">Henüz sipariş yok.</div>`
               : "";
-            const geriAl =
-              !o &&
-              sonOdeme &&
-              !sonOdeme.geriAlindi &&
-              Number(sonOdeme.masa) === no
-                ? `<div class="masa-siparisler"><b>Son ödeme yapılan masa</b></div><button style="background:#ef6c00" onclick="sonIslemiGeriAl()">↩ Hesap Ödemeyi Geri Al</button>`
-                : "";
-            return `<article class="masa ${o ? "acik" : "kapali"}"><div class="no">Masa ${no}</div><div class="durum">${o ? "🟢 AÇIK" : "🔴 KAPALI"}</div><div class="tutar">${para(t)}</div>${detay}${o ? `<button onclick="hesapOdendi(${no})">Hesap Ödendi</button>` : geriAl}</article>`;
+            const geriKaydi = sonOdemeler[no];
+            const geriAlAktif = !o && geriKaydi && !geriKaydi.geriAlindi;
+            const geriAl = `<button ${geriAlAktif ? "" : "disabled"} style="margin-top:7px;background:${geriAlAktif ? "#ef6c00" : "#aaa"}" onclick="hesapOdemeGeriAlSifreSor(${no})">↩ Hesap Ödemeyi Geri Al</button>`;
+            return `<article class="masa ${o ? "acik" : "kapali"}"><div class="no">Masa ${no}</div><div class="durum">${o ? "🟢 AÇIK" : "🔴 KAPALI"}</div><div class="tutar">${para(t)}</div>${detay}${o ? `<button onclick="hesapOdendi(${no})">Hesap Ödendi</button>` : ""}${geriAl}</article>`;
           })
           .join("");
         document.getElementById("acik").textContent =
@@ -745,8 +792,9 @@
         siparisler = s.docs.map((d) => ({ id: d.id, ...d.data() }));
         ciz();
       });
-      onSnapshot(doc(db, "ayarlar", "sonOdeme"), (s) => {
-        sonOdeme = s.exists() ? s.data() : null;
+      onSnapshot(collection(db, "sonOdemeler"), (s) => {
+        sonOdemeler = {};
+        s.docs.forEach((d) => (sonOdemeler[Number(d.id)] = d.data()));
         ciz();
       });
       onSnapshot(collection(db, "menu"), (s) => {
@@ -814,12 +862,35 @@
         );
         try {
           const onceki = gunBaslangic;
+          const aktifSiparisler = siparisler.filter(
+            (s) => s.durum === "Bekleyen" || s.durum === "Onaylandı",
+          );
+          const cagrilar = await getDocs(collection(db, "garsonCagrilari"));
+          const aktifCagrilar = cagrilar.docs.filter(
+            (x) => x.data().durum === "bekliyor",
+          );
+          const yazbozlar = await getDocs(collection(db, "yazbozlar"));
+          const acikOturumIdleri = Object.values(oturumlar).map((o) => o.id);
+          const yazbozYedek = yazbozlar.docs
+            .filter((x) => acikOturumIdleri.includes(x.id))
+            .map((x) => ({ id: x.id, veri: x.data() }));
           await addDoc(collection(db, "gunSonlari"), {
             tarih: new Date().toLocaleDateString("tr-TR"),
             toplam: liste.reduce((t, s) => t + Number(s.toplam || 0), 0),
             siparisSayisi: liste.length,
             urunOzet,
             oncekiBaslangic: onceki,
+            oturumYedek: Object.values(oturumlar),
+            siparisYedek: aktifSiparisler.map((s) => ({
+              id: s.id,
+              durum: s.durum,
+              odendi: s.odendi || false,
+            })),
+            cagriYedek: aktifCagrilar.map((x) => ({
+              id: x.id,
+              durum: x.data().durum,
+            })),
+            yazbozYedek,
             kapanisZamani: serverTimestamp(),
           });
           const b = writeBatch(db);
@@ -831,24 +902,19 @@
               gunSonundaKapandi: true,
             }),
           );
-          siparisler
-            .filter((s) => s.durum === "Bekleyen" || s.durum === "Onaylandı")
-            .forEach((s) =>
-              b.update(doc(db, "siparisler", s.id), {
-                durum: "Tamamlandı",
-                odendi: true,
-                odemeZamani: serverTimestamp(),
-              }),
-            );
-          const cagrilar = await getDocs(collection(db, "garsonCagrilari"));
-          cagrilar.docs
-            .filter((x) => x.data().durum === "bekliyor")
-            .forEach((x) =>
-              b.update(x.ref, {
-                durum: "tamamlandi",
-                tamamlanmaZamani: serverTimestamp(),
-              }),
-            );
+          aktifSiparisler.forEach((s) =>
+            b.update(doc(db, "siparisler", s.id), {
+              durum: "Tamamlandı",
+              odendi: true,
+              odemeZamani: serverTimestamp(),
+            }),
+          );
+          aktifCagrilar.forEach((x) =>
+            b.update(x.ref, {
+              durum: "tamamlandi",
+              tamamlanmaZamani: serverTimestamp(),
+            }),
+          );
           Object.values(oturumlar).forEach((o) =>
             b.delete(doc(db, "yazbozlar", o.id)),
           );
@@ -865,17 +931,46 @@
       };
 
       window.sonGunSonunuGeriAl = async () => {
+        if (!window.gunSonuGeriAlYetkili)
+          return alert("Bu işlem için yönetici şifresi gereklidir.");
+        window.gunSonuGeriAlYetkili = false;
         const g = gunSonlari[0];
         if (!g) return alert("Geri alınacak gün sonu yok.");
         if (!confirm(`${g.tarih} gün sonu geri alınsın mı?`)) return;
         try {
-          await setDoc(
+          const b = writeBatch(db);
+          (g.oturumYedek || []).forEach((o) =>
+            b.update(doc(db, "oturumlar", o.id), {
+              durum: "acik",
+              odendi: false,
+              kapanisZamani: null,
+              gunSonundaKapandi: false,
+            }),
+          );
+          (g.siparisYedek || []).forEach((s) =>
+            b.update(doc(db, "siparisler", s.id), {
+              durum: s.durum,
+              odendi: s.odendi,
+              odemeZamani: null,
+            }),
+          );
+          (g.cagriYedek || []).forEach((c) =>
+            b.update(doc(db, "garsonCagrilari", c.id), {
+              durum: c.durum,
+              tamamlanmaZamani: null,
+            }),
+          );
+          (g.yazbozYedek || []).forEach((y) =>
+            b.set(doc(db, "yazbozlar", y.id), y.veri),
+          );
+          b.set(
             doc(db, "ayarlar", "gunluk"),
             { gunBaslangic: g.oncekiBaslangic },
             { merge: true },
           );
-          await deleteDoc(doc(db, "gunSonlari", g.id));
-          mesaj("Gün sonu geri alındı");
+          b.delete(doc(db, "gunSonlari", g.id));
+          await b.commit();
+          mesaj("Gün sonu geri alındı; masa ve kayıtlar geri yüklendi");
         } catch (e) {
           alert(e.message);
         }
@@ -969,7 +1064,7 @@
                 where("oturumId", "==", o.id),
               ),
             );
-          await setDoc(doc(db, "ayarlar", "sonOdeme"), {
+          await setDoc(doc(db, "sonOdemeler", String(no)), {
             masa: no,
             oturumId: o.id,
             oturum: o,
@@ -1000,9 +1095,12 @@
           alert(e.message);
         }
       };
-      window.sonIslemiGeriAl = async () => {
+      window.sonIslemiGeriAl = async (no) => {
+        if (window.hesapGeriAlYetkiliMasa !== Number(no))
+          return alert("Bu işlem için yönetici şifresi gereklidir.");
+        window.hesapGeriAlYetkiliMasa = null;
         try {
-          const s = await getDoc(doc(db, "ayarlar", "sonOdeme"));
+          const s = await getDoc(doc(db, "sonOdemeler", String(no)));
           if (!s.exists() || s.data().geriAlindi)
             return alert("Geri alınacak hesap ödeme işlemi yok.");
           const x = s.data();
@@ -1021,7 +1119,7 @@
               odemeZamani: null,
             }),
           );
-          b.update(doc(db, "ayarlar", "sonOdeme"), {
+          b.update(doc(db, "sonOdemeler", String(no)), {
             geriAlindi: true,
             geriAlmaZamani: serverTimestamp(),
           });
