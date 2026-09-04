@@ -706,10 +706,16 @@
         buton.style.color = "#fff";
         if (id === "garsonPanel") {
           const f = document.querySelector("#garsonPanel iframe");
+          const izinGonder = () =>
+            f.contentWindow?.postMessage(
+              { type: "dk-yonetici-onay" },
+              location.origin,
+            );
           if (!f.dataset.guncel) {
+            f.addEventListener("load", izinGonder, { once: true });
             f.src = "garson.html?v=" + Date.now();
             f.dataset.guncel = "1";
-          }
+          } else izinGonder();
         }
       };
     </script>
