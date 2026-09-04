@@ -379,6 +379,12 @@ header p{
     color:#fff;
 }
 
+/* Sayfa ilk açıldığında eşli oyun seçili olduğu için yalnızca 2 oyuncu görünür. */
+.yz-oyuncular button:nth-child(2),
+.yz-oyuncular button:nth-child(3){
+    display:none;
+}
+
 #oyunSayisi{
     width:120px;
     padding:12px;
@@ -402,6 +408,7 @@ header p{
     width:100%;
     max-width:900px;
     margin:15px auto 0;
+    text-align:center;
 }
 
 .yz-tablo{
@@ -415,12 +422,14 @@ header p{
 .yz-grid{
     display:grid;
     width:max-content;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 .yz-hucre{
-    width:95px;
+    width:115px;
     height:60px;
-    min-width:95px;
+    min-width:115px;
     min-height:60px;
     padding:4px;
     display:flex;
@@ -454,15 +463,18 @@ header p{
 }
 
 .yz-skor{
-    width:44px;
+    width:72px;
     height:44px;
-    min-width:44px;
+    min-width:72px;
     min-height:44px;
+    box-sizing:border-box;
+    padding:2px;
     border:1px solid #aaa;
     border-radius:4px;
     text-align:center;
     font-size:18px;
     font-weight:bold;
+    line-height:normal;
 }
 
 .yz-skor:disabled{
@@ -549,8 +561,8 @@ header p{
     }
 
     .yz-hucre{
-        width:95px;
-        min-width:95px;
+        width:115px;
+        min-width:115px;
         height:60px;
     }
 
@@ -2478,7 +2490,7 @@ function yzTabloOlustur(){
 
 
     g.style.gridTemplateColumns =
-        `95px repeat(${yzOyuncuSayisi},95px)`;
+        `115px repeat(${yzOyuncuSayisi},115px)`;
 
 
     function h(x,c=""){
