@@ -522,6 +522,21 @@
         border-radius: 10px;
         margin-top: 7px;
       }
+      .foto-yukle-btn {
+        width: 100%;
+        border: 0;
+        border-radius: 9px;
+        padding: 11px;
+        background: #1565c0;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .foto-durum {
+        min-height: 22px;
+        font-weight: bold;
+        color: #2e7d32;
+      }
       .toast {
         position: fixed;
         top: 15px;
@@ -763,10 +778,16 @@
             onchange="gorselOnizle(this)"
           />
           <input id="urunGorsel" type="hidden" />
-          <img
-            id="urunGorselOnizleme"
-            alt="Ürün fotoğrafı önizlemesi"
-          /> </label
+          <img id="urunGorselOnizleme" alt="Ürün fotoğrafı önizlemesi" />
+          <button
+            id="fotoYukleBtn"
+            class="foto-yukle-btn"
+            type="button"
+            onclick="fotoYukle()"
+          >
+            ⬆️ Fotoğrafı Yükle
+          </button>
+          <span id="fotoYuklemeDurumu" class="foto-durum"></span> </label
         ><label class="alan"
           >Durum<select id="urunAktif">
             <option value="true">Aktif</option>
@@ -1199,6 +1220,30 @@
         }
         onizleme.src = URL.createObjectURL(dosya);
         onizleme.style.display = "block";
+        fotoYuklemeDurumu.textContent =
+          "Fotoğraf seçildi. Fotoğrafı Yükle butonuna basın.";
+        fotoYuklemeDurumu.style.color = "#795548";
+      };
+      window.fotoYukle = async () => {
+        const dosya = urunGorselDosya.files?.[0];
+        if (!dosya) return alert("Önce bir fotoğraf seçin.");
+        fotoYukleBtn.disabled = true;
+        fotoYukleBtn.textContent = "⏳ Yükleniyor…";
+        fotoYuklemeDurumu.textContent = "Fotoğraf yükleniyor…";
+        fotoYuklemeDurumu.style.color = "#795548";
+        try {
+          urunGorsel.value = await window.menuGorselYukle(dosya);
+          urunGorselDosya.value = "";
+          fotoYuklemeDurumu.textContent = "✅ Yüklendi";
+          fotoYuklemeDurumu.style.color = "#2e7d32";
+        } catch (e) {
+          fotoYuklemeDurumu.textContent = "❌ Yüklenemedi";
+          fotoYuklemeDurumu.style.color = "#c62828";
+          alert("Fotoğraf yüklenemedi: " + e.message);
+        } finally {
+          fotoYukleBtn.disabled = false;
+          fotoYukleBtn.textContent = "⬆️ Fotoğrafı Yükle";
+        }
       };
       window.yeniUrun = () => {
         formBaslik.textContent = "Yeni Ürün";
@@ -1209,6 +1254,7 @@
         urunGorselDosya.value = "";
         urunGorselOnizleme.removeAttribute("src");
         urunGorselOnizleme.style.display = "none";
+        fotoYuklemeDurumu.textContent = "";
         urunKat.value = "Sıcak İçecekler";
         urunAktif.value = "true";
         urunPencere.showModal();
@@ -1224,6 +1270,10 @@
         urunGorselDosya.value = "";
         urunGorselOnizleme.src = u.gorsel || "";
         urunGorselOnizleme.style.display = u.gorsel ? "block" : "none";
+        fotoYuklemeDurumu.textContent = u.gorsel
+          ? "✅ Mevcut fotoğraf yüklü"
+          : "";
+        fotoYuklemeDurumu.style.color = "#2e7d32";
         urunAktif.value = String(u.aktif !== false);
         urunPencere.showModal();
       };
@@ -1233,12 +1283,15 @@
         const kaydetButonu = e.submitter;
         if (kaydetButonu) {
           kaydetButonu.disabled = true;
-          kaydetButonu.textContent = "Yükleniyor…";
+          kaydetButonu.textContent = "Kaydediliyor…";
         }
         try {
           let gorsel = urunGorsel.value.trim();
           const dosya = urunGorselDosya.files?.[0];
-          if (dosya) gorsel = await window.menuGorselYukle(dosya);
+          if (dosya)
+            throw new Error(
+              "Seçilen fotoğraf için önce Fotoğrafı Yükle butonuna basın.",
+            );
           const v = {
             ad: urunAd.value.trim(),
             kategori: urunKat.value,
