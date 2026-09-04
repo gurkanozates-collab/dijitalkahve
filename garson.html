@@ -439,30 +439,22 @@
         e.classList.add("goster");
         setTimeout(() => e.classList.remove("goster"), 2200);
       }
-      const garsonMenu = {
-        Çay: 25,
-        Nescafe: 60,
-        "Türk Kahvesi": 70,
-        Latte: 95,
-        Cappuccino: 95,
-        Espresso: 75,
-        Americano: 85,
-        "Sıcak Çikolata": 90,
-        Kola: 50,
-        Fanta: 50,
-        Limonata: 80,
-        "Soğuk Kahve": 105,
-        Ayran: 40,
-        "Meyve Suyu": 60,
-        "Maden Suyu": 35,
-        Su: 15,
-        Tost: 100,
-        Cheesecake: 120,
-        "San Sebastian": 135,
-        Kurabiye: 55,
-      };
+      let garsonMenu = {};
       let aktifMasa = null,
         garsonSepet = {};
+      onSnapshot(collection(db, "menu"), (snap) => {
+        garsonMenu = {};
+        const yeniSepet = {};
+        snap.docs
+          .map((d) => d.data())
+          .filter((x) => x.aktif !== false && x.ad)
+          .forEach((x) => {
+            garsonMenu[x.ad] = Number(x.fiyat || 0);
+            yeniSepet[x.ad] = garsonSepet[x.ad] || 0;
+          });
+        garsonSepet = yeniSepet;
+        if (document.getElementById("masaPencere").open) masaMenuCiz();
+      });
       function masalariCiz() {
         document.getElementById("masalar").innerHTML = Array.from(
           { length: 10 },
@@ -576,7 +568,7 @@
         )
           .map(
             ([u, f]) =>
-              `<div class="duzenleme-satir"><div><b>${u}</b><br><small>${para(f)}</small></div><div class="adet-sec"><button onclick="garsonAdet('${u}',-1)">−</button><b>${garsonSepet[u]}</b><button onclick="garsonAdet('${u}',1)">+</button></div></div>`,
+              `<div class="duzenleme-satir"><div><b>${u}</b><br><small>${para(f)}</small></div><div class="adet-sec"><button onclick="garsonAdet(decodeURIComponent('${encodeURIComponent(u)}'),-1)">−</button><b>${garsonSepet[u]}</b><button onclick="garsonAdet(decodeURIComponent('${encodeURIComponent(u)}'),1)">+</button></div></div>`,
           )
           .join("");
         document.getElementById("masaToplam").textContent = para(
