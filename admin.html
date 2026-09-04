@@ -48,10 +48,14 @@
           '<div id="yoneticiGiris" class="giris-ekrani"><div class="giris-kart"><h2>🔐 Yönetici Girişi</h2><input id="yEmail" type="email" placeholder="E-posta adresi"><input id="ySifre" type="password" placeholder="Şifre"><button onclick="yoneticiGiris()">Giriş Yap</button><button onclick="sifremiUnuttum()" style="background:#1565c0">Şifremi Unuttum</button></div></div>',
         );
         const n = document.querySelector("nav>div");
-        n.style.gridTemplateColumns = "repeat(6,1fr)";
+        n.style.gridTemplateColumns = "repeat(7,1fr)";
         n.insertAdjacentHTML(
           "beforeend",
           '<button onclick="panelAc(\'sifrePanel\',this)" style="border:0;border-radius:10px;padding:13px;background:#eee;font-weight:bold">🔐 Şifre Yönetimi</button>',
+        );
+        n.insertAdjacentHTML(
+          "beforeend",
+          '<button onclick="yoneticiCikis()" style="border:0;border-radius:10px;padding:13px;background:#c62828;color:#fff;font-weight:bold;cursor:pointer">🚪 Çıkış Yap</button>',
         );
         document
           .querySelector("main")
@@ -172,9 +176,46 @@
           alert("Yönetici şifresi yanlış. Hesap ödemesi geri alınmadı.");
         }
       };
+      const HAREKETSIZLIK_SURESI = 60 * 1000;
+      let sonHareket = Date.now();
+      let hareketsizlikKontrolu = null;
+      const hareketVar = () => {
+        if (auth.currentUser) sonHareket = Date.now();
+      };
+      ["pointerdown", "mousemove", "keydown", "touchstart", "scroll"].forEach(
+        (olay) =>
+          document.addEventListener(olay, hareketVar, { passive: true }),
+      );
+      window.addEventListener("message", (e) => {
+        if (e.origin === location.origin && e.data?.type === "dk-hareket")
+          hareketVar();
+      });
+      document.addEventListener("visibilitychange", () => {
+        if (
+          !document.hidden &&
+          auth.currentUser &&
+          Date.now() - sonHareket >= HAREKETSIZLIK_SURESI
+        )
+          signOut(auth);
+      });
+      function hareketsizlikBaslat() {
+        sonHareket = Date.now();
+        clearInterval(hareketsizlikKontrolu);
+        hareketsizlikKontrolu = setInterval(() => {
+          if (
+            auth.currentUser &&
+            Date.now() - sonHareket >= HAREKETSIZLIK_SURESI
+          )
+            signOut(auth);
+        }, 5000);
+      }
       arayuz();
       gorunur(false);
-      onAuthStateChanged(auth, (u) => gorunur(!!u));
+      onAuthStateChanged(auth, (u) => {
+        gorunur(!!u);
+        if (u) hareketsizlikBaslat();
+        else clearInterval(hareketsizlikKontrolu);
+      });
     </script>
     <style>
       .masa {
