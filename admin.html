@@ -21,15 +21,42 @@
         doc,
         setDoc,
       } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+      import {
+        getStorage,
+        ref as storageRef,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-storage.js";
       const c = {
           apiKey: "AIzaSyC05yXQzAlF2AYzzeaJrDdMUYKwohKOsWM",
           authDomain: "dijitalkahve-67f0a.firebaseapp.com",
           projectId: "dijitalkahve-67f0a",
+          storageBucket: "dijitalkahve-67f0a.firebasestorage.app",
           appId: "1:326476599239:web:143f39583a3478118853e2",
         },
         a = initializeApp(c, "yoneticiAuth"),
         auth = getAuth(a),
-        dbs = getFirestore(a);
+        dbs = getFirestore(a),
+        storage = getStorage(a);
+      window.menuGorselYukle = async (dosya) => {
+        if (!auth.currentUser) throw new Error("Yönetici oturumu bulunamadı.");
+        if (!dosya.type.startsWith("image/"))
+          throw new Error("Lütfen bir fotoğraf dosyası seçin.");
+        if (dosya.size > 5 * 1024 * 1024)
+          throw new Error("Fotoğraf en fazla 5 MB olabilir.");
+        const uzanti = (dosya.name.split(".").pop() || "jpg").replace(
+          /[^a-zA-Z0-9]/g,
+          "",
+        );
+        const yol = storageRef(
+          storage,
+          `menu-resimleri/${Date.now()}-${crypto.randomUUID()}.${uzanti}`,
+        );
+        const sonuc = await uploadBytes(yol, dosya, {
+          contentType: dosya.type,
+        });
+        return getDownloadURL(sonuc.ref);
+      };
       function gorunur(v) {
         document.querySelector("header").style.display = v ? "block" : "none";
         document.querySelector("nav").style.display = v ? "block" : "none";
@@ -487,6 +514,14 @@
         padding: 10px;
         font-weight: bold;
       }
+      #urunGorselOnizleme {
+        display: none;
+        width: 100%;
+        max-height: 210px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-top: 7px;
+      }
       .toast {
         position: fixed;
         top: 15px;
@@ -720,7 +755,18 @@
             step="0.01"
             required /></label
         ><label class="alan"
-          >Görsel adresi<input id="urunGorsel" type="url" /></label
+          >📷 Ürün fotoğrafı
+          <input
+            id="urunGorselDosya"
+            type="file"
+            accept="image/*"
+            onchange="gorselOnizle(this)"
+          />
+          <input id="urunGorsel" type="hidden" />
+          <img
+            id="urunGorselOnizleme"
+            alt="Ürün fotoğrafı önizlemesi"
+          /> </label
         ><label class="alan"
           >Durum<select id="urunAktif">
             <option value="true">Aktif</option>
@@ -1143,12 +1189,26 @@
               .join("")
           : "Henüz ürün eklenmedi.";
       };
+      window.gorselOnizle = (input) => {
+        const dosya = input.files?.[0];
+        const onizleme = document.getElementById("urunGorselOnizleme");
+        if (!dosya) return;
+        if (!dosya.type.startsWith("image/")) {
+          input.value = "";
+          return alert("Lütfen bir fotoğraf dosyası seçin.");
+        }
+        onizleme.src = URL.createObjectURL(dosya);
+        onizleme.style.display = "block";
+      };
       window.yeniUrun = () => {
         formBaslik.textContent = "Yeni Ürün";
         urunId.value = "";
         urunAd.value = "";
         urunFiyat.value = "";
         urunGorsel.value = "";
+        urunGorselDosya.value = "";
+        urunGorselOnizleme.removeAttribute("src");
+        urunGorselOnizleme.style.display = "none";
         urunKat.value = "Sıcak İçecekler";
         urunAktif.value = "true";
         urunPencere.showModal();
@@ -1161,21 +1221,32 @@
         urunKat.value = u.kategori;
         urunFiyat.value = u.fiyat;
         urunGorsel.value = u.gorsel || "";
+        urunGorselDosya.value = "";
+        urunGorselOnizleme.src = u.gorsel || "";
+        urunGorselOnizleme.style.display = u.gorsel ? "block" : "none";
         urunAktif.value = String(u.aktif !== false);
         urunPencere.showModal();
       };
       window.urunKaydet = async (e) => {
         e.preventDefault();
-        const id = urunId.value,
-          v = {
+        const id = urunId.value;
+        const kaydetButonu = e.submitter;
+        if (kaydetButonu) {
+          kaydetButonu.disabled = true;
+          kaydetButonu.textContent = "Yükleniyor…";
+        }
+        try {
+          let gorsel = urunGorsel.value.trim();
+          const dosya = urunGorselDosya.files?.[0];
+          if (dosya) gorsel = await window.menuGorselYukle(dosya);
+          const v = {
             ad: urunAd.value.trim(),
             kategori: urunKat.value,
             fiyat: Number(urunFiyat.value),
-            gorsel: urunGorsel.value.trim(),
+            gorsel,
             aktif: urunAktif.value === "true",
             guncellemeZamani: serverTimestamp(),
           };
-        try {
           id
             ? await updateDoc(doc(db, "menu", id), v)
             : await addDoc(collection(db, "menu"), {
@@ -1185,7 +1256,12 @@
           urunPencere.close();
           mesaj("Ürün kaydedildi");
         } catch (x) {
-          alert(x.message);
+          alert("Fotoğraf veya ürün kaydedilemedi: " + x.message);
+        } finally {
+          if (kaydetButonu) {
+            kaydetButonu.disabled = false;
+            kaydetButonu.textContent = "Kaydet";
+          }
         }
       };
       window.urunSil = async (id) => {
