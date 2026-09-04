@@ -10,6 +10,7 @@
         getFirestore,
         doc,
         getDoc,
+        onSnapshot,
       } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
       const c = {
           apiKey: "AIzaSyC05yXQzAlF2AYzzeaJrDdMUYKwohKOsWM",
@@ -52,21 +53,42 @@
           if ((await hash(pinGiris.value.trim())) !== s.data().garsonPinHash)
             return alert("Garson PIN’i yanlış.");
           sessionStorage.setItem("dk_garson_giris", "ok");
+          sessionStorage.setItem(
+            "dk_garson_anahtar",
+            s.data().garsonOturumAnahtari || "eski",
+          );
           goster(true);
         } catch (e) {
           alert("Giriş kontrol edilemedi: " + e.message);
         }
       };
       kur();
+      let yoneticiYetkisi = false;
       goster(sessionStorage.getItem("dk_garson_giris") === "ok");
+      onSnapshot(doc(dbs, "ayarlar", "guvenlik"), (s) => {
+        if (!s.exists()) return;
+        const yeniAnahtar = s.data().garsonOturumAnahtari || "eski";
+        const kayitliAnahtar = sessionStorage.getItem("dk_garson_anahtar");
+        if (
+          sessionStorage.getItem("dk_garson_giris") === "ok" &&
+          kayitliAnahtar !== yeniAnahtar
+        ) {
+          sessionStorage.removeItem("dk_garson_giris");
+          sessionStorage.removeItem("dk_garson_anahtar");
+          document.getElementById("pinGiris").value = "";
+          if (!yoneticiYetkisi) goster(false);
+        }
+      });
       if (window.self !== window.top) {
         window.addEventListener("message", (e) => {
           if (
             e.origin === location.origin &&
             e.source === window.parent &&
             e.data?.type === "dk-yonetici-onay"
-          )
+          ) {
+            yoneticiYetkisi = true;
             goster(true);
+          }
         });
         ["pointerdown", "mousemove", "keydown", "touchstart", "scroll"].forEach(
           (olay) =>
