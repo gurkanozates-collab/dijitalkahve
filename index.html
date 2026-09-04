@@ -921,94 +921,11 @@
    ÜRÜNLER
 ================================ */
 
-      const urunler = {
-        Çay: 25,
-        Nescafe: 60,
-        "Türk Kahvesi": 70,
-        Latte: 95,
-        Cappuccino: 95,
-        Espresso: 75,
-        Americano: 85,
-        "Sıcak Çikolata": 90,
-        Kola: 50,
-        Fanta: 50,
-        Limonata: 80,
-        "Soğuk Kahve": 105,
-        Ayran: 40,
-        "Meyve Suyu": 60,
-        "Maden Suyu": 35,
-        Su: 15,
-        Tost: 100,
-        Cheesecake: 120,
-        "San Sebastian": 135,
-        Kurabiye: 55,
-      };
-
-      const idler = {
-        Çay: "Cay",
-        Nescafe: "Nescafe",
-        "Türk Kahvesi": "TurkKahvesi",
-        Latte: "Latte",
-        Cappuccino: "Cappuccino",
-        Espresso: "Espresso",
-        Americano: "Americano",
-        "Sıcak Çikolata": "SicakCikolata",
-        Kola: "Kola",
-        Fanta: "Fanta",
-        Limonata: "Limonata",
-        "Soğuk Kahve": "SogukKahve",
-        Ayran: "Ayran",
-        "Meyve Suyu": "MeyveSuyu",
-        "Maden Suyu": "MadenSuyu",
-        Su: "Su",
-        Tost: "Tost",
-        Cheesecake: "Cheesecake",
-        "San Sebastian": "SanSebastian",
-        Kurabiye: "Kurabiye",
-      };
-
-      const gorseller = {
-        Çay: "https://images.unsplash.com/photo-1594631252845-29fc4cc8cde9?w=500",
-        Nescafe:
-          "https://images.unsplash.com/photo-1551030173-122aabc4489c?w=500",
-        "Türk Kahvesi":
-          "https://images.unsplash.com/photo-1578374173705-969cbe6f2d6b?w=500",
-        Latte:
-          "https://images.unsplash.com/photo-1561882468-9110e03e0f78?w=500",
-        Cappuccino:
-          "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500",
-        Espresso:
-          "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=500",
-        Americano:
-          "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500",
-        "Sıcak Çikolata":
-          "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=500",
-        Kola: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?w=500",
-        Fanta:
-          "https://images.unsplash.com/photo-1624517452488-04869289c4ca?w=500",
-        Limonata:
-          "https://images.unsplash.com/photo-1523371054106-bbf80586c38c?w=500",
-        "Soğuk Kahve":
-          "https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=500",
-        Ayran:
-          "https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=500",
-        "Meyve Suyu":
-          "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500",
-        "Maden Suyu":
-          "https://images.unsplash.com/photo-1564419320461-6870880221ad?w=500",
-        Su: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=500",
-        Tost: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500",
-        Cheesecake:
-          "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500",
-        "San Sebastian":
-          "https://images.unsplash.com/photo-1524351199678-941a58a3df50?w=500",
-        Kurabiye:
-          "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=500",
-      };
-
+      let urunler = {};
+      let idler = {};
+      let gorseller = {};
+      let kategoriler = {};
       let sepet = {};
-
-      Object.keys(urunler).forEach((u) => (sepet[u] = 0));
 
       /* ================================
    OTURUM
@@ -1044,7 +961,7 @@
             <div class="adet">
 
                 <button
-                    onclick="adetAzalt('${u}')">
+                    onclick="adetAzalt(decodeURIComponent('${encodeURIComponent(u)}'))">
 
                     −
 
@@ -1058,7 +975,7 @@
                 </span>
 
                 <button
-                    onclick="adetArtir('${u}')">
+                    onclick="adetArtir(decodeURIComponent('${encodeURIComponent(u)}'))">
 
                     +
 
@@ -1073,40 +990,51 @@
     `;
       }
 
-      document.getElementById("sicakMenu").innerHTML = [
-        "Çay",
-        "Nescafe",
-        "Türk Kahvesi",
-        "Latte",
-        "Cappuccino",
-        "Espresso",
-        "Americano",
-        "Sıcak Çikolata",
-      ]
-        .map(kart)
-        .join("");
+      function menuCiz(liste) {
+        const alanlar = {
+          "Sıcak İçecekler": "sicakMenu",
+          "Soğuk İçecekler": "sogukMenu",
+          Atıştırmalıklar: "atistirmalikMenu",
+        };
+        Object.values(alanlar).forEach(
+          (id) => (document.getElementById(id).innerHTML = ""),
+        );
+        liste.forEach((x) => {
+          urunler[x.ad] = Number(x.fiyat || 0);
+          idler[x.ad] = "urun_" + x.id;
+          gorseller[x.ad] =
+            x.gorsel || "https://placehold.co/500x350?text=Ürün";
+          kategoriler[x.ad] = x.kategori;
+          if (sepet[x.ad] === undefined) sepet[x.ad] = 0;
+        });
+        Object.entries(alanlar).forEach(([kat, id]) => {
+          const adlar = liste
+            .filter((x) => x.kategori === kat)
+            .map((x) => x.ad);
+          document.getElementById(id).innerHTML = adlar.length
+            ? adlar.map(kart).join("")
+            : '<div class="bos" style="grid-column:1/-1">Bu kategoride aktif ürün yok.</div>';
+        });
+      }
 
-      document.getElementById("sogukMenu").innerHTML = [
-        "Kola",
-        "Fanta",
-        "Limonata",
-        "Soğuk Kahve",
-        "Ayran",
-        "Meyve Suyu",
-        "Maden Suyu",
-        "Su",
-      ]
-        .map(kart)
-        .join("");
-
-      document.getElementById("atistirmalikMenu").innerHTML = [
-        "Tost",
-        "Cheesecake",
-        "San Sebastian",
-        "Kurabiye",
-      ]
-        .map(kart)
-        .join("");
+      onSnapshot(
+        collection(db, "menu"),
+        (snap) => {
+          urunler = {};
+          idler = {};
+          gorseller = {};
+          kategoriler = {};
+          const liste = snap.docs
+            .map((d) => ({ id: d.id, ...d.data() }))
+            .filter((x) => x.aktif !== false && x.ad)
+            .sort((a, b) => (a.ad || "").localeCompare(b.ad || "", "tr"));
+          menuCiz(liste);
+        },
+        (e) => {
+          document.getElementById("sicakMenu").innerHTML =
+            `<div class="bos">Menü yüklenemedi: ${e.message}</div>`;
+        },
+      );
 
       /* ================================
    OTURUM BUL
@@ -1359,7 +1287,7 @@
 ================================ */
 
       function sepetiSifirla() {
-        Object.keys(sepet).forEach((u) => {
+        Object.keys(urunler).forEach((u) => {
           sepet[u] = 0;
 
           const el = document.getElementById("adet-" + idler[u]);
@@ -1462,7 +1390,7 @@
         const liste = [];
         let toplam = 0;
 
-        Object.keys(sepet).forEach((u) => {
+        Object.keys(urunler).forEach((u) => {
           const adet = Number(sepet[u]);
 
           if (adet > 0) {
