@@ -283,6 +283,25 @@
         font-size: 25px;
         margin-top: 5px;
       }
+      .masa-sayac {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .masa-sayac span {
+        padding: 8px;
+        border-radius: 9px;
+        text-align: center;
+        font-weight: bold;
+      }
+      .masa-sayac .acik-sayac {
+        background: #e8f5e9;
+        color: #2e7d32;
+      }
+      .masa-sayac .kapali-sayac {
+        background: #ffebee;
+        color: #c62828;
+      }
       h2 {
         margin: 24px 0 11px;
       }
@@ -605,14 +624,15 @@
     <main>
       <section id="masalarPanel" class="yonetim-panel">
         <section class="ozet">
-          <div>Açık masa<b id="acik">0</b></div>
+          <div class="masa-sayac">
+            <span class="acik-sayac">🟢 Açık<b id="acik">0</b></span>
+            <span class="kapali-sayac">🔴 Kapalı<b id="kapali">10</b></span>
+          </div>
+          <div>Bekleyen siparişler<b id="bekleyen">0</b></div>
+          <div>Ödeme bekleyen onaylı<b id="onayliBekleyenToplam">₺0</b></div>
           <div>Günlük nakit<b id="nakitToplam">₺0</b></div>
           <div>Günlük POS<b id="posToplam">₺0</b></div>
-          <div>Günlük toplam hasılat<b id="toplam">₺0</b></div>
-          <div>
-            Ödeme bekleyen onaylı siparişler<b id="onayliBekleyenToplam">₺0</b>
-          </div>
-          <div>Bekleyen sipariş<b id="bekleyen">0</b></div>
+          <div>Günlük toplam<b id="toplam">₺0</b></div>
         </section>
         <h2>🪑 Masa ve Hesap Yönetimi</h2>
         <section id="masalar" class="masalar"></section>
@@ -864,6 +884,8 @@
           .join("");
         document.getElementById("acik").textContent =
           Object.keys(oturumlar).length;
+        document.getElementById("kapali").textContent =
+          10 - Object.keys(oturumlar).length;
         const gunluk = siparisler.filter(
           (s) =>
             s.odendi === true &&
