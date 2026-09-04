@@ -414,7 +414,8 @@
         <div>
           <span class="canli">● Firebase canlı</span> ·
           <b id="acikSayisi">0</b> açık masa ·
-          <b id="siparisSayisi">0</b> bekleyen sipariş
+          <b id="siparisSayisi">0</b> bekleyen sipariş ·
+          <b id="onayliToplam">₺0</b> ödeme bekleyen onaylı hesap
         </div>
         <button class="yenile" onclick="location.reload()">↻ Yenile</button>
       </div>
@@ -683,8 +684,13 @@
       onSnapshot(
         collection(db, "siparisler"),
         (s) => {
-          siparisler = s.docs
-            .map((d) => ({ id: d.id, ...d.data() }))
+          const tumSiparisler = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+          document.getElementById("onayliToplam").textContent = para(
+            tumSiparisler
+              .filter((x) => x.durum === "Onaylandı" && x.odendi !== true)
+              .reduce((toplam, x) => toplam + Number(x.toplam || 0), 0),
+          );
+          siparisler = tumSiparisler
             .filter((x) => x.durum === "Bekleyen")
             .sort(
               (a, b) =>
