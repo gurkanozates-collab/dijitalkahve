@@ -112,6 +112,7 @@
           doc(dbs, "ayarlar", "guvenlik"),
           {
             garsonPinHash: await hash(p),
+            garsonOturumAnahtari: crypto.randomUUID(),
             guncelleyen: auth.currentUser.email,
             guncellemeZamani: new Date().toISOString(),
           },
@@ -968,6 +969,15 @@
           b.set(
             doc(db, "ayarlar", "gunluk"),
             { gunBaslangic: serverTimestamp() },
+            { merge: true },
+          );
+          b.set(
+            doc(db, "ayarlar", "guvenlik"),
+            {
+              garsonOturumAnahtari: crypto.randomUUID(),
+              garsonOturumYenilemeNedeni: "gun-sonu",
+              garsonOturumYenilemeZamani: serverTimestamp(),
+            },
             { merge: true },
           );
           await b.commit();
