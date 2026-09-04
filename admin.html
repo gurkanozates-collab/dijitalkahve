@@ -430,6 +430,21 @@
       dialog::backdrop {
         background: #0008;
       }
+      .odeme-secimler {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .odeme-secimler button {
+        border: 0;
+        border-radius: 12px;
+        padding: 18px 10px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+      }
       .form {
         padding: 19px;
       }
@@ -591,7 +606,9 @@
       <section id="masalarPanel" class="yonetim-panel">
         <section class="ozet">
           <div>Açık masa<b id="acik">0</b></div>
-          <div>Günlük onaylı hasılat<b id="toplam">₺0</b></div>
+          <div>Günlük nakit<b id="nakitToplam">₺0</b></div>
+          <div>Günlük POS<b id="posToplam">₺0</b></div>
+          <div>Günlük toplam hasılat<b id="toplam">₺0</b></div>
           <div>Bekleyen sipariş<b id="bekleyen">0</b></div>
         </section>
         <h2>🪑 Masa ve Hesap Yönetimi</h2>
@@ -693,6 +710,32 @@
         </div>
       </form>
     </dialog>
+    <dialog id="odemePencere">
+      <div class="form">
+        <h2 id="odemeBaslik">Ödeme Yöntemini Seçin</h2>
+        <p>Hesap hangi yöntemle ödendi?</p>
+        <div class="odeme-secimler">
+          <button style="background: #2e7d32" onclick="odemeTamamla('nakit')">
+            💵 Nakit
+          </button>
+          <button style="background: #1565c0" onclick="odemeTamamla('pos')">
+            💳 POS Cihazı
+          </button>
+        </div>
+        <button
+          style="
+            width: 100%;
+            margin-top: 10px;
+            padding: 11px;
+            border: 0;
+            border-radius: 9px;
+          "
+          onclick="odemePencere.close()"
+        >
+          Vazgeç
+        </button>
+      </div>
+    </dialog>
     <script>
       window.panelAc = function (id, buton) {
         document
@@ -752,6 +795,7 @@
         menu = [],
         gunSonlari = [];
       let sonOdemeler = {};
+      let odemeBekleyenMasa = null;
       let gunBaslangic = new Date();
       gunBaslangic.setHours(0, 0, 0, 0);
       const para = (n) =>
@@ -818,10 +862,20 @@
         document.getElementById("acik").textContent =
           Object.keys(oturumlar).length;
         const gunluk = siparisler.filter(
-          (s) => s.onayZamani?.toMillis?.() >= gunBaslangic.getTime(),
+          (s) =>
+            s.odendi === true &&
+            s.odemeZamani?.toMillis?.() >= gunBaslangic.getTime(),
         );
+        const nakitToplam = gunluk
+          .filter((s) => s.odemeYontemi === "nakit")
+          .reduce((t, s) => t + Number(s.toplam || 0), 0);
+        const posToplam = gunluk
+          .filter((s) => s.odemeYontemi === "pos")
+          .reduce((t, s) => t + Number(s.toplam || 0), 0);
+        document.getElementById("nakitToplam").textContent = para(nakitToplam);
+        document.getElementById("posToplam").textContent = para(posToplam);
         document.getElementById("toplam").textContent = para(
-          gunluk.reduce((t, s) => t + Number(s.toplam || 0), 0),
+          nakitToplam + posToplam,
         );
         document.getElementById("bekleyen").textContent = siparisler.filter(
           (s) => s.durum === "Bekleyen",
@@ -872,7 +926,7 @@
           ? gunSonlari
               .map(
                 (g) =>
-                  `<article class="urun" style="margin-bottom:10px"><h3>${g.tarih || "Gün sonu"}</h3><div class="fiyat">${para(g.toplam)}</div><div class="etiket">${g.siparisSayisi || 0} sipariş</div><hr>${Object.entries(
+                  `<article class="urun" style="margin-bottom:10px"><h3>${g.tarih || "Gün sonu"}</h3><div class="fiyat">Toplam: ${para(g.toplam)}</div><div class="etiket">💵 Nakit: ${para(g.nakitToplam)} · 💳 POS: ${para(g.posToplam)} · ${g.siparisSayisi || 0} sipariş</div><hr>${Object.entries(
                     g.urunOzet || {},
                   )
                     .sort((x, y) => y[1].adet - x[1].adet)
@@ -897,9 +951,17 @@
         )
           return;
         const liste = siparisler.filter(
-            (s) => s.onayZamani?.toMillis?.() >= gunBaslangic.getTime(),
+            (s) =>
+              s.odendi === true &&
+              s.odemeZamani?.toMillis?.() >= gunBaslangic.getTime(),
           ),
           urunOzet = {};
+        const nakitToplam = liste
+          .filter((s) => s.odemeYontemi === "nakit")
+          .reduce((t, s) => t + Number(s.toplam || 0), 0);
+        const posToplam = liste
+          .filter((s) => s.odemeYontemi === "pos")
+          .reduce((t, s) => t + Number(s.toplam || 0), 0);
         liste.forEach((s) =>
           (s.urunler || []).forEach((u) => {
             const x =
@@ -924,7 +986,9 @@
             .map((x) => ({ id: x.id, veri: x.data() }));
           await addDoc(collection(db, "gunSonlari"), {
             tarih: new Date().toLocaleDateString("tr-TR"),
-            toplam: liste.reduce((t, s) => t + Number(s.toplam || 0), 0),
+            toplam: nakitToplam + posToplam,
+            nakitToplam,
+            posToplam,
             siparisSayisi: liste.length,
             urunOzet,
             oncekiBaslangic: onceki,
@@ -1103,10 +1167,24 @@
           mesaj("Ürün silindi");
         }
       };
-      window.hesapOdendi = async (no) => {
+      window.hesapOdendi = (no) => {
+        if (!oturumlar[no]) return;
+        odemeBekleyenMasa = Number(no);
+        document.getElementById("odemeBaslik").textContent =
+          `Masa ${no} — Ödeme Yöntemi`;
+        document.getElementById("odemePencere").showModal();
+      };
+      window.odemeTamamla = async (odemeYontemi) => {
+        const no = odemeBekleyenMasa;
         const o = oturumlar[no];
-        if (!o || !confirm(`Masa ${no} hesabı ödendi ve masa kapatılsın mı?`))
+        if (!o) return alert("Masa oturumu bulunamadı.");
+        if (
+          !confirm(
+            `Masa ${no} hesabı ${odemeYontemi === "nakit" ? "NAKİT" : "POS"} olarak kapatılsın mı?`,
+          )
+        )
           return;
+        document.getElementById("odemePencere").close();
         try {
           const b = writeBatch(db),
             sq = await getDocs(
@@ -1129,7 +1207,9 @@
               id: x.id,
               durum: x.data().durum,
               odendi: x.data().odendi || false,
+              odemeYontemi: x.data().odemeYontemi || null,
             })),
+            odemeYontemi,
             geriAlindi: false,
             zaman: serverTimestamp(),
           });
@@ -1137,6 +1217,7 @@
             b.update(x.ref, {
               durum: "Tamamlandı",
               odendi: true,
+              odemeYontemi,
               odemeZamani: serverTimestamp(),
             }),
           );
@@ -1147,7 +1228,10 @@
             kapanisZamani: serverTimestamp(),
           });
           await b.commit();
-          mesaj(`Masa ${no} sıfırlandı ve kapandı`);
+          odemeBekleyenMasa = null;
+          mesaj(
+            `Masa ${no} ${odemeYontemi === "nakit" ? "nakit" : "POS"} olarak kapatıldı`,
+          );
         } catch (e) {
           alert(e.message);
         }
@@ -1173,6 +1257,7 @@
             b.update(doc(db, "siparisler", k.id), {
               durum: k.durum,
               odendi: k.odendi,
+              odemeYontemi: k.odemeYontemi || null,
               odemeZamani: null,
             }),
           );
