@@ -58,19 +58,16 @@
         }
       };
       kur();
-      let yoneticiIcindenAcildi = false;
-      try {
-        const yonlendiren = new URL(document.referrer);
-        yoneticiIcindenAcildi =
-          window.self !== window.top &&
-          yonlendiren.origin === location.origin &&
-          yonlendiren.pathname.endsWith("/yonetici.html");
-      } catch (_) {}
-      goster(
-        yoneticiIcindenAcildi ||
-          sessionStorage.getItem("dk_garson_giris") === "ok",
-      );
+      goster(sessionStorage.getItem("dk_garson_giris") === "ok");
       if (window.self !== window.top) {
+        window.addEventListener("message", (e) => {
+          if (
+            e.origin === location.origin &&
+            e.source === window.parent &&
+            e.data?.type === "dk-yonetici-onay"
+          )
+            goster(true);
+        });
         ["pointerdown", "mousemove", "keydown", "touchstart", "scroll"].forEach(
           (olay) =>
             document.addEventListener(
