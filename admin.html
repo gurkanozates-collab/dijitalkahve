@@ -609,6 +609,9 @@
           <div>Günlük nakit<b id="nakitToplam">₺0</b></div>
           <div>Günlük POS<b id="posToplam">₺0</b></div>
           <div>Günlük toplam hasılat<b id="toplam">₺0</b></div>
+          <div>
+            Ödeme bekleyen onaylı siparişler<b id="onayliBekleyenToplam">₺0</b>
+          </div>
           <div>Bekleyen sipariş<b id="bekleyen">0</b></div>
         </section>
         <h2>🪑 Masa ve Hesap Yönetimi</h2>
@@ -876,6 +879,9 @@
         document.getElementById("posToplam").textContent = para(posToplam);
         document.getElementById("toplam").textContent = para(
           nakitToplam + posToplam,
+        );
+        document.getElementById("onayliBekleyenToplam").textContent = para(
+          Object.values(hesap).reduce((a, b) => a + b, 0),
         );
         document.getElementById("bekleyen").textContent = siparisler.filter(
           (s) => s.durum === "Bekleyen",
