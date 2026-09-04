@@ -70,6 +70,20 @@
         yoneticiIcindenAcildi ||
           sessionStorage.getItem("dk_garson_giris") === "ok",
       );
+      if (window.self !== window.top) {
+        ["pointerdown", "mousemove", "keydown", "touchstart", "scroll"].forEach(
+          (olay) =>
+            document.addEventListener(
+              olay,
+              () =>
+                window.parent.postMessage(
+                  { type: "dk-hareket" },
+                  location.origin,
+                ),
+              { passive: true },
+            ),
+        );
+      }
     </script>
     <style>
       .masa {
@@ -256,6 +270,29 @@
         border-radius: 13px;
         padding: 25px;
       }
+      .hazirlik-ozet {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      .hazirlik-urun {
+        background: #fff;
+        border-left: 6px solid var(--t);
+        border-radius: 12px;
+        padding: 13px;
+        box-shadow: 0 4px 14px #0001;
+      }
+      .hazirlik-urun b {
+        display: block;
+        font-size: 22px;
+        margin-top: 6px;
+        color: var(--k);
+      }
+      .hazirlik-masalar {
+        margin-top: 6px;
+        color: #6d625d;
+        font-size: 12px;
+      }
       .toast {
         position: fixed;
         top: 15px;
@@ -325,6 +362,9 @@
         .grid {
           grid-template-columns: repeat(2, 1fr);
         }
+        .hazirlik-ozet {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
       @media (max-width: 580px) {
         .masalar {
@@ -332,6 +372,9 @@
         }
         .grid {
           grid-template-columns: 1fr;
+        }
+        .hazirlik-ozet {
+          grid-template-columns: repeat(2, 1fr);
         }
         .bar {
           flex-direction: column;
@@ -359,6 +402,10 @@
       <h2>🔔 Garson Çağrıları</h2>
       <section id="cagrilar" class="grid">
         <div class="bos">Yükleniyor…</div>
+      </section>
+      <h2>☕ Hazırlanacak Ürünler</h2>
+      <section id="hazirlikOzeti" class="hazirlik-ozet">
+        <div class="bos">Bekleyen ürünler yükleniyor…</div>
       </section>
       <h2>🧾 Siparişler</h2>
       <section id="siparisler" class="grid">
@@ -627,6 +674,32 @@
             );
           document.getElementById("siparisSayisi").textContent =
             siparisler.length;
+          const urunOzeti = {};
+          siparisler.forEach((siparis) =>
+            (siparis.urunler || []).forEach((u) => {
+              const x =
+                urunOzeti[u.urun] ||
+                (urunOzeti[u.urun] = { adet: 0, masalar: {} });
+              x.adet += Number(u.adet || 0);
+              x.masalar[siparis.masa] =
+                (x.masalar[siparis.masa] || 0) + Number(u.adet || 0);
+            }),
+          );
+          document.getElementById("hazirlikOzeti").innerHTML = Object.keys(
+            urunOzeti,
+          ).length
+            ? Object.entries(urunOzeti)
+                .sort((a, b) => b[1].adet - a[1].adet)
+                .map(
+                  ([ad, v]) =>
+                    `<article class="hazirlik-urun"><span>${ad}</span><b>${v.adet} adet</b><div class="hazirlik-masalar">${Object.entries(
+                      v.masalar,
+                    )
+                      .map(([m, adet]) => `Masa ${m}: ${adet}`)
+                      .join(" · ")}</div></article>`,
+                )
+                .join("")
+            : '<div class="bos">Hazırlanacak bekleyen ürün yok.</div>';
           document.getElementById("siparisler").innerHTML = siparisler.length
             ? siparisler
                 .map(
@@ -636,9 +709,12 @@
                 .join("")
             : '<div class="bos">Bekleyen sipariş yok.</div>';
         },
-        (e) =>
-          (document.getElementById("siparisler").innerHTML =
-            `<div class="bos">${e.message}</div>`),
+        (e) => {
+          document.getElementById("siparisler").innerHTML =
+            `<div class="bos">${e.message}</div>`;
+          document.getElementById("hazirlikOzeti").innerHTML =
+            `<div class="bos">Ürün özeti yüklenemedi.</div>`;
+        },
       );
       window.siparisDuzenle = (id) => {
         const s = siparisler.find((x) => x.id === id);
