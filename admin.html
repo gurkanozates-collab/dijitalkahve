@@ -38,22 +38,42 @@
         auth = getAuth(a),
         dbs = getFirestore(a),
         storage = getStorage(a);
+      async function fotografiKucult(dosya) {
+        const resim = await createImageBitmap(dosya);
+        const enFazla = 900;
+        const oran = Math.min(1, enFazla / Math.max(resim.width, resim.height));
+        const genislik = Math.max(1, Math.round(resim.width * oran));
+        const yukseklik = Math.max(1, Math.round(resim.height * oran));
+        const canvas = document.createElement("canvas");
+        canvas.width = genislik;
+        canvas.height = yukseklik;
+        canvas.getContext("2d").drawImage(resim, 0, 0, genislik, yukseklik);
+        resim.close();
+        const blob = await new Promise((resolve, reject) =>
+          canvas.toBlob(
+            (sonuc) =>
+              sonuc
+                ? resolve(sonuc)
+                : reject(new Error("Fotoğraf küçültülemedi.")),
+            "image/webp",
+            0.76,
+          ),
+        );
+        return blob;
+      }
       window.menuGorselYukle = async (dosya) => {
         if (!auth.currentUser) throw new Error("Yönetici oturumu bulunamadı.");
         if (!dosya.type.startsWith("image/"))
           throw new Error("Lütfen bir fotoğraf dosyası seçin.");
-        if (dosya.size > 5 * 1024 * 1024)
-          throw new Error("Fotoğraf en fazla 5 MB olabilir.");
-        const uzanti = (dosya.name.split(".").pop() || "jpg").replace(
-          /[^a-zA-Z0-9]/g,
-          "",
-        );
+        if (dosya.size > 15 * 1024 * 1024)
+          throw new Error("Fotoğraf en fazla 15 MB olabilir.");
+        const kucukFotoğraf = await fotografiKucult(dosya);
         const yol = storageRef(
           storage,
-          `menu-resimleri/${Date.now()}-${crypto.randomUUID()}.${uzanti}`,
+          `menu-resimleri/${Date.now()}-${crypto.randomUUID()}.webp`,
         );
-        const sonuc = await uploadBytes(yol, dosya, {
-          contentType: dosya.type,
+        const sonuc = await uploadBytes(yol, kucukFotoğraf, {
+          contentType: "image/webp",
         });
         return getDownloadURL(sonuc.ref);
       };
@@ -1228,8 +1248,8 @@
         const dosya = urunGorselDosya.files?.[0];
         if (!dosya) return alert("Önce bir fotoğraf seçin.");
         fotoYukleBtn.disabled = true;
-        fotoYukleBtn.textContent = "⏳ Yükleniyor…";
-        fotoYuklemeDurumu.textContent = "Fotoğraf yükleniyor…";
+        fotoYukleBtn.textContent = "⏳ Hazırlanıyor…";
+        fotoYuklemeDurumu.textContent = "Fotoğraf küçültülüyor ve yükleniyor…";
         fotoYuklemeDurumu.style.color = "#795548";
         try {
           urunGorsel.value = await window.menuGorselYukle(dosya);
