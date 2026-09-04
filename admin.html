@@ -48,7 +48,7 @@
           '<div id="yoneticiGiris" class="giris-ekrani"><div class="giris-kart"><h2>🔐 Yönetici Girişi</h2><input id="yEmail" type="email" placeholder="E-posta adresi"><input id="ySifre" type="password" placeholder="Şifre"><button onclick="yoneticiGiris()">Giriş Yap</button><button onclick="sifremiUnuttum()" style="background:#1565c0">Şifremi Unuttum</button></div></div>',
         );
         const n = document.querySelector("nav>div");
-        n.style.gridTemplateColumns = "repeat(5,1fr)";
+        n.style.gridTemplateColumns = "repeat(6,1fr)";
         n.insertAdjacentHTML(
           "beforeend",
           '<button onclick="panelAc(\'sifrePanel\',this)" style="border:0;border-radius:10px;padding:13px;background:#eee;font-weight:bold">🔐 Şifre Yönetimi</button>',
@@ -117,6 +117,23 @@
         alert("Garson PIN’i değiştirildi.");
       };
       window.yoneticiCikis = () => signOut(auth);
+      window.gunSonuSifreSor = async () => {
+        const sifre = prompt("Gün sonu için yönetici şifresini girin:");
+        if (sifre === null) return;
+        if (!sifre) return alert("Yönetici şifresini girmelisiniz.");
+        try {
+          const u = auth.currentUser;
+          await reauthenticateWithCredential(
+            u,
+            EmailAuthProvider.credential(u.email, sifre),
+          );
+          window.gunSonuYetkili = true;
+          await window.gunSonuYap();
+        } catch (e) {
+          window.gunSonuYetkili = false;
+          alert("Yönetici şifresi yanlış. Gün sonu yapılmadı.");
+        }
+      };
       arayuz();
       gorunur(false);
       onAuthStateChanged(auth, (u) => gorunur(!!u));
@@ -223,6 +240,26 @@
         font-size: 18px;
         font-weight: bold;
         margin: 10px;
+      }
+      .masa-siparisler {
+        text-align: left;
+        background: #f7f4f2;
+        border-radius: 9px;
+        padding: 8px;
+        margin: 9px 0;
+        font-size: 13px;
+      }
+      .masa-siparis-satir {
+        display: flex;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 4px 0;
+        border-bottom: 1px solid #e5ddd8;
+      }
+      .masa-siparis-durum {
+        font-size: 11px;
+        color: #795548;
+        margin-top: 5px;
       }
       .masa button,
       .ana {
@@ -351,6 +388,9 @@
         transform: translate(-50%, 0);
       }
       @media (max-width: 850px) {
+        nav > div {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
         .masalar,
         .urunler {
           grid-template-columns: repeat(2, 1fr);
@@ -449,7 +489,21 @@
             cursor: pointer;
           "
         >
-          📊 İstatistikler
+          📊 İstatistikler</button
+        ><button
+          id="btnGunSonu"
+          onclick="gunSonuSifreSor()"
+          style="
+            border: 0;
+            border-radius: 10px;
+            padding: 13px;
+            background: #263238;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+          "
+        >
+          🌙 Gün Sonu
         </button>
       </div>
     </nav>
@@ -461,29 +515,6 @@
           <div>Bekleyen sipariş<b id="bekleyen">0</b></div>
         </section>
         <h2>🪑 Masa ve Hesap Yönetimi</h2>
-        <div
-          style="
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 14px;
-          "
-        >
-          <button
-            class="ana"
-            style="background: #263238"
-            onclick="gunSonuYap()"
-          >
-            🌙 Gün Sonu Yap
-          </button>
-          <button
-            class="ana"
-            style="background: #ef6c00"
-            onclick="sonIslemiGeriAl()"
-          >
-            ↩ Son Hesap Ödemeyi Geri Al
-          </button>
-        </div>
         <section id="masalar" class="masalar"></section>
       </section>
       <section id="garsonPanel" class="yonetim-panel" style="display: none">
@@ -573,10 +604,12 @@
           .querySelectorAll(".yonetim-panel")
           .forEach((p) => (p.style.display = "none"));
         document.getElementById(id).style.display = "block";
-        document.querySelectorAll("nav button").forEach((b) => {
-          b.style.background = "#eee";
-          b.style.color = "#33231e";
-        });
+        document
+          .querySelectorAll("nav button:not(#btnGunSonu)")
+          .forEach((b) => {
+            b.style.background = "#eee";
+            b.style.color = "#33231e";
+          });
         buton.style.background = "#4e342e";
         buton.style.color = "#fff";
         if (id === "garsonPanel") {
@@ -619,6 +652,7 @@
         siparisler = [],
         menu = [],
         gunSonlari = [];
+      let sonOdeme = null;
       let gunBaslangic = new Date();
       gunBaslangic.setHours(0, 0, 0, 0);
       const para = (n) =>
@@ -649,7 +683,41 @@
           .map((no) => {
             const o = oturumlar[no],
               t = o ? hesap[o.id] || 0 : 0;
-            return `<article class="masa ${o ? "acik" : "kapali"}"><div class="no">Masa ${no}</div><div class="durum">${o ? "🟢 AÇIK" : "🔴 KAPALI"}</div><div class="tutar">${para(t)}</div><button ${o ? "" : "disabled"} onclick="hesapOdendi(${no})">Hesap Ödendi</button></article>`;
+            const masaSiparisleri = o
+              ? siparisler.filter((s) => s.oturumId === o.id)
+              : [];
+            const urunOzet = {};
+            masaSiparisleri.forEach((s) =>
+              (s.urunler || []).forEach((u) => {
+                const x =
+                  urunOzet[u.urun] ||
+                  (urunOzet[u.urun] = { adet: 0, tutar: 0 });
+                x.adet += Number(u.adet || 0);
+                x.tutar += Number(u.tutar || 0);
+              }),
+            );
+            const detay = o
+              ? Object.keys(urunOzet).length
+                ? `<div class="masa-siparisler"><b>Tüm Siparişler</b>${Object.entries(
+                    urunOzet,
+                  )
+                    .map(
+                      ([ad, v]) =>
+                        `<div class="masa-siparis-satir"><span>${v.adet} × ${ad}</span><b>${para(v.tutar)}</b></div>`,
+                    )
+                    .join(
+                      "",
+                    )}<div class="masa-siparis-durum">🟢 ${masaSiparisleri.filter((s) => s.durum === "Onaylandı").length} onaylı · 🟡 ${masaSiparisleri.filter((s) => s.durum === "Bekleyen").length} bekleyen</div></div>`
+                : `<div class="masa-siparisler">Henüz sipariş yok.</div>`
+              : "";
+            const geriAl =
+              !o &&
+              sonOdeme &&
+              !sonOdeme.geriAlindi &&
+              Number(sonOdeme.masa) === no
+                ? `<div class="masa-siparisler"><b>Son ödeme yapılan masa</b></div><button style="background:#ef6c00" onclick="sonIslemiGeriAl()">↩ Hesap Ödemeyi Geri Al</button>`
+                : "";
+            return `<article class="masa ${o ? "acik" : "kapali"}"><div class="no">Masa ${no}</div><div class="durum">${o ? "🟢 AÇIK" : "🔴 KAPALI"}</div><div class="tutar">${para(t)}</div>${detay}${o ? `<button onclick="hesapOdendi(${no})">Hesap Ödendi</button>` : geriAl}</article>`;
           })
           .join("");
         document.getElementById("acik").textContent =
@@ -675,6 +743,10 @@
       });
       onSnapshot(collection(db, "siparisler"), (s) => {
         siparisler = s.docs.map((d) => ({ id: d.id, ...d.data() }));
+        ciz();
+      });
+      onSnapshot(doc(db, "ayarlar", "sonOdeme"), (s) => {
+        sonOdeme = s.exists() ? s.data() : null;
         ciz();
       });
       onSnapshot(collection(db, "menu"), (s) => {
@@ -719,14 +791,12 @@
       }
 
       window.gunSonuYap = async () => {
-        if (
-          Object.keys(oturumlar).length &&
-          !confirm("Açık masalar var. Yine de gün sonu yapılsın mı?")
-        )
-          return;
+        if (!window.gunSonuYetkili)
+          return alert("Gün sonu için yönetici şifresi gereklidir.");
+        window.gunSonuYetkili = false;
         if (
           !confirm(
-            "Günlük hasılat istatistiklere kaydedilecek ve sayaç sıfırlanacak. Onaylıyor musunuz?",
+            "Günlük hasılat istatistiklere kaydedilecek; açık masalar, siparişler, garson çağrıları ve Yaz-Boz kayıtları sıfırlanacak. Onaylıyor musunuz?",
           )
         )
           return;
@@ -752,12 +822,43 @@
             oncekiBaslangic: onceki,
             kapanisZamani: serverTimestamp(),
           });
-          await setDoc(
+          const b = writeBatch(db);
+          Object.values(oturumlar).forEach((o) =>
+            b.update(doc(db, "oturumlar", o.id), {
+              durum: "kapali",
+              odendi: true,
+              kapanisZamani: serverTimestamp(),
+              gunSonundaKapandi: true,
+            }),
+          );
+          siparisler
+            .filter((s) => s.durum === "Bekleyen" || s.durum === "Onaylandı")
+            .forEach((s) =>
+              b.update(doc(db, "siparisler", s.id), {
+                durum: "Tamamlandı",
+                odendi: true,
+                odemeZamani: serverTimestamp(),
+              }),
+            );
+          const cagrilar = await getDocs(collection(db, "garsonCagrilari"));
+          cagrilar.docs
+            .filter((x) => x.data().durum === "bekliyor")
+            .forEach((x) =>
+              b.update(x.ref, {
+                durum: "tamamlandi",
+                tamamlanmaZamani: serverTimestamp(),
+              }),
+            );
+          Object.values(oturumlar).forEach((o) =>
+            b.delete(doc(db, "yazbozlar", o.id)),
+          );
+          b.set(
             doc(db, "ayarlar", "gunluk"),
             { gunBaslangic: serverTimestamp() },
             { merge: true },
           );
-          mesaj("Gün sonu tamamlandı");
+          await b.commit();
+          mesaj("Gün sonu tamamlandı; günlük işlemler sıfırlandı");
         } catch (e) {
           alert(e.message);
         }
