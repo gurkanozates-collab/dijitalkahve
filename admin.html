@@ -750,9 +750,9 @@
         </section>
       </section>
       <section id="istatistikPanel" class="yonetim-panel" style="display: none">
-        <h2>📊 Günlük Satış İstatistikleri</h2>
+        <h2>📊 Ürün Satış İstatistikleri</h2>
         <section class="panel">
-          <div id="istatistikler">Henüz gün sonu kaydı yok.</div>
+          <div id="istatistikler">Henüz satış kaydı yok.</div>
         </section>
       </section>
       <section id="gunSonuPanel" class="yonetim-panel" style="display: none">
@@ -1015,6 +1015,7 @@
       onSnapshot(collection(db, "siparisler"), (s) => {
         siparisler = s.docs.map((d) => ({ id: d.id, ...d.data() }));
         ciz();
+        istatistikleriCiz();
       });
       onSnapshot(collection(db, "sonOdemeler"), (s) => {
         sonOdemeler = {};
@@ -1044,22 +1045,44 @@
       function istatistikleriCiz() {
         const a = document.getElementById("istatistikler");
         if (!a) return;
-        a.innerHTML = gunSonlari.length
-          ? gunSonlari
-              .map(
-                (g) =>
-                  `<article class="urun" style="margin-bottom:10px"><h3>${g.tarih || "Gün sonu"}</h3><div class="fiyat">Toplam: ${para(g.toplam)}</div><div class="etiket">💵 Nakit: ${para(g.nakitToplam)} · 💳 POS: ${para(g.posToplam)} · ${g.siparisSayisi || 0} sipariş</div><hr>${Object.entries(
-                    g.urunOzet || {},
-                  )
-                    .sort((x, y) => y[1].adet - x[1].adet)
-                    .map(
-                      ([ad, v]) =>
-                        `<div style="display:flex;justify-content:space-between;padding:5px"><span>${ad}: <b>${v.adet} adet</b></span><span>${para(v.tutar)}</span></div>`,
-                    )
-                    .join("")}</article>`,
-              )
-              .join("")
-          : "Henüz gün sonu kaydı yok.";
+        const simdi = new Date();
+        const gun = new Date(simdi);
+        gun.setHours(0, 0, 0, 0);
+        const hafta = new Date(gun);
+        hafta.setDate(hafta.getDate() - ((hafta.getDay() + 6) % 7));
+        const ay = new Date(simdi.getFullYear(), simdi.getMonth(), 1);
+
+        const kart = (baslik, baslangic) => {
+          const ozet = {};
+          siparisler
+            .filter((s) => {
+              const zaman = s.odemeZamani?.toDate?.();
+              return s.odendi === true && zaman && zaman >= baslangic;
+            })
+            .forEach((s) =>
+              (s.urunler || []).forEach((u) => {
+                const ad = String(u.urun || "Ürün");
+                const x = ozet[ad] || (ozet[ad] = { adet: 0, tutar: 0 });
+                x.adet += Number(u.adet || 0);
+                x.tutar += Number(u.tutar || 0);
+              }),
+            );
+          const satirlar = Object.entries(ozet).sort(
+            (x, y) => y[1].adet - x[1].adet,
+          );
+          const toplamAdet = satirlar.reduce((t, [, v]) => t + v.adet, 0);
+          const toplamTutar = satirlar.reduce((t, [, v]) => t + v.tutar, 0);
+          return `<article style="border:1px solid #e2d8d2;border-radius:12px;padding:13px;margin-bottom:12px">
+            <h3 style="margin:0 0 8px">${baslik}</h3>
+            <div class="etiket" style="margin-bottom:8px"><b>${toplamAdet} ürün</b> · ${para(toplamTutar)}</div>
+            ${satirlar.length ? satirlar.map(([ad, v]) => `<div style="display:flex;justify-content:space-between;gap:10px;padding:7px 2px;border-top:1px solid #eee"><span>${ad}</span><span><b>${v.adet} adet</b> · ${para(v.tutar)}</span></div>`).join("") : '<div style="padding:8px 0;color:#777">Bu dönemde satılan ürün yok.</div>'}
+          </article>`;
+        };
+
+        a.innerHTML =
+          kart("Bugün", gun) +
+          kart("Bu Hafta", hafta) +
+          kart("Bu Ay", ay);
       }
 
       window.gunSonuYap = async () => {
