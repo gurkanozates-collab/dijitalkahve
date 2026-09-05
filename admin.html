@@ -92,7 +92,7 @@
         document.head.appendChild(s);
         document.body.insertAdjacentHTML(
           "afterbegin",
-          '<div id="yoneticiGiris" class="giris-ekrani"><div class="giris-kart"><h2>🔐 Yönetici Girişi</h2><input id="yEmail" type="email" placeholder="E-posta adresi"><input id="ySifre" type="password" placeholder="Şifre"><button onclick="yoneticiGiris()">Giriş Yap</button><button onclick="sifremiUnuttum()" style="background:#1565c0">Şifremi Unuttum</button></div></div>',
+          '<div id="yoneticiGiris" class="giris-ekrani"><div class="giris-kart"><h2>🔐 Yönetici Girişi</h2><input id="yEmail" type="email" placeholder="E-posta adresi" autocomplete="username"><input id="ySifre" type="password" placeholder="Şifre" autocomplete="off"><button onclick="yoneticiGiris()">Giriş Yap</button><button onclick="sifremiUnuttum()" style="background:#1565c0">Şifremi Unuttum</button></div></div>',
         );
         const n = document.querySelector("nav>div");
         n.style.gridTemplateColumns = "repeat(7,1fr)";
@@ -127,6 +127,7 @@
             yEmail.value.trim(),
             ySifre.value,
           );
+          document.getElementById("ySifre").value = "";
         } catch (e) {
           alert("Giriş başarısız: " + e.message);
         }
@@ -168,7 +169,10 @@
         garsonPin.value = "";
         alert("Garson PIN’i değiştirildi.");
       };
-      window.yoneticiCikis = () => signOut(auth);
+      window.yoneticiCikis = () => {
+        document.getElementById("ySifre").value = "";
+        signOut(auth);
+      };
       window.gunSonuSifreSor = async () => {
         const sifre = prompt("Gün sonu için yönetici şifresini girin:");
         if (sifre === null) return;
@@ -260,6 +264,7 @@
       arayuz();
       gorunur(false);
       onAuthStateChanged(auth, (u) => {
+        document.getElementById("ySifre").value = "";
         gorunur(!!u);
         if (u) hareketsizlikBaslat();
         else clearInterval(hareketsizlikKontrolu);
